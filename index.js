@@ -30,14 +30,25 @@ rainbowSDK.start().then(() => {
 
   rainbowSDK.events.on('rainbow_onmessagereceived', function(message) {
 
-    // test if the message comes from a bubble of from a conversation with one participant
-    if(message.type == "chat") {
+    // test if the message comes from Agent first
+    if (message.type == "chat" && message.fromJid in matchmaker.agentTable) {
+      // match agent to user
+      let userId = matchmaker.matchAgent(message.fromJid);
+      // forward the message to the user
+      message = rainbowSDK.im.sendMessageToJid(`${message.content}`, userId);
 
+      console.log("agentTable", matchmaker.agentTable);
+      console.log("userTable", matchmaker.userTable);
+    }
+
+    else if(message.type == "chat") {
       // match user to agent
       let agentId = matchmaker.matchUser(message.fromJid);
-
       // forward the message to the agent
       message = rainbowSDK.im.sendMessageToJid(`${message.content}`, agentId);
+
+      console.log("agentTable", matchmaker.agentTable);
+      console.log("userTable", matchmaker.userTable);
 
     }
 
