@@ -1,17 +1,24 @@
 // Load the SDK
 let RainbowSDK = require("rainbow-node-sdk");
-let config = require("./config")
+let config = require("./config");
+let matchMakerEngine = require("./matchmakerEngine");
 
 // Instantiate the SDK
 let rainbowSDK = new RainbowSDK(config.options);
 
+//  get all contacts
+rainbowSDK.events.on('rainbow_onready', function() {
+    let contacts = rainbowSDK.contacts.getAll();
+});
 
-
+// starts rainbowsdk
 rainbowSDK.start().then(() => {
-  // echo message
+  console.log(">> RainbowSDK started.");
+
+  // instantiate matchmaker engine
+  let matchmaker = new matchMakerEngine.MatchMaker();
+
   rainbowSDK.events.on('rainbow_onmessagereceived', function(message) {
-    // Do something when the SDK is started
-    console.log("start");
 
     // test if the message comes from a bubble of from a conversation with one participant
     if(message.type == "groupchat") {
