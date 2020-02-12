@@ -52,6 +52,22 @@ function MatchMaker() {
 
   }
 
+  this.matchAgent = function(agentId) {
+    if (this.agentTable[agentId] != null) {
+      let userId = this.agentTable[agentId];
+      let message = `This Agent: ${agentId} has found a match!`;
+      console.log(message);
+      return userId;
+    }
+
+    else {
+      let message = `Failure! This Agent: ${agentId} is not connected to anyone.`;
+      console.log(message);
+      return null;
+    }
+
+  }
+
   this.addAgent = function(agentId) {
     // adds agent if not inside already
     if (agentId in this.agentTable) {

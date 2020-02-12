@@ -46,10 +46,19 @@ function test_disconnectUser() {
   console.log(matchmaker.userTable);
 }
 
+function test_matchAgent() {
+  let agent1 = "5e43c49ce9f127306369575f";
+  message = matchmaker.matchAgent(agent1);
+  console.log(message);
+  console.log(matchmaker.agentTable);
+}
+
 test_addAgent();
 test_addAgent();
 test_generateMatch();
 test_matchUser();
 test_matchUser();
+test_matchAgent();
 test_matchUserBusy();
 test_disconnectUser();
+test_matchAgent();
