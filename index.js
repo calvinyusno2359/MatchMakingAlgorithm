@@ -1,7 +1,7 @@
 // Load the SDK
 let RainbowSDK = require("rainbow-node-sdk");
 let config = require("./config");
-let matchMakerEngine = require("./matchmakerEngine");
+let matchMakerEngine = require("./matchMakerEngine");
 
 // Instantiate the SDK
 let rainbowSDK = new RainbowSDK(config.options);
