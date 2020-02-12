@@ -6,32 +6,39 @@ let matchMakerEngine = require("./matchMakerEngine");
 // Instantiate the SDK
 let rainbowSDK = new RainbowSDK(config.options);
 
-//  get all contacts
+// instantiate matchmaker engine
+let matchmaker = new matchMakerEngine.MatchMaker();
+
+// get all contacts and populate agentTable
 rainbowSDK.events.on('rainbow_onready', function() {
-    let contacts = rainbowSDK.contacts.getAll();
+  let contacts = rainbowSDK.contacts.getAll();
+  for (contact of contacts) {
+
+    // selects only agents
+    if (contact.name.value == "Test A") { // isAgent
+      matchmaker.addAgent(contact.jid_im);
+      console.log("agentTable", matchmaker.agentTable);
+    }
+
+    else {continue;}
+  }
 });
 
 // starts rainbowsdk
 rainbowSDK.start().then(() => {
   console.log(">> RainbowSDK started.");
 
-  // instantiate matchmaker engine
-  let matchmaker = new matchMakerEngine.MatchMaker();
-
   rainbowSDK.events.on('rainbow_onmessagereceived', function(message) {
 
     // test if the message comes from a bubble of from a conversation with one participant
-    if(message.type == "groupchat") {
-        // Send the answer to the bubble
-        messageSent = rainbowSDK.im.sendMessageToBubbleJid('The message answer', message.fromBubbleJid);
-        console.log("bubble rainbow_onmessagereceived")
-    }
+    if(message.type == "chat") {
 
-    else {
-        // send the answer to the user directly otherwise
-        messageSent = rainbowSDK.im.sendMessageToJid('The message answer', message.fromJid);
-        console.log("rainbow_onmessagereceived")
-        console.log(message)
+      // match user to agent
+      let agentId = matchmaker.matchUser(message.fromJid);
+
+      // forward the message to the agent
+      message = rainbowSDK.im.sendMessageToJid(`${message.content}`, agentId);
+
     }
 
   });
