@@ -5,16 +5,12 @@ let path = require("path");
 
 // modules
 let config = require("./config");
-let matchMakerEngine = require("./matchMakerEngine");
 let user = require("./handlers/user");
 let agent = require("./handlers/agent");
 let rainbow = require("./handlers/rainbow");
 
 // get rainbowSDK
 let rainbowSDK = rainbow.rainbowSDK;
-
-// instantiate matchmaker engine
-let matchmaker = new matchMakerEngine.MatchMaker();
 
 // instantiate express app
 let app = new express();
