@@ -31,4 +31,4 @@ rainbowSDK.start();
 // for faster testing
 // app.listen(config.PORT, () => console.log(`Listening to port: ${config.PORT}...`));
 
-app.listen(config.PORT);
+app.listen(process.env.PORT || 8080);
