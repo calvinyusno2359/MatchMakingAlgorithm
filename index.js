@@ -4,7 +4,6 @@ let RainbowSDK = require("rainbow-node-sdk");
 let path = require("path");
 
 // modules
-let config = require("./config");
 let user = require("./handlers/user");
 let agent = require("./handlers/agent");
 let rainbow = require("./handlers/rainbow");

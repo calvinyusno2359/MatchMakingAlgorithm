@@ -2,7 +2,6 @@ let path = require("path");
 let RainbowSDK = require("rainbow-node-sdk");
 
 // modules
-let config = require("../config");
 let rainbow = require("./rainbow");
 
 // get rainbowSDK
