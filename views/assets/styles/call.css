@@ -1,0 +1,39 @@
+.loading {
+  font-family: "century-gothic", serif;
+  font-size: 50px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 45%;
+  left: 50%;
+}
+
+.lds-dual-ring {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 55%;
+  left: 50%;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid rgb(233, 30, 99);
+  border-color: rgb(233, 30, 99) transparent rgb(233, 30, 99) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+

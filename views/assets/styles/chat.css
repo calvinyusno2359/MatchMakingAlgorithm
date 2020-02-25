@@ -1,0 +1,137 @@
+body {
+	font-family: "century-gothic", serif;
+	font-size: 20px;
+	margin: 0 auto;
+}
+
+.container {
+	box-sizing: border-box;
+	width: 100%;
+	overflow: auto;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.left {
+	border: 2px solid rgb(65, 150, 242);
+	border-radius: 10px;
+	background-color: rgba(65, 150, 242, 0.7);
+	color: black;
+	max-width: 40%;
+	box-sizing: border-box;
+	padding: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+	float: left;
+}
+
+.right {
+	border: 2px solid rgb(233, 30, 99);
+	border-radius: 10px;
+	background-color: rgba(233, 30, 99, 0.7);
+	color: white;
+	max-width: 40%;
+	box-sizing: border-box;
+	padding: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+	float: right;
+}
+
+.right.sending {
+	background-color: white;
+	color: black;
+}
+
+.chat_content {
+	background-color: white;
+	top: 0%;
+	height: 88%;
+	position: absolute;
+	width: 100%;
+	box-sizing: border-box;
+	overflow-y: auto;
+	padding: 30px;
+}
+
+.text_box {
+	border: 5px solid rgba(233, 30, 99, 0.7);
+	background-color: white;
+	padding: 15px;
+	height: 12%;
+	position: absolute;
+	width: calc(100% - 150px);
+	box-sizing: border-box;
+	bottom: 0%;
+	overflow-y: auto;
+}
+
+.send_button {
+	font-family: "century-gothic", serif;
+	background-color: rgba(233, 30, 99, 0.7);
+	border: 2px rgba(233, 30, 99, 0.75);
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 24px;
+	height: 12%;
+	transition-duration: 0.33s;
+	width: 150px;
+	box-sizing: border-box;
+	position: absolute;
+	bottom: 0%;
+	right: 0%;
+}
+
+.send_button:hover:enabled {
+	background-color: rgba(233, 30, 99, 1);
+}
+
+.send_button:disabled {
+	cursor: not-allowed;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.loading {
+	font-family: "century-gothic", serif;
+	font-size: 50px;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	top: 45%;
+	left: 50%;
+}
+
+
+.lds-dual-ring {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 55%;
+  left: 50%;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid rgb(233, 30, 99);
+  border-color: rgb(233, 30, 99) transparent rgb(233, 30, 99) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+

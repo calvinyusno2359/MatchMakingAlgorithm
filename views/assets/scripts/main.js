@@ -18,9 +18,9 @@ function selectTag(e) {
 function getSupport(e) {
 	let target = e.toElement;
 	if (target.id === "chat") {
-		window.location = "/support/chat";
+		window.location = "chat";
 	} else if (target.id === "call") {
-		window.location = "/support/call";
+		window.location = "call";
 	}
 }
 
