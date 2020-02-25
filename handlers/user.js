@@ -3,8 +3,10 @@ let RainbowSDK = require("rainbow-node-sdk");
 
 // modules
 let config = require("../config");
+let rainbow = require("./rainbow");
 
-let rainbowSDK = new RainbowSDK(config.options);
+// get rainbowSDK
+let rainbowSDK = rainbow.rainbowSDK;
 
 async function chat(req, res) {
   let view = path.join(__dirname + "/../views/chat.html");

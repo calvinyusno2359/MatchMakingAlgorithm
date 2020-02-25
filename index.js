@@ -8,9 +8,10 @@ let config = require("./config");
 let matchMakerEngine = require("./matchMakerEngine");
 let user = require("./handlers/user");
 let agent = require("./handlers/agent");
+let rainbow = require("./handlers/rainbow");
 
-// Instantiate the SDK
-let rainbowSDK = new RainbowSDK(config.options);
+// get rainbowSDK
+let rainbowSDK = rainbow.rainbowSDK;
 
 // instantiate matchmaker engine
 let matchmaker = new matchMakerEngine.MatchMaker();
@@ -23,34 +24,11 @@ app.use(bodyParser);
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// get all contacts and populate agentTable when SDK is ready
-rainbowSDK.events.on('rainbow_onready', (req, res) => {
-  let contacts = rainbowSDK.contacts.getAll();
-  // populate contact table
-  console.log("Rainbow SDK is ready.")
-  app.listen(config.PORT);
-});
-
 // routes and handlers
 app.get('/', async (req, res) => res.sendFile(path.join(__dirname + "/views/main.html")));
 app.get('/chat', user.chat);
 app.get('/call', user.call);
-app.get('/chat/request', async (req, res) => {
-  let agent_id = "5e422880e9f1273063695253";
-
-  let response = await rainbowSDK.admin.createAnonymousGuestUser(3600);
-  let username = response.loginEmail;
-  let password = response.password;
-
-  // get the token
-  response = await rainbowSDK.admin.askTokenOnBehalf(username, password);
-  let token = response.token;
-
-  res.send({
-    "token": token,
-    "agent_id": agent_id,
-  });
-});
+app.get('/chat/request', user.requesting);
 
 // starts rainbowsdk
 rainbowSDK.start();
@@ -58,3 +36,4 @@ rainbowSDK.start();
 // for faster testing
 // app.listen(config.PORT, () => console.log(`Listening to port: ${config.PORT}...`));
 
+app.listen(config.PORT);
