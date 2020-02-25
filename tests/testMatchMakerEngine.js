@@ -1,4 +1,4 @@
-let matchMakerEngine = require("../matchmakerEngine");
+let matchMakerEngine = require("../handlers/matchMakerEngine");
 
 let matchmaker = new matchMakerEngine.MatchMaker();
 

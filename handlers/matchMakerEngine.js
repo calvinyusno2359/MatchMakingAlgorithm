@@ -87,19 +87,15 @@ function MatchMaker() {
 
     // this one just gets any agent that is free
     for (agentId of Object.keys(this.agentTable)) {
-
       if (this.agentTable[agentId] == null) {
-        let message = `Success! A matching Agent: ${userId} has been found for User: ${agentId}.`;
+        let message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
         console.log(message);
         return agentId;
       }
-
-      else {
-        let message = `Failure! A match cannot be found, returning null.`;
-        console.log(message);
-        return null;
-      }
     }
+    let message = `Failure! A match cannot be found, returning null.`;
+    console.log(message);
+    return null;
   }
 
 };
