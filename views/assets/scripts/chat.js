@@ -40,7 +40,7 @@ function keyPress(e) {
 
 async function waitConnection() {
     // ping server for token and id
-    let response = await fetch("api/chat/request");
+    let response = await fetch("/chat/request");
     let result = await response.json();
     let token = result.token;
     let agent_id = result.agent_id;

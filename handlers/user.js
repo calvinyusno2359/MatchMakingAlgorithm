@@ -1,4 +1,10 @@
 let path = require("path");
+let RainbowSDK = require("rainbow-node-sdk");
+
+// modules
+let config = require("../config");
+
+let rainbowSDK = new RainbowSDK(config.options);
 
 async function chat(req, res) {
   let view = path.join(__dirname + "/../views/chat.html");

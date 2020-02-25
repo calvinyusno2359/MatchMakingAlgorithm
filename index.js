@@ -21,6 +21,7 @@ let app = new express();
 // app settings
 app.use(bodyParser);
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // get all contacts and populate agentTable when SDK is ready
 rainbowSDK.events.on('rainbow_onready', (req, res) => {
@@ -34,7 +35,22 @@ rainbowSDK.events.on('rainbow_onready', (req, res) => {
 app.get('/', async (req, res) => res.sendFile(path.join(__dirname + "/views/main.html")));
 app.get('/chat', user.chat);
 app.get('/call', user.call);
-app.get('/chat/request', user.requesting);
+app.get('/chat/request', async (req, res) => {
+  let agent_id = "5e422880e9f1273063695253";
+
+  let response = await rainbowSDK.admin.createAnonymousGuestUser(3600);
+  let username = response.loginEmail;
+  let password = response.password;
+
+  // get the token
+  response = await rainbowSDK.admin.askTokenOnBehalf(username, password);
+  let token = response.token;
+
+  res.send({
+    "token": token,
+    "agent_id": agent_id,
+  });
+});
 
 // starts rainbowsdk
 rainbowSDK.start();
