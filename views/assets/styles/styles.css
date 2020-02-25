@@ -1,0 +1,82 @@
+header {
+	text-align: center;
+	font-family: "century-gothic", serif;
+	font-size: 50px;
+}
+
+p {
+
+}
+
+p.left {
+
+}
+
+p.right {
+	
+}
+
+.button {
+	font-family: "century-gothic", serif;
+	background-color: rgb(233, 30, 99);
+	border: 2px solid rgb(233, 30, 99);
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 24px;
+	border-radius: 4px;
+	transition-duration: 0.33s;
+	width: 280px;
+}
+
+.button:hover:enabled {
+	background-color: white;
+	color: black;
+}
+
+.button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.support_buttons {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	left: 50%;
+	bottom: 0%;
+}
+
+.problems {
+	text-align: center;
+	font-family: "century-gothic", serif;
+	font-size: 30px;
+	width: 560px;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	left: 50%;
+	top: 47%;
+	border: 2px solid rgb(233, 30, 99);
+	border-radius: 4px;
+	overflow-y: auto;
+	height: 306.65px;
+}
+
+.problems a {
+	background-color: rgb(233, 30, 99);
+	opacity: 0.5;
+	color: white;
+	display: block;
+	padding: 12px;
+	text-decoration: none;
+	transition-duration: 0.33s;
+}
+
+.problems a:hover {
+	opacity: 0.8;
+}
+
+.problems a.active {
+	opacity: 1;
+}
