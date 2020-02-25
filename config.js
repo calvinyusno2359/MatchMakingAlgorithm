@@ -38,7 +38,7 @@ const options = {
     }
 };
 
-const PORT = process.env.PORT || 8080;
+let PORT = process.env.PORT || 8080;
 
 exports.options = options;
 exports.PORT = PORT;
