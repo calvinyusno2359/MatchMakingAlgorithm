@@ -7,6 +7,9 @@ let rainbow = require("./rainbow");
 // get rainbowSDK
 let rainbowSDK = rainbow.rainbowSDK;
 
+// get matchmaker
+let matchmaker = rainbow.matchmaker;
+
 async function chat(req, res) {
   let view = path.join(__dirname + "/../views/chat.html");
   res.sendFile(view);
@@ -18,9 +21,6 @@ async function call(req, res) {
 };
 
 async function requesting(req, res) {
-  // match agent
-  let agent_id = "5e422880e9f1273063695253";
-
   let response = await rainbowSDK.admin.createAnonymousGuestUser(3600);
   let username = response.loginEmail;
   let password = response.password;
@@ -28,6 +28,11 @@ async function requesting(req, res) {
   // get the token
   response = await rainbowSDK.admin.askTokenOnBehalf(username, password);
   let token = response.token;
+
+  // match user with agent
+  console.log(password);
+  let agent_id = matchmaker.matchUser(password);
+  console.log(matchmaker.agentTable);
 
   res.send({
     "token": token,

@@ -28,7 +28,5 @@ app.get('/chat/request', user.requesting);
 // starts rainbowsdk
 rainbowSDK.start();
 
-// for faster testing
-// app.listen(config.PORT, () => console.log(`Listening to port: ${config.PORT}...`));
-
-app.listen(process.env.PORT || 8080);
+let PORT = process.env.PORT || 8080
+app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));

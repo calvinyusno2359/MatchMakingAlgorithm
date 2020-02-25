@@ -86,7 +86,7 @@ function MatchMaker() {
     // TODO: algorithm to generate match given user id, returns agentId
 
     // this one just gets any agent that is free
-    for (agentId of  Object.keys(this.agentTable)) {
+    for (agentId of Object.keys(this.agentTable)) {
 
       if (this.agentTable[agentId] == null) {
         let message = `Success! A matching Agent: ${userId} has been found for User: ${agentId}.`;
