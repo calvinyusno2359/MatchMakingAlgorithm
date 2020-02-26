@@ -4,13 +4,13 @@ const options = {
         host: "sandbox"
     },
     credentials: {
-        login: "spam.xyz999@gmail.com", // To replace with your developer credendials
-        password: "Cain186Leon!"        // To replace with your developer credentials
+        login: "derong97@gmail.com", // To replace with your developer credendials
+        password: "Qwertyuiop~123" // To replace with your developer credentials
     },
     // Application identifier
     application: {
-        appID: "30088dc04d5411ea819a43cb4a9dae9b",
-        appSecret: "2Z3DnzBTREuuoVfFRA6uvlbKxmwTi4Ri8RwWxLsaCQA7TDf41vqKe7N63rVroLm6"
+        appID: "de6b39a0513f11ea819a43cb4a9dae9b",
+        appSecret: "WzpQkTwxj6SfULL9muZJ83yKFEvxuvM1Iq59HxaXSo9S3lrTK0ST4khFlRPGErZ2"
     },
     // Logs options
     logs: {
@@ -27,9 +27,10 @@ const options = {
             path: "/var/tmp/rainbowsdk/",
             customFileName: "R-SDK-Node-Sample2",
             level: "debug",
-            zippedArchive : false/*,
-            maxSize : '10m',
-            maxFiles : 10 // */
+            zippedArchive: false
+                /*,
+                            maxSize : '10m',
+                            maxFiles : 10 // */
         }
     },
     // IM options
