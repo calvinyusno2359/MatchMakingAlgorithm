@@ -36,7 +36,7 @@ function addAgent2(req, res) {
     let query = db.query(sql, entry, (err, result) => {
         if (err) throw err;
         console.log(result);
-        res.send('Agent 2 added...');
+        res.send('Agent 2 added....');
     });
 };
 
