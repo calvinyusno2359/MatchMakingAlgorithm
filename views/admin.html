@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Edit Remove HTML Table Row</title>
+    <meta charset="windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="assets/styles/admin.css">
+    <script type="text/javascript" src="assets/scripts/admin.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="tab">
+            <table id="table" border="1">
+                <tr>
+                    <th>ID</th>
+                    <th>Email Address</th>
+                    <th>Skill Tags</th>
+                </tr>
+                <tr>
+                    <td>5e4a2f6ee9f1273063697382</td>
+                    <td>user.one@rainbow.com</td>
+                    <td>rubbish collecting</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab tab-2">
+            ID :<input type="text" name="id" id="id"> Email Address :<input type="text" name="email" id="email"> Skill Tags :<input type="text" name="tag" id="tag">
+
+            <button onclick="addHtmlTableRow();">Add</button>
+            <button onclick="editHtmlTbleSelectedRow();">Edit</button>
+            <button onclick="removeSelectedRow();">Remove</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

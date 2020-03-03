@@ -34,7 +34,7 @@ function MatchMaker() {
 
     this.disconnectUser = function(userId) {
         // disconnects user and agent
-        // done by writing null to agenttable and deleting user from userTable
+        // done by writing null to agentTable and deleting user from userTable
 
         let agentId = this.userTable[userId];
         if (this.agentTable[agentId] == userId) {
