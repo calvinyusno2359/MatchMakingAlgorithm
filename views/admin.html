@@ -11,7 +11,7 @@
 
 <body>
     <div class="container">
-        <div class="tab">
+        <div class="tab tab-2">
             <table id="table" border="1">
                 <tr>
                     <th>ID</th>
@@ -19,18 +19,28 @@
                     <th>Skill Tags</th>
                 </tr>
                 <tr>
+                    <td>1</td>
+                    <td>test1@rainbow.com</td>
+                    <td>trash</td>
+                </tr>
+                <!---<tr>
                     <td>5e4a2f6ee9f1273063697382</td>
                     <td>user.one@rainbow.com</td>
                     <td>rubbish collecting</td>
                 </tr>
+                <tr>
+                    <td>5e4a303ae9f127306369738a</td>
+                    <td>user.two@rainbow.com</td>
+                    <td>nothing</td>
+                </tr>--->
             </table>
         </div>
         <div class="tab tab-2">
             ID :<input type="text" name="id" id="id"> Email Address :<input type="text" name="email" id="email"> Skill Tags :<input type="text" name="tag" id="tag">
 
-            <button onclick="addHtmlTableRow();">Add</button>
+            <button onclick="addHtmlTableRow();" method="POST" action="/admin/addagent">Add</button>
             <button onclick="editHtmlTbleSelectedRow();">Edit</button>
-            <button onclick="removeSelectedRow();">Remove</button>
+            <button onclick="removeSelectedRow();" method="POST" action="/admin/deleteagent">Remove</button>
         </div>
     </div>
 

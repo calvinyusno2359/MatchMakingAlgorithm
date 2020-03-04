@@ -22,7 +22,7 @@ function checkEmptyInput() {
 }
 
 // add Row
-function addHtmlTableRow() {
+async function addHtmlTableRow() {
     // get the table by id
     // create a new row and cells
     // get value from input text
@@ -35,7 +35,15 @@ function addHtmlTableRow() {
             id = document.getElementById("id").value,
             email = document.getElementById("email").value,
             tag = document.getElementById("tag").value;
-
+        var data = { id: id, email: email, tag: tag, availability: false };
+        var options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        await fetch("/admin/addagent", options);
         cell1.innerHTML = id;
         cell2.innerHTML = email;
         cell3.innerHTML = tag;
@@ -70,7 +78,9 @@ function editHtmlTbleSelectedRow() {
     }
 }
 
-function removeSelectedRow() {
+async function removeSelectedRow() {
+    id = document.getElementById("id").value;
+    await fetch("/admin/deleteagent/" + id);
     table.deleteRow(rIndex);
     // clear input text
     document.getElementById("id").value = "";

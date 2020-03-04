@@ -16,28 +16,16 @@ db.connect((err) => {
     console.log('MySQL connected...')
 })
 
-// Add agent 1
-function addAgent1(req, res) {
-    let agentId = '5e4a2f6ee9f1273063697382';
-    let entry = { id: agentId, email: 'user.one@rainbow.com', availability: true };
+// Add agent
+function addAgent(req, res) {
+    let entry = req.body;
     let sql = 'INSERT INTO agent SET ?';
     let query = db.query(sql, entry, (err, result) => {
         if (err) throw err;
         console.log(result);
-        res.send('Agent 1 added...');
+        console.log("Agent added...")
     });
-};
-
-// Add agent 2
-function addAgent2(req, res) {
-    let agentId = '5e4a303ae9f127306369738a';
-    let entry = { id: agentId, email: 'user.two@rainbow.com', availability: false };
-    let sql = 'INSERT INTO agent SET ?';
-    let query = db.query(sql, entry, (err, result) => {
-        if (err) throw err;
-        console.log(result);
-        res.send('Agent 2 added....');
-    });
+    res.end();
 };
 
 // Select agents
@@ -77,13 +65,13 @@ function deleteAgent(req, res) {
     let query = db.query(sql, (err, result) => {
         if (err) throw err;
         console.log(result);
-        res.send('Agent deleted...');
+        console.log('Agent deleted...');
     });
+    res.end();
 };
 
 // exports
-exports.addAgent1 = addAgent1;
-exports.addAgent2 = addAgent2;
+exports.addAgent = addAgent;
 exports.selectAgents = selectAgents;
 exports.selectAgent = selectAgent;
 exports.updateAgentSkillTag = updateAgentSkillTag;
