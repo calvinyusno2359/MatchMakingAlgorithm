@@ -38,17 +38,17 @@ function pushText(text, side, sending=false) {
         }
     }
     
-     function endChat() {
-        console.log(user_id)
+    // end chat and close conversation
+    function endChat() {
         const id = {
-            user_id: user_id 
+            userId: user_id 
         }
-        console.log(id)
-        disconnect('/chat/disconnect', id).then((data) => {
-            // returnToMain('/').then((data) => {
-            //     console.log(data)
-            // })
-            console.log(data)
+        disconnect('/chat/disconnect', id).then(() => {
+            closeConversation().then(() => {
+                console.log("Conversation closed successfully")
+            }).catch(() => {
+                console.log("Conversation closed unsuccessfully ")
+            })
         })
     }
 
@@ -62,14 +62,10 @@ function pushText(text, side, sending=false) {
         });
         return await response.json(); 
       }
-      
-      async function returnToMain(url = '') {
-        const response = await fetch(url, {
-          method: 'GET'
-        });
-        return await response.json(); 
-      }
-    
+
+    const closeConversation = async() => {
+        await rainbowSDK.conversations.closeConversation(conversation)
+    }
     
     async function waitConnection() {
         // ping server for token and id
@@ -81,7 +77,7 @@ function pushText(text, side, sending=false) {
         response = await rainbowSDK.connection.signinSandBoxWithToken(token);
     
         // get agent, add to network, and open conversation
-        let contact = await rainbowSDK.contacts.searchById(agent_id);
+        let contact = await rainbowSDK.contacts.searchById(agent_id);
         conversation = await rainbowSDK.conversations.openConversationForContact(contact);
         await rainbowSDK.im.getMessagesFromConversation(conversation);
     
@@ -144,7 +140,7 @@ function pushText(text, side, sending=false) {
     let user_id = "";
     let receipt_queue = [];
     let logs = []
-    
+
     const chat = document.createElement("div");
     const content = document.createElement("div");
     const send = document.createElement("button");
