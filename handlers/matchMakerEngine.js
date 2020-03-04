@@ -4,7 +4,7 @@ function MatchMaker() {
     this.userTable = {};
     this.agentTable = {};
 
-    this.matchUser = function(userId) {
+    this.matchUser = async function(userId) {
         // matches both agent and user together if user is not matched already, returns agentId
         // done by writing a value to the key in userAgent and agentTable
 

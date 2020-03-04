@@ -24,14 +24,15 @@ async function requesting(req, res) {
   let response = await rainbowSDK.admin.createAnonymousGuestUser(3600);
   let username = response.loginEmail;
   let password = response.password;
+  let userId = response.loginEmail.substring(0,24);
 
   // get the token
   response = await rainbowSDK.admin.askTokenOnBehalf(username, password);
   let token = response.token;
 
-  // match user with agent
-  console.log(password);
-  let agentId = matchmaker.matchUser(password);
+  // match userId with agentId
+  console.log(userId);
+  let agentId = await matchmaker.matchUser(userId);
   console.log(matchmaker.agentTable);
 
   res.send({
