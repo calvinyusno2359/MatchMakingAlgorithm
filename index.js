@@ -34,6 +34,7 @@ app.get('/admin/deleteagent/:id', admin.deleteAgent);
 
 
 // starts rainbowsdk
+// comment this for faster load during development
 rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
