@@ -37,6 +37,8 @@ const options = {
     im: {
         sendReadReceipt: true
     }
+
+    pythonPath: process.env.PYTHON_PATH, // leave it blank for heroku
 };
 
 exports.options = options;
