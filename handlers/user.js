@@ -37,6 +37,7 @@ async function requesting(req, res) {
 
   res.send({
     "token": token,
+    "userId": userId,
     "agent_id": agentId,
   });
 };
