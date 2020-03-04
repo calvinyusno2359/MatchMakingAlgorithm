@@ -36,7 +36,7 @@ const options = {
     // IM options
     im: {
         sendReadReceipt: true
-    }
+    },
 
     pythonPath: process.env.PYTHON_PATH, // leave it blank for heroku
 };

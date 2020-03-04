@@ -1,5 +1,21 @@
 let {PythonShell} = require('python-shell');
 let path = require("path");
+let config = require("../config");
+
+// define a new array method
+Object.defineProperty(Array.prototype, 'prioritySort', {
+    enumerable: false,
+    value: function(agentIds) {
+        // get array of sorted index whose value is biggest to lowest
+        let priority = [];
+        let sortedScores = this.slice().sort(function(a, b){return b-a});
+        for (var i=0; i<sortedScores.length; i++) {
+            let index = this.indexOf(sortedScores[i]);
+            priority.push(agentIds[index]);
+        }
+        return priority
+    }
+})
 
 function MatchMaker() {
     console.log("MatchMaker loaded.");
@@ -84,7 +100,24 @@ function MatchMaker() {
     this.generateMatch = function(userId) {
         // TODO: algorithm to generate match given user id, returns agentId
 
-        // this one just gets any agent that is free
+        // specify script and pyshell
+        let script = "matchmake.py";
+        let pyshell = new PythonShell(path.join(__dirname, script), config.options);
+
+        // pass in argument
+        let agentPriority;
+        let agentIds = Object.keys(this.agentTable);
+        pyshell.send(JSON.stringify(agentIds));
+
+        // get result
+        pyshell.on('message', (result) => {
+            try {
+                let agentScores = JSON.parse(result);
+                agentPriority = agentScores.prioritySort(agentIds);
+            } catch (err) {console.log(err);}
+        })
+
+        // this one just gets any agent that is free from the priority queue
         for (agentId of Object.keys(this.agentTable)) {
             if (this.agentTable[agentId] == null) {
                 let message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
@@ -92,6 +125,7 @@ function MatchMaker() {
                 return agentId;
             }
         }
+
         let message = `Failure! A match cannot be found, returning null.`;
         console.log(message);
         return null;
