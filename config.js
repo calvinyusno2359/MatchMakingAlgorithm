@@ -5,7 +5,7 @@ const options = {
     },
     credentials: {
         login: "spam.xyz999@gmail.com", // To replace with your developer credendials
-        password: "Cain186Leon!" // To replace with your developer credentials
+        password: "1234Qwer!" // To replace with your developer credentials
     },
     // Application identifier
     application: {
