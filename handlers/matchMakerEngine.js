@@ -44,6 +44,10 @@ function MatchMaker() {
             let message = `Success! User: ${userId} has been disconnected from ${agentId}.`
             console.log(message);
             return message;
+        } else {
+            let message = `Failure! User: ${userId} cannot be found!`
+            console.log(message);
+            return message;
         }
 
     }
