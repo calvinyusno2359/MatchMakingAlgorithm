@@ -25,7 +25,7 @@ app.get('/', async(req, res) => res.sendFile(path.join(__dirname + "/views/main.
 app.get('/chat', user.chat);
 app.get('/call', user.call);
 app.get('/chat/request', user.requesting);
-app.get('/admin', (req, res) => { res.sendFile(path.join(__dirname + "/views/admin.html")) });
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname + "/views/admin.html")));
 app.post('/admin/addagent', admin.addAgent);
 app.get('/admin/deleteagent/:id', admin.deleteAgent);
 // app.get('/selectagents', admin.selectAgents);
@@ -34,7 +34,7 @@ app.get('/admin/deleteagent/:id', admin.deleteAgent);
 
 
 // starts rainbowsdk
-// rainbowSDK.start();
+rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
 app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
