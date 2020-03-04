@@ -21,10 +21,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '1mb' }));
 
 // routes and handlers
+// user-related routes
 app.get('/', async(req, res) => res.sendFile(path.join(__dirname + "/views/main.html")));
 app.get('/chat', user.chat);
 app.get('/call', user.call);
 app.get('/chat/request', user.requesting);
+app.post('/chat/disconnect', user.disconnect);
+
+// admin-related routes
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname + "/views/admin.html")));
 app.post('/admin/addagent', admin.addAgent);
 app.get('/admin/deleteagent/:id', admin.deleteAgent);

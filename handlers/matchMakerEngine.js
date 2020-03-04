@@ -32,7 +32,7 @@ function MatchMaker() {
         }
     };
 
-    this.disconnectUser = function(userId) {
+    this.disconnectUser = async function(userId) {
         // disconnects user and agent
         // done by writing null to agentTable and deleting user from userTable
 

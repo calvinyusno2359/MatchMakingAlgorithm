@@ -31,16 +31,30 @@ async function requesting(req, res) {
 
   // match user with agent
   console.log(password);
-  let agent_id = matchmaker.matchUser(password);
+  let agentId = matchmaker.matchUser(password);
   console.log(matchmaker.agentTable);
 
   res.send({
     "token": token,
-    "agent_id": agent_id,
+    "agent_id": agentId,
   });
 };
+
+async function disconnect(req, res) {
+  let userId = req.body.userId;
+
+  // disconnect user
+  console.log(userId);
+  let result = await matchmaker.disconnectUser(userId);
+  console.log(matchmaker.agentTable);
+
+  res.send({
+    "message": result,
+  })
+}
 
 // exports
 exports.chat = chat;
 exports.call = call;
 exports.requesting = requesting;
+exports.disconnect = disconnect;
