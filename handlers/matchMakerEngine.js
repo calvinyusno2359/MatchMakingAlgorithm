@@ -13,7 +13,12 @@ Object.defineProperty(Array.prototype, 'prioritySort', {
             let index = this.indexOf(sortedScores[i]);
             priority.push(agentIds[index]);
         }
-        return priority
+        return priority;
+        // return new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve(priority);
+        //     }, 3000);
+        // });
     }
 })
 
@@ -119,6 +124,7 @@ function MatchMaker() {
 
         // this one just gets any agent that is free from the priority queue
         for (agentId of Object.keys(this.agentTable)) {
+            console.log(agentPriority);
             if (this.agentTable[agentId] == null) {
                 let message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
                 console.log(message);
