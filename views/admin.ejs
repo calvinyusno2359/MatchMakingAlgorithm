@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Edit Remove HTML Table Row</title>
+    <meta charset="windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="assets/styles/admin.css">
+    <script type="text/javascript" src="assets/scripts/admin.js" defer></script>
+</head>
+
+<body>
+    <div class="tab tab-2">
+        <table id="table">
+            <tr>
+                <th>ID</th>
+                <th>Email Address</th>
+                <th>Skill Tags</th>
+            </tr>
+            <% data.forEach(function(item){ %>
+                <tr>
+                    <td>
+                        <%= item.id %>
+                    </td>
+                    <td>
+                        <%= item.email %>
+                    </td>
+                    <td>
+                        <%= item.tag %>
+                    </td>
+
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+    <div class="tab tab-2">
+        ID :<input type="text" name="id" id="id"> Email Address :<input type="text" name="email" id="email"> Skill Tags :<input type="text" name="tag" id="tag">
+
+        <button onclick="addHtmlTableRow();">Add</button>
+        <button onclick="editHtmlTableSelectedRow();">Edit</button>
+        <button onclick="removeSelectedRow();">Remove</button>
+        <button onclick="clearFields();">Clear</button>
+
+    </div>
+    </div>
+
+</body>
+
+</html>

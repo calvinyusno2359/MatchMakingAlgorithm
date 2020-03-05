@@ -1,7 +1,3 @@
-.container {
-    overflow: hidden
-}
-
 .tab {
     float: left;
 }
@@ -15,8 +11,31 @@
     margin-bottom: 10px
 }
 
+table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #588c7e;
+    font-family: monospace;
+    font-size: 25px;
+    text-align: left;
+}
+
+th {
+    padding: 10px;
+    background-color: #588c7e;
+    color: white;
+}
+
+td {
+    padding: 10px;
+}
+
 tr {
     transition: all .25s ease-in-out
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
 }
 
 tr:hover {

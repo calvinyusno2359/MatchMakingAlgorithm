@@ -19,22 +19,22 @@ app.use(bodyParser);
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '1mb' }));
+app.set('view engine', 'ejs');
 
 // routes and handlers
-app.get('/', async(req, res) => res.sendFile(path.join(__dirname + "/views/main.html")));
+app.get('/', async(req, res) => res.sendFile(path.join(__dirname, "/views/main.html")));
 app.get('/chat', user.chat);
 app.get('/call', user.call);
 app.get('/chat/request', user.requesting);
-app.get('/admin', (req, res) => { res.sendFile(path.join(__dirname + "/views/admin.html")) });
+app.get('/admin', admin.selectAgents);
 app.post('/admin/addagent', admin.addAgent);
+app.post('/admin/updateagent', admin.updateAgent);
 app.get('/admin/deleteagent/:id', admin.deleteAgent);
-// app.get('/selectagents', admin.selectAgents);
-// app.get('/selectagent', admin.selectAgent);
-// app.get('/updateagentskilltag/:id', admin.updateAgentSkillTag);
-
+// app.get('/admin/selectagents', admin.selectAgents);
+// app.get('/admin/selectagent', admin.selectAgent);
 
 // starts rainbowsdk
-// rainbowSDK.start();
+rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
 app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
