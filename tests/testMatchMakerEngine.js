@@ -66,11 +66,11 @@ function test_generateUser() {
 
   message = matchmaker.matchUser(user1);
   console.log(message);
-  console.log(matchmaker.agentTable);
+  // console.log(matchmaker.agentTable);
 
   message = matchmaker.matchUser(user2);
   console.log(message);
-  console.log(matchmaker.agentTable);
+  // console.log(matchmaker.agentTable);
 }
 
 // test_addAgent();

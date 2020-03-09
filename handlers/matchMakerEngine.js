@@ -33,21 +33,25 @@ function MatchMaker() {
             console.log(message);
             return agentId;
         } else {
-            let agentId = await this.generateMatch(userId);
+            let agentPriority = await this.generateMatch(userId);
+            let agentId = agentPriority[0];
 
-            if (agentId != null) {
-                // double record on both tables
-                this.userTable[userId] = agentId;
-                this.agentTable[agentId] = userId;
+            console.log('agentPriority:', agentPriority);
+            console.log('agentId:', agentId);
 
-                let message = `Success! User: ${userId} has been paired with ${agentId}.`;
-                console.log(message);
-                return agentId;
-            } else {
-                let message = `Failure! A match cannot be found, it seems all agents are busy.`;
-                console.log(message);
-                return null;
-            }
+            // if (agentId != null) {
+            //     // double record on both tables
+            //     this.userTable[userId] = agentId;
+            //     this.agentTable[agentId] = userId;
+
+            //     let message = `Success! User: ${userId} has been paired with ${agentId}.`;
+            //     console.log(message);
+            //     return agentId;
+            // } else {
+            //     let message = `Failure! A match cannot be found, it seems all agents are busy.`;
+            //     console.log(message);
+            //     return null;
+            // }
         }
     };
 
@@ -103,15 +107,15 @@ function MatchMaker() {
             let pyshell = new PythonShell(path.join(__dirname, script), config.options);
 
             let agentIds = Object.keys(this.agentTable);
-            let agentId;
+            let agentPriority;
 
             pyshell.send(JSON.stringify(agentIds));
 
             pyshell.on('message', function (message) {
                 let agentScores = JSON.parse(message);
-                let agentPriority = agentScores.prioritySort(agentIds);
+                agentPriority = agentScores.prioritySort(agentIds);
                 console.log(agentPriority);
-                agentId = agentPriority[0];
+
             });
 
             pyshell.on('stderr', function (stderr) {
@@ -127,9 +131,9 @@ function MatchMaker() {
                 console.log('The exit code was: ' + code);
                 console.log('The exit signal was: ' + signal);
                 console.log(`${script} finished`);
-                message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
+                message = `Success! A matching Agent: ${agentPriority[0]} has been found for User: ${userId}.`;
                 console.log(message);
-                resolve(agentId);
+                resolve(agentPriority);
             });
         });
     }
