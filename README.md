@@ -18,7 +18,7 @@ You may test it yourself by going to this website: http://match-made-on-rainbow.
 
 ## The Routing Algorithm
 The algorithm treats User `tags` and Agent `skills` as vectors and attempt to find their similarity score. Then, it...
-- [Cosine Similarity](#-Cosine-Similarity)
+- [Cosine Similarity](#Cosine-Similarity)
 
 ## Issues of Naive Routing
 The Naive Routing Algorithm involves pooling all the available Agents into 1 pool and then queueing all Users into 1 queue. Then using First In First Out (FIFO) Policy, queued users are matched by their `tags` to a list of Agents, prioritizing Agents with least `skills`.
