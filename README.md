@@ -17,15 +17,25 @@ The following image summarizes the seven-step process:
 You may test it yourself by going to this website: http://match-made-on-rainbow.herokuapp.com/
 
 ## The Routing Algorithm
-The algorithm treats User `tags` and Agent `skills` as a vectors and attempt to find their similarity score.
+The algorithm treats User `tags` and Agent `skills` as vectors and attempt to find their similarity score. Then, it...
 - [Cosine Similarity](#-Cosine-Similarity)
 
-
 ## Issues of Naive Routing
+The Naive Routing Algorithm involves pooling all the available Agents into 1 pool and then queueing all Users into 1 queue. Then using First In First Out (FIFO) Policy, queued users are matched by their `tags` to a list of Agents, prioritizing Agents with least `skills`.
 
+The Naive Routing Algorithm has several issues that are remedied by the proposed Routing Algorithm.
 
 <details>
-<summary><b>Problem</b></summary>
+<summary><b>Sub-optimal Match Cases</b></summary>
+
+The Naive Routing Algorithm works well when there are very few `tags` invovled and many Agents with covering multiple `tag` combinations allowing for perfect matches. However, as the number of `tags` increase and Agents decrease, Naive Routing Algorithm will perform poorly when it has to make sub-optimal matches.
+
+For example, given 26 `tags` of `a` to `z`, suppose that a User chooses 4 out of these `tags`. In total there will be `26C4 = 14950` total combinations. It is unlikely that there will be a perfect match to be found between this User and any Agent available.
+
+As one can expect, this scenario is fairly common and should be expected to be the norm. As such, for an routing algorithm to perform well, it should be able to generate and rank sub-optimal matches fairly well. The proposed algorithm uses cosine similarity to generate and rank sub-optimal match cases.
+
 ### Cosine Similarity
-hello
+
+
+
 </details>
