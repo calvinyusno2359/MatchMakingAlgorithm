@@ -32,6 +32,8 @@ function MatchMaker() {
             let message = `This user has already been matched!`;
             console.log(message);
             return agentId;
+
+        // go through priority list and try to match user and agent
         } else {
             let agentPriority = await this.generateMatch(userId);
 
