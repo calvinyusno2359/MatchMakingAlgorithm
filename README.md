@@ -18,7 +18,7 @@ You may test it yourself by going to this website: http://match-made-on-rainbow.
 
 ## The Routing Algorithm
 The algorithm treats User `tags` and Agent `skills` as a vectors and attempt to find their similarity score.
-- [Cosine Similarity](#Cosine Similarity)
+- [Cosine Similarity](#-Cosine-Similarity)
 
 
 ## Issues of Naive Routing
