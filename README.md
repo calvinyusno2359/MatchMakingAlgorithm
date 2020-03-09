@@ -11,17 +11,21 @@ The application follows a seven-step process to connect a User to an appropriate
 7. User logins as `Anonymous Guest` and creates a `Conversation` with the designated Agent using Rainbow API
 
 The following image summarizes the seven-step process:
+
 ![Overview Image](/images/overview.jpg)
 
 You may test it yourself by going to this website: http://match-made-on-rainbow.herokuapp.com/
 
-## Routing Algorithm
+## The Routing Algorithm
+The algorithm treats User `tags` and Agent `skills` as a vectors and attempt to find their similarity score.
+- [Cosine Similarity](### Cosine Similarity)
 
-### Cosine Similarity
 
 ## Issues of Naive Routing
 
+
 <details>
 <summary><b>Problem</b></summary>
+### Cosine Similarity
 hello
 </details>
