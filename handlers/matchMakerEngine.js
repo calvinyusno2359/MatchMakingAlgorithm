@@ -14,11 +14,6 @@ Object.defineProperty(Array.prototype, 'prioritySort', {
             priority.push(agentIds[index]);
         }
         return priority;
-        // return new Promise((resolve, reject) => {
-        //     setTimeout(() => {
-        //         resolve(priority);
-        //     }, 3000);
-        // });
     }
 })
 
@@ -38,7 +33,7 @@ function MatchMaker() {
             console.log(message);
             return agentId;
         } else {
-            let agentId = this.generateMatch(userId);
+            let agentId = await this.generateMatch(userId);
 
             if (agentId != null) {
                 // double record on both tables
@@ -103,40 +98,41 @@ function MatchMaker() {
     }
 
     this.generateMatch = function(userId) {
-        // TODO: algorithm to generate match given user id, returns agentId
+        return new Promise((resolve, reject) => {
+            let script = "matchmake.py";
+            let pyshell = new PythonShell(path.join(__dirname, script), config.options);
 
-        // specify script and pyshell
-        let script = "matchmake.py";
-        let pyshell = new PythonShell(path.join(__dirname, script), config.options);
+            let agentIds = Object.keys(this.agentTable);
+            let agentId;
 
-        // pass in argument
-        let agentPriority;
-        let agentIds = Object.keys(this.agentTable);
-        pyshell.send(JSON.stringify(agentIds));
+            pyshell.send(JSON.stringify(agentIds));
 
-        // get result
-        pyshell.on('message', (result) => {
-            try {
-                let agentScores = JSON.parse(result);
-                agentPriority = agentScores.prioritySort(agentIds);
-            } catch (err) {console.log(err);}
-        })
+            pyshell.on('message', function (message) {
+                let agentScores = JSON.parse(message);
+                let agentPriority = agentScores.prioritySort(agentIds);
+                console.log(agentPriority);
+                agentId = agentPriority[0];
+            });
 
-        // this one just gets any agent that is free from the priority queue
-        for (agentId of Object.keys(this.agentTable)) {
-            console.log(agentPriority);
-            if (this.agentTable[agentId] == null) {
-                let message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
+            pyshell.on('stderr', function (stderr) {
+                console.log(stderr);
+            });
+
+            pyshell.end(function (err, code, signal) {
+                if (err) {
+                    let message = `Failure! A match cannot be found, returning null.`;
+                    console.log(message);
+                    reject(err)
+                };
+                console.log('The exit code was: ' + code);
+                console.log('The exit signal was: ' + signal);
+                console.log(`${script} finished`);
+                message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
                 console.log(message);
-                return agentId;
-            }
-        }
-
-        let message = `Failure! A match cannot be found, returning null.`;
-        console.log(message);
-        return null;
+                resolve(agentId);
+            });
+        });
     }
-
 };
 
 // exports
