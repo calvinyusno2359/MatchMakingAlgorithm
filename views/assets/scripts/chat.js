@@ -147,15 +147,16 @@ let tags = JSON.parse(window.localStorage.getItem("tag")).data;
 const chat = document.createElement("div");
 const content = document.createElement("div");
 const send = document.createElement("button");
-const end = document.createElement("end")
+const end = document.createElement("button")
 chat.className = "chat_content";
 content.className = "text_box";
 content.contentEditable = true;
 send.className = "send_button";
 send.textContent = "Send";
-end.className = "end_button";
-end.textContent = "End Chat"
 send.disabled = true;
+end.className = "end_button";
+end.textContent = "✖";
+end.title = "End";
 
 angular.bootstrap(document, ["sdk"]).get("rainbowSDK");
 
