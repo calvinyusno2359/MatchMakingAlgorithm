@@ -34,24 +34,22 @@ function MatchMaker() {
             return agentId;
         } else {
             let agentPriority = await this.generateMatch(userId);
-            let agentId = agentPriority[0];
 
-            console.log('agentPriority:', agentPriority);
-            console.log('agentId:', agentId);
+            for (var i=0; i<agentPriority.length; i++) {
+                let agentId = agentPriority[i];
+                if (this.agentTable[agentId] == null) {
+                    // double record on both tables
+                    this.userTable[userId] = agentId;
+                    this.agentTable[agentId] = userId;
 
-            // if (agentId != null) {
-            //     // double record on both tables
-            //     this.userTable[userId] = agentId;
-            //     this.agentTable[agentId] = userId;
-
-            //     let message = `Success! User: ${userId} has been paired with ${agentId}.`;
-            //     console.log(message);
-            //     return agentId;
-            // } else {
-            //     let message = `Failure! A match cannot be found, it seems all agents are busy.`;
-            //     console.log(message);
-            //     return null;
-            // }
+                    let message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
+                    console.log(message);
+                    return agentId;
+                }
+            }
+            let message = `Failure! A match cannot be found, it seems all agents are busy.`;
+            console.log(message);
+            return null;
         }
     };
 
@@ -131,7 +129,7 @@ function MatchMaker() {
                 console.log('The exit code was: ' + code);
                 console.log('The exit signal was: ' + signal);
                 console.log(`${script} finished`);
-                message = `Success! A matching Agent: ${agentPriority[0]} has been found for User: ${userId}.`;
+                message = `Success! Matches has been generated for User: ${userId}.`;
                 console.log(message);
                 resolve(agentPriority);
             });

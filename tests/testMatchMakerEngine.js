@@ -65,12 +65,17 @@ function test_generateUser() {
   matchmaker.addAgent(agent3);
 
   message = matchmaker.matchUser(user1);
-  console.log(message);
-  // console.log(matchmaker.agentTable);
+  setTimeout(function(){
+    console.log(message);
+    console.log(matchmaker.agentTable);;
+  }, 255);
+
 
   message = matchmaker.matchUser(user2);
-  console.log(message);
-  // console.log(matchmaker.agentTable);
+  setTimeout(function(){
+    console.log(message);
+    console.log(matchmaker.agentTable);;
+  }, 300);
 }
 
 // test_addAgent();
