@@ -70,7 +70,8 @@ const closeConversation = async() => {
 
 async function waitConnection() {
     // ping server for token and id
-    let response = await fetch("/chat/request");
+    let header = {"tags":tags};
+    let response = await fetch("/chat/request", {headers: header});
     let result = await response.json();
     let token = result.token;
     let agent_id = result.agent_id;
@@ -141,6 +142,7 @@ let conversation;
 let user_id = "";
 let receipt_queue = [];
 let logs = []
+let tags = JSON.parse(window.localStorage.getItem("tag")).data;
 
 const chat = document.createElement("div");
 const content = document.createElement("div");
