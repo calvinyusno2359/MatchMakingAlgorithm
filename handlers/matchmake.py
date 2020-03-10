@@ -13,8 +13,8 @@ class MatchMaker:
         # get request returns matrix
         matrix = [
                     [2.0, 2.1, 0],
-                    [2.1, 0, 0.5],
-                    [0.2, 1.2, 1]
+                    [0.1, 1, 1],
+                    [0.2, 0.7, 1]
                  ]
 
         self.matrix = np.array(matrix)
@@ -63,7 +63,7 @@ def main():
     # do algo here to get score
     matchmaker = MatchMaker(tags, agent_ids)
     agent_scores = matchmaker.solve().get_norm_agent_scores().tolist()
-    agent_scores = [0.3, 0.2, 0.1]
+    # agent_scores = [0.2, 0.3, 0.1]
 
     # return the sum to the output stream
     print(agent_scores)
