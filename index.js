@@ -25,8 +25,10 @@ app.use(express.json({ limit: '1mb' }));
 app.get('/', async(req, res) => res.sendFile(path.join(__dirname + "/views/main.html")));
 app.get('/chat', user.chat);
 app.get('/call', user.call);
+app.get('/call/request', user.requesting);
 app.get('/chat/request', user.requesting);
 app.post('/chat/disconnect', user.disconnect);
+app.get('/calling',user.calling);
 
 // admin-related routes
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname + "/views/admin.html")));
@@ -41,5 +43,21 @@ app.get('/admin/deleteagent/:id', admin.deleteAgent);
 // comment this for faster load during development
 rainbowSDK.start();
 
-let PORT = process.env.PORT || 8080
-app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
+var fs = require('fs')
+var https = require('https')
+
+app.get('/', function (req, res) {
+  res.send('hello world')
+})
+
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app)
+.listen(8080, function () {
+  //https://localhost:8080
+  console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+})
+
+// let PORT = process.env.PORT || 8080
+// app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
