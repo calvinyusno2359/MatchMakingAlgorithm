@@ -86,6 +86,7 @@ body {
 	right: 0%;
 }
 
+<<<<<<< HEAD
 .end_button {
 	font-family: "century-gothic", serif;
 	background-color: rgba(233, 30, 99, 0.7);
@@ -111,6 +112,32 @@ body {
 .send_button:disabled {
 	cursor: not-allowed;
 	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.end_button {
+	width: 50px;
+	height: 50px;
+	background-color: rgba(233, 30, 99, 0.8);
+	border-radius: 50%;
+	border: 0px;
+	box-shadow: 0 3px 5px 0 #666;
+
+	font-size: 18px;
+	color: white;
+	text-align: center;
+	display: inline-block;
+
+	position: fixed;
+	right: 10px;
+	top: 10px;
+
+	transition-duration: 0.33s;
+}
+
+.end_button:hover {
+	box-shadow: 0 3px 6px 0 #666;
+	transform: scale(1.05);
+	background-color: rgba(233, 30, 99, 0.9);
 }
 
 .loading {

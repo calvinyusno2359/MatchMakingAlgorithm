@@ -30,6 +30,8 @@ async function requesting(req, res) {
   response = await rainbowSDK.admin.askTokenOnBehalf(username, password);
   let token = response.token;
 
+  let tags = req.headers.tags;
+  // tags is an array of the tags selected by user
   // match userId with agentId
   console.log(userId);
   let agentId = await matchmaker.matchUser(userId);

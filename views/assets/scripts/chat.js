@@ -63,7 +63,7 @@ function endChat() {
     } else {
         // Do nothing!
     }
-    
+
 }
 
 async function disconnect(url = '', data = {}) {
@@ -97,7 +97,8 @@ function downloadLogs() {
 
 async function waitConnection() {
     // ping server for token and id
-    let response = await fetch("/chat/request");
+    let header = {"tags":tags};
+    let response = await fetch("/chat/request", {headers: header});
     let result = await response.json();
     let token = result.token;
     agent_id = result.agent_id;
@@ -171,19 +172,24 @@ let agent_id = "";
 let receipt_queue = [];
 let logs = []
 let msg = "";
+let tags = JSON.parse(window.localStorage.getItem("tag")).data;
 
 const chat = document.createElement("div");
 const content = document.createElement("div");
 const send = document.createElement("button");
-const end = document.createElement("end")
+const end = document.createElement("button")
 chat.className = "chat_content";
 content.className = "text_box";
 content.contentEditable = true;
 send.className = "send_button";
 send.textContent = "Send";
+
 end.className = "end_button";
 end.textContent = "Exit"
 send.disabled = true;
+end.className = "end_button";
+end.textContent = "✖";
+end.title = "End";
 
 angular.bootstrap(document, ["sdk"]).get("rainbowSDK");
 

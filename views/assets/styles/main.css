@@ -74,9 +74,13 @@ p.right {
 }
 
 .problems a:hover {
-	opacity: 0.8;
+	opacity: 0.65;
 }
 
 .problems a.active {
 	opacity: 1;
+}
+
+.problems a.active:hover {
+	opacity: 0.8;
 }
