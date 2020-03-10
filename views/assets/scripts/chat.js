@@ -23,6 +23,7 @@ function sendMessage() {
     if (content.textContent != "") {
         receipt_queue.push(pushText(content.textContent, "right", true));
         rainbowSDK.im.sendMessageToConversation(conversation, content.textContent);
+        msg += `${user_id}: ${content.textContent} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
     }
     content.textContent = "";
 }
@@ -43,14 +44,26 @@ function endChat() {
     const id = {
         userId: user_id
     }
-    disconnect('/chat/disconnect', id).then(() => {
-        closeConversation().then(() => {
-            console.log("Conversation closed successfully")
-            window.location.pathname = '/'
-        }).catch(() => {
-            console.log("Conversation closed unsuccessfully ")
-        })
-    })
+    if (confirm('Are you sure you want to exit the chat?')) {
+        if (confirm('Do you want a copy of the chat logs?')) {
+            downloadLogs()
+            disconnect('/chat/disconnect', id).then(() => {
+                closeConversation().then(() => {
+                    window.location.pathname = '/'
+                })
+            })
+        }
+        else {
+            disconnect('/chat/disconnect', id).then(() => {
+                closeConversation().then(() => {
+                    window.location.pathname = '/'
+                })
+            })
+        }
+    } else {
+        // Do nothing!
+    }
+    
 }
 
 async function disconnect(url = '', data = {}) {
@@ -68,12 +81,26 @@ const closeConversation = async() => {
     await rainbowSDK.conversations.closeConversation(conversation)
 }
 
+function downloadLogs() {
+    var filename = "logs.txt";
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(msg));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
 async function waitConnection() {
     // ping server for token and id
     let response = await fetch("/chat/request");
     let result = await response.json();
     let token = result.token;
-    let agent_id = result.agent_id;
+    agent_id = result.agent_id;
     user_id = result.user_id;
     response = await rainbowSDK.connection.signinSandBoxWithToken(token);
 
@@ -106,6 +133,7 @@ async function waitConnection() {
 function receive(e) {
     let message = e.detail.message;
     pushText(message.data, "left");
+    msg += `${agent_id}: ${message.data} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
 }
 
 function receipt(e) {
@@ -139,8 +167,10 @@ function onLoaded() {
 
 let conversation;
 let user_id = "";
+let agent_id = "";
 let receipt_queue = [];
 let logs = []
+let msg = "";
 
 const chat = document.createElement("div");
 const content = document.createElement("div");
@@ -152,7 +182,7 @@ content.contentEditable = true;
 send.className = "send_button";
 send.textContent = "Send";
 end.className = "end_button";
-end.textContent = "End Chat"
+end.textContent = "Exit"
 send.disabled = true;
 
 angular.bootstrap(document, ["sdk"]).get("rainbowSDK");
