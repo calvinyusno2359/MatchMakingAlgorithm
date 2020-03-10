@@ -20,6 +20,11 @@ async function call(req, res) {
   res.sendFile(view);
 };
 
+async function calling(req, res) {
+  let view = path.join(__dirname + "/../views/calling.html");
+  res.sendFile(view);
+};
+
 async function requesting(req, res) {
   let response = await rainbowSDK.admin.createAnonymousGuestUser(3600);
   let username = response.loginEmail;
@@ -62,3 +67,4 @@ exports.chat = chat;
 exports.call = call;
 exports.requesting = requesting;
 exports.disconnect = disconnect;
+exports.calling = calling;
