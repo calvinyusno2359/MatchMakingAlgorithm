@@ -20,6 +20,11 @@ async function call(req, res) {
   res.sendFile(view);
 };
 
+async function calling(req, res) {
+  let view = path.join(__dirname + "/../views/calling.html");
+  res.sendFile(view);
+};
+
 async function requesting(req, res) {
   let response = await rainbowSDK.admin.createAnonymousGuestUser(3600);
   let username = response.loginEmail;
@@ -30,6 +35,8 @@ async function requesting(req, res) {
   response = await rainbowSDK.admin.askTokenOnBehalf(username, password);
   let token = response.token;
 
+  let tags = req.headers.tags;
+  // tags is an array of the tags selected by user
   // match userId with agentId
   console.log(userId);
   let agentId = await matchmaker.matchUser(userId);
@@ -60,3 +67,4 @@ exports.chat = chat;
 exports.call = call;
 exports.requesting = requesting;
 exports.disconnect = disconnect;
+exports.calling = calling;
