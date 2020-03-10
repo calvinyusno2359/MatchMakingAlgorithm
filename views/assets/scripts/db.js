@@ -1,5 +1,6 @@
-var rIndex,
-    table = document.getElementById("table");
+var rIndex;
+var table = document.getElementById("table");
+var tags = document.querySelector(".tag").querySelectorAll(".input");
 
 // check the empty input
 function checkEmptyInput() {
@@ -62,10 +63,8 @@ function selectedRowToInput() {
             document.getElementById("id").value = this.cells[0].innerHTML.trim();
             document.getElementById("id").disabled = true;
             document.getElementById("email").value = this.cells[1].innerHTML.trim();
-            document.getElementById("tag").value = this.cells[2].innerHTML.trim();
-            // for (let item of this.cells[2].innerHTML.trim()){
-            //     // chb[0]
-            // }
+            // document.getElementById("tag").value = this.cells[2].innerHTML.trim();
+
         };
     }
 }
