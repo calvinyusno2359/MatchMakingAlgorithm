@@ -39,4 +39,12 @@ const options = {
     }
 };
 
+const dblogin = {
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: 'tinder-on-rainbow'
+}
+
 exports.options = options;
+exports.dblogin = dblogin;

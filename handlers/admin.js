@@ -1,13 +1,9 @@
+// modules
 const mysql = require('mysql');
-let path = require("path");
+let config = require("../config");
 
 // Create connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'tinder-on-rainbow'
-});
+const db = mysql.createConnection(config.dblogin);
 
 // Connect
 db.connect((err) => {
@@ -36,7 +32,7 @@ function selectAgents(req, res) {
         if (err) throw err;
         console.log(results);
         console.log('Agents fetched...');
-        res.render('admin', { data: results });
+        res.render('db', { data: results });
     });
 };
 

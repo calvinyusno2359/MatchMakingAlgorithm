@@ -10,7 +10,6 @@
     "author": "derong",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.19.2",
         "ejs": "^3.0.1",
         "mysql": "^2.18.1",
         "rainbow-cli": "^1.65.0",

@@ -6,8 +6,12 @@
     margin-left: 50px
 }
 
-.tab-2 input {
+.tab-2>input {
     display: block;
+    margin-bottom: 10px
+}
+
+.chb {
     margin-bottom: 10px
 }
 

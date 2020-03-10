@@ -34,7 +34,7 @@ app.get('/admin/deleteagent/:id', admin.deleteAgent);
 // app.get('/admin/selectagent', admin.selectAgent);
 
 // starts rainbowsdk
-rainbowSDK.start();
+// rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
 app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
