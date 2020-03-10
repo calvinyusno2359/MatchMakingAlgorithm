@@ -46,10 +46,6 @@ rainbowSDK.start();
 var fs = require('fs')
 var https = require('https')
 
-app.get('/', function (req, res) {
-  res.send('hello world')
-})
-
 https.createServer({
   key: fs.readFileSync('server.key'),
   cert: fs.readFileSync('server.cert')
