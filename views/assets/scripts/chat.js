@@ -100,7 +100,7 @@ async function waitConnection() {
     let response = await fetch("/chat/request");
     let result = await response.json();
     let token = result.token;
-    let agent_id = result.agent_id;
+    agent_id = result.agent_id;
     user_id = result.user_id;
     response = await rainbowSDK.connection.signinSandBoxWithToken(token);
 
@@ -133,8 +133,7 @@ async function waitConnection() {
 function receive(e) {
     let message = e.detail.message;
     pushText(message.data, "left");
-    msg += `${agent_id}: ${content.textContent} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
-
+    msg += `${agent_id}: ${message.data} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
 }
 
 function receipt(e) {
@@ -168,6 +167,7 @@ function onLoaded() {
 
 let conversation;
 let user_id = "";
+let agent_id = "";
 let receipt_queue = [];
 let logs = []
 let msg = "";
@@ -182,7 +182,7 @@ content.contentEditable = true;
 send.className = "send_button";
 send.textContent = "Send";
 end.className = "end_button";
-end.textContent = "End Chat"
+end.textContent = "Exit"
 send.disabled = true;
 
 angular.bootstrap(document, ["sdk"]).get("rainbowSDK");

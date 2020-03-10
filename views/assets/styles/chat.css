@@ -62,7 +62,7 @@ body {
 	padding: 15px;
 	height: 12%;
 	position: absolute;
-	width: calc(100% - 150px);
+	width: calc(100% - 300px);
 	box-sizing: border-box;
 	bottom: 0%;
 	overflow-y: auto;
@@ -100,6 +100,8 @@ body {
 	width: 150px;
 	box-sizing: border-box;
 	position: absolute;
+	bottom: 0%;
+	right: 11%;
 }
 
 .send_button:hover:enabled {
