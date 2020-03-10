@@ -82,7 +82,7 @@ const closeConversation = async() => {
 }
 
 function downloadLogs() {
-    var filename = "logs.txt";
+    var filename = "logs.pdf";
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(msg));
     element.setAttribute('download', filename);

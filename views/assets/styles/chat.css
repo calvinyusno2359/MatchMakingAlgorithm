@@ -62,7 +62,7 @@ body {
 	padding: 15px;
 	height: 12%;
 	position: absolute;
-	width: calc(100% - 300px);
+	width: calc(100% - 150px);
 	box-sizing: border-box;
 	bottom: 0%;
 	overflow-y: auto;
@@ -86,7 +86,6 @@ body {
 	right: 0%;
 }
 
-<<<<<<< HEAD
 .end_button {
 	font-family: "century-gothic", serif;
 	background-color: rgba(233, 30, 99, 0.7);
