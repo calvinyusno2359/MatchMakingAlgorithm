@@ -109,7 +109,12 @@ function MatchMaker() {
             let agentIds = Object.keys(this.agentTable);
             let agentPriority;
 
-            pyshell.send(JSON.stringify(agentIds));
+            let data = {
+                "agent_ids" : agentIds,
+                "tags" : [1, 1, 1]          // input tags here
+            };
+
+            pyshell.send(JSON.stringify(data));
 
             pyshell.on('message', function (message) {
                 let agentScores = JSON.parse(message);

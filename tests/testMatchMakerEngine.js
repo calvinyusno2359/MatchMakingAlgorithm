@@ -68,14 +68,14 @@ function test_generateUser() {
   setTimeout(function(){
     console.log(message);
     console.log(matchmaker.agentTable);;
-  }, 255);
+  }, 380);
 
 
   message = matchmaker.matchUser(user2);
   setTimeout(function(){
     console.log(message);
     console.log(matchmaker.agentTable);;
-  }, 300);
+  }, 450);
 }
 
 // test_addAgent();
