@@ -49,6 +49,15 @@ async function requesting(req, res) {
   });
 };
 
+async function redirect(req, res) {
+  let tags = req.headers.tags;
+  let userId = req.headers.userId;
+  let agentId = await matchmaker.matchUser(userId);
+  res.send({
+    "agent_id": agentId
+  });
+}
+
 async function disconnect(req, res) {
   let userId = req.body.userId;
 
@@ -66,5 +75,6 @@ async function disconnect(req, res) {
 exports.chat = chat;
 exports.call = call;
 exports.requesting = requesting;
+exports.redirect = redirect;
 exports.disconnect = disconnect;
 exports.calling = calling;

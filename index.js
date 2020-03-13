@@ -27,6 +27,7 @@ app.get('/chat', user.chat);
 app.get('/call', user.call);
 app.get('/call/request', user.requesting);
 app.get('/chat/request', user.requesting);
+app.get('/chat/redirect', user.redirect);
 app.post('/chat/disconnect', user.disconnect);
 app.get('/calling',user.calling);
 

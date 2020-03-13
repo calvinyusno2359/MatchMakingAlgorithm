@@ -81,6 +81,19 @@ const closeConversation = async() => {
     await rainbowSDK.conversations.closeConversation(conversation)
 }
 
+async function redirect() {
+  let header = {"tags": tags, "userId": user_id};
+  let response = await fetch("/chat/redirect", {headers: header});
+  let result = await response.json();
+  agent_id = result.agent_id;
+
+  await closeConversation();
+  await disconnect('/chat/disconnect', {"userId": user_id});
+
+  let contact = await rainbowSDK.contacts.searchById(agent_id);
+  conversation = await rainbowSDK.conversations.openConversationForContact(contact);
+}
+
 function downloadLogs() {
     var filename = "logs.txt";
     var element = document.createElement('a');
@@ -133,6 +146,10 @@ async function waitConnection() {
 
 function receive(e) {
     let message = e.detail.message;
+    if (message.data === COMMAND_REDIRECT) {
+      redirect();
+      return;
+    }
     pushText(message.data, "left");
     msg += `${agent_id}: ${message.data} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
 }
@@ -173,6 +190,8 @@ let receipt_queue = [];
 let logs = []
 let msg = "";
 let tags = JSON.parse(window.localStorage.getItem("tag")).data;
+
+const COMMAND_REDIRECT = "/REDIRECT";
 
 const chat = document.createElement("div");
 const content = document.createElement("div");
