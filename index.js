@@ -46,6 +46,10 @@ app.get('/admin/deleteagent/:id', admin.deleteAgent);
 rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
-https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () => {
+// https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () => {
+//   console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
+// });
+
+https.createServer(app).listen(PORT, () => {
   console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
 });
