@@ -3,15 +3,7 @@ const mysql = require('mysql');
 let config = require("../config");
 
 // Create connection
-const db = mysql.createConnection(config.dblogin);
-
-// Connect
-db.connect((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log('MySQL connected...');
-});
+const db = mysql.createPool(config.dblogin);
 
 function test(req, res) {
     let sql = 'SELECT * FROM agent';

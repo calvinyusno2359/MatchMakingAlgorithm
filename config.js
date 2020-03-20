@@ -45,10 +45,11 @@ const options = {
 };
 
 const dblogin = {
+    connectionLimit : 10,
     host: process.env.AGENT_DB_HOST || 'localhost',
     user: process.env.AGENT_DB_USERNAME || 'root',
     password: process.env.AGENT_DB_PASSWORD || 'password',
-    database: process.env.AGENT_DB_DATABASE || 'tinder-on-rainbow'
+    database: process.env.AGENT_DB_DATABASE || 'tinder-on-rainbow',
 }
 
 
