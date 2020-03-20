@@ -1,3 +1,4 @@
+let dotenv = require('dotenv').config();
 let fs = require("fs");
 
 // Define your configuration
@@ -6,8 +7,8 @@ const options = {
         host: "sandbox"
     },
     credentials: {
-        login: "spam.xyz999@gmail.com", // To replace with your developer credendials
-        password: "1234Qwer!" // To replace with your developer credentials
+        login: process.env.BOT_EMAIL || "spam.xyz999@gmail.com", // developer credendials
+        password: process.env.BOT_PASSWORD || "1234Qwer!"        // developer credentials
     },
     // Application identifier
     application: {
@@ -43,9 +44,18 @@ const options = {
     pythonPath: process.env.PYTHON_PATH, // leave it blank for heroku
 };
 
+const dblogin = {
+    host: process.env.AGENT_DB_HOST || 'localhost',
+    user: process.env.AGENT_DB_USERNAME || 'root',
+    password: process.env.AGENT_DB_PASSWORD || 'password',
+    database: process.env.AGENT_DB_DATABASE || 'tinder-on-rainbow'
+}
+
+
 const cert = fs.readFileSync('server.cert');
 const key = fs.readFileSync('server.key');
 
+exports.dblogin = dblogin;
 exports.options = options;
 exports.cert = cert;
 exports.key = key
