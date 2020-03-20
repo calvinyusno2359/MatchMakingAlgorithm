@@ -1,3 +1,5 @@
+let fs = require("fs");
+
 // Define your configuration
 const options = {
     rainbow: {
@@ -48,5 +50,11 @@ const dblogin = {
     database: 'tinder-on-rainbow'
 }
 
-exports.options = options;
+
+const cert = fs.readFileSync('server.cert');
+const key = fs.readFileSync('server.key');
+
 exports.dblogin = dblogin;
+exports.options = options;
+exports.cert = cert;
+exports.key = key

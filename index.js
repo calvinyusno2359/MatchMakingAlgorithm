@@ -1,5 +1,6 @@
 let express = require('express');
 let bodyParser = express.urlencoded({ extended: true });
+let https = require("https");
 let path = require("path");
 
 // modules
@@ -7,6 +8,7 @@ let user = require("./handlers/user");
 let agent = require("./handlers/agent");
 let admin = require("./handlers/admin");
 let rainbow = require("./handlers/rainbow");
+let config = require("./config");
 
 // get rainbowSDK
 let rainbowSDK = rainbow.rainbowSDK;
@@ -43,17 +45,12 @@ app.get('/admin/deleteagent/:id', admin.deleteAgent);
 // comment this for faster load during development
 rainbowSDK.start();
 
-var fs = require('fs');
-var https = require('https');
+let PORT = process.env.PORT || 8080
 
-https.createServer({
-        key: fs.readFileSync('server.key'),
-        cert: fs.readFileSync('server.cert')
-    }, app)
-    .listen(8080, function() {
-        //https://localhost:8080
-        console.log('Example app listening on port 3000! Go to https://localhost:3000/')
-    });
+// for localhost deployment: use self-issued ssh found in config.js
+https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () => {
+    console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
+});
 
-// let PORT = process.env.PORT || 8080
+// for heroku deployment: ssl certificate for https is managed by heroku's Auto Cert Management
 // app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
