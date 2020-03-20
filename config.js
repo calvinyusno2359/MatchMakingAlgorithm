@@ -6,8 +6,8 @@ const options = {
         host: "sandbox"
     },
     credentials: {
-        login: "derong97@gmail.com", // To replace with your developer credendials
-        password: "Qwertyuiop~123" // To replace with your developer credentials
+        login: "spam.xyz999@gmail.com", // To replace with your developer credendials
+        password: "1234Qwer!" // To replace with your developer credentials
     },
     // Application identifier
     application: {
