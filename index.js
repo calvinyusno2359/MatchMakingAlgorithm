@@ -41,7 +41,7 @@ app.get('/admin/deleteagent/:id', admin.deleteAgent);
 
 // starts rainbowsdk
 // comment this for faster load during development
-// rainbowSDK.start();
+rainbowSDK.start();
 
 var fs = require('fs');
 var https = require('https');
