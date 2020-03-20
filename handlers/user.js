@@ -20,27 +20,51 @@ async function call(req, res) {
   res.sendFile(view);
 };
 
+async function calling(req, res) {
+  let view = path.join(__dirname + "/../views/calling.html");
+  res.sendFile(view);
+};
+
 async function requesting(req, res) {
   let response = await rainbowSDK.admin.createAnonymousGuestUser(3600);
   let username = response.loginEmail;
   let password = response.password;
+  let userId = response.loginEmail.substring(0,24);
 
   // get the token
   response = await rainbowSDK.admin.askTokenOnBehalf(username, password);
   let token = response.token;
 
-  // match user with agent
-  console.log(password);
-  let agent_id = matchmaker.matchUser(password);
+  let tags = req.headers.tags;
+  // tags is an array of the tags selected by user
+  // match userId with agentId
+  console.log(userId);
+  let agentId = await matchmaker.matchUser(userId);
   console.log(matchmaker.agentTable);
 
   res.send({
     "token": token,
-    "agent_id": agent_id,
+    "user_id": userId,
+    "agent_id": agentId,
   });
 };
+
+async function disconnect(req, res) {
+  let userId = req.body.userId;
+
+  // disconnect user
+  console.log(userId);
+  let result = await matchmaker.disconnectUser(userId);
+  console.log(matchmaker.agentTable);
+
+  res.send({
+    "message": result,
+  })
+}
 
 // exports
 exports.chat = chat;
 exports.call = call;
 exports.requesting = requesting;
+exports.disconnect = disconnect;
+exports.calling = calling;

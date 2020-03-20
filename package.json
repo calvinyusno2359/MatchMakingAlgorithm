@@ -5,13 +5,17 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node index.js"
+        "start": "node index.js",
+        "dev": "nodemon index.js"
     },
-    "author": "derong",
+    "author": "derong, xuliang, gerald, yutong, calvin",
     "license": "ISC",
     "dependencies": {
         "ejs": "^3.0.1",
+        "express": "^4.17.1",
         "mysql": "^2.18.1",
+        "python-shell": "^1.0.8",
+        "nodemon": "^2.0.2",
         "rainbow-cli": "^1.65.0",
         "rainbow-node-sdk": "^1.66.1",
         "rainbow-web-sdk": "^1.67.0"
@@ -25,5 +29,7 @@
     "bugs": {
         "url": "https://github.com/heavensward-argentlux/MatchMakingAlgorithm/issues"
     },
-    "homepage": "https://github.com/heavensward-argentlux/MatchMakingAlgorithm#readme"
+    "homepage": "https://github.com/heavensward-argentlux/MatchMakingAlgorithm#readme",
+    "devDependencies": {},
+    "keywords": []
 }

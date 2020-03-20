@@ -1,10 +1,29 @@
+let {PythonShell} = require('python-shell');
+let path = require("path");
+let config = require("../config");
+
+// define a new array method
+Object.defineProperty(Array.prototype, 'prioritySort', {
+    enumerable: false,
+    value: function(agentIds) {
+        // get array of sorted index whose value is biggest to lowest
+        let priority = [];
+        let sortedScores = this.slice().sort(function(a, b){return b-a});
+        for (var i=0; i<sortedScores.length; i++) {
+            let index = this.indexOf(sortedScores[i]);
+            priority.push(agentIds[index]);
+        }
+        return priority;
+    }
+})
+
 function MatchMaker() {
     console.log("MatchMaker loaded.");
 
     this.userTable = {};
     this.agentTable = {};
 
-    this.matchUser = function(userId) {
+    this.matchUser = async function(userId) {
         // matches both agent and user together if user is not matched already, returns agentId
         // done by writing a value to the key in userAgent and agentTable
 
@@ -13,26 +32,30 @@ function MatchMaker() {
             let message = `This user has already been matched!`;
             console.log(message);
             return agentId;
+
+        // go through priority list and try to match user and agent
         } else {
-            let agentId = this.generateMatch(userId);
+            let agentPriority = await this.generateMatch(userId);
 
-            if (agentId != null) {
-                // double record on both tables
-                this.userTable[userId] = agentId;
-                this.agentTable[agentId] = userId;
+            for (var i=0; i<agentPriority.length; i++) {
+                let agentId = agentPriority[i];
+                if (this.agentTable[agentId] == null) {
+                    // double record on both tables
+                    this.userTable[userId] = agentId;
+                    this.agentTable[agentId] = userId;
 
-                let message = `Success! User: ${userId} has been paired with ${agentId}.`;
-                console.log(message);
-                return agentId;
-            } else {
-                let message = `Failure! A match cannot be found, it seems all agents are busy.`;
-                console.log(message);
-                return null;
+                    let message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
+                    console.log(message);
+                    return agentId;
+                }
             }
+            let message = `Failure! A match cannot be found, it seems all agents are busy.`;
+            console.log(message);
+            return null;
         }
     };
 
-    this.disconnectUser = function(userId) {
+    this.disconnectUser = async function(userId) {
         // disconnects user and agent
         // done by writing null to agentTable and deleting user from userTable
 
@@ -42,6 +65,10 @@ function MatchMaker() {
             this.agentTable[agentId] = null;
 
             let message = `Success! User: ${userId} has been disconnected from ${agentId}.`
+            console.log(message);
+            return message;
+        } else {
+            let message = `Failure! User: ${userId} cannot be found!`
             console.log(message);
             return message;
         }
@@ -75,21 +102,46 @@ function MatchMaker() {
     }
 
     this.generateMatch = function(userId) {
-        // TODO: algorithm to generate match given user id, returns agentId
+        return new Promise((resolve, reject) => {
+            let script = "matchmake.py";
+            let pyshell = new PythonShell(path.join(__dirname, script), config.options);
 
-        // this one just gets any agent that is free
-        for (agentId of Object.keys(this.agentTable)) {
-            if (this.agentTable[agentId] == null) {
-                let message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
+            let agentIds = Object.keys(this.agentTable);
+            let agentPriority;
+
+            let data = {
+                "agent_ids" : agentIds,
+                "tags" : [1, 1, 1]          // input tags here
+            };
+
+            pyshell.send(JSON.stringify(data));
+
+            pyshell.on('message', function (message) {
+                let agentScores = JSON.parse(message);
+                agentPriority = agentScores.prioritySort(agentIds);
+                console.log(agentPriority);
+
+            });
+
+            pyshell.on('stderr', function (stderr) {
+                console.log(stderr);
+            });
+
+            pyshell.end(function (err, code, signal) {
+                if (err) {
+                    let message = `Failure! A match cannot be found, returning null.`;
+                    console.log(message);
+                    reject(err)
+                };
+                console.log('The exit code was: ' + code);
+                console.log('The exit signal was: ' + signal);
+                console.log(`${script} finished`);
+                message = `Success! Matches has been generated for User: ${userId}.`;
                 console.log(message);
-                return agentId;
-            }
-        }
-        let message = `Failure! A match cannot be found, returning null.`;
-        console.log(message);
-        return null;
+                resolve(agentPriority);
+            });
+        });
     }
-
 };
 
 // exports

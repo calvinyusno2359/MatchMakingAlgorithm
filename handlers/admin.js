@@ -21,7 +21,7 @@ function addAgent(req, res) {
         if (err) throw err;
         console.log(result);
         console.log("Agent added...");
-        res.end();
+        res.json({ status: "success" });
     });
 };
 
@@ -54,7 +54,7 @@ function updateAgent(req, res) {
         if (err) throw err;
         console.log(result);
         console.log('Agent updated...');
-        res.end();
+        res.json({ status: "success" });
     });
 };
 
@@ -65,7 +65,7 @@ function deleteAgent(req, res) {
         if (err) throw err;
         console.log(result);
         console.log('Agent deleted...');
-        res.end();
+        res.json({ status: "success" });
     });
 };
 

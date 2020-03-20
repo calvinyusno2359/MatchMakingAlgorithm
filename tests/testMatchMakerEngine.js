@@ -53,12 +53,39 @@ function test_matchAgent() {
   console.log(matchmaker.agentTable);
 }
 
-test_addAgent();
-test_addAgent();
-test_generateMatch();
-test_matchUser();
-test_matchUser();
-test_matchAgent();
-test_matchUserBusy();
-test_disconnectUser();
-test_matchAgent();
+function test_generateUser() {
+  let agent1 = "5e43c49ce9f127306369575f";
+  let agent2 = "5e43c555e9f1273063695767";
+  let agent3 = "5e43c5asfr012341256gfdb3a";
+  let user1 = "user1";
+  let user2 = "user2";
+
+  matchmaker.addAgent(agent1);
+  matchmaker.addAgent(agent2);
+  matchmaker.addAgent(agent3);
+
+  message = matchmaker.matchUser(user1);
+  setTimeout(function(){
+    console.log(message);
+    console.log(matchmaker.agentTable);;
+  }, 780);
+
+
+  message = matchmaker.matchUser(user2);
+  setTimeout(function(){
+    console.log(message);
+    console.log(matchmaker.agentTable);;
+  }, 800);
+}
+
+// test_addAgent();
+// test_addAgent();
+// test_generateMatch();
+// test_matchUser();
+// test_matchUser();
+// test_matchAgent();
+// test_matchUserBusy();
+// test_disconnectUser();
+// test_matchAgent();
+test_generateUser()
+
