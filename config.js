@@ -1,3 +1,4 @@
+let dotenv = require('dotenv').config();
 let fs = require("fs");
 
 // Define your configuration
@@ -6,8 +7,8 @@ const options = {
         host: "sandbox"
     },
     credentials: {
-        login: "spam.xyz999@gmail.com", // To replace with your developer credendials
-        password: "1234Qwer!" // To replace with your developer credentials
+        login: process.env.BOT_EMAIL || "spam.xyz999@gmail.com", // developer credendials
+        password: process.env.BOT_PASSWORD || "1234Qwer!"        // developer credentials
     },
     // Application identifier
     application: {
