@@ -50,4 +50,5 @@ let PORT = process.env.PORT || 8080
 //   console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
 // });
 
+// for heroku deployment, ssl certificate for https is managed by heroku's Auto Cert Management
 app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
