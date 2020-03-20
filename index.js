@@ -1,5 +1,6 @@
 let express = require('express');
 let bodyParser = express.urlencoded({ extended: true });
+let dotenv = require('dotenv').config();
 let mysql = require('mysql');
 let https = require("https");
 let path = require("path");

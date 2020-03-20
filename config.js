@@ -1,4 +1,3 @@
-let dotenv = require('dotenv').config();
 let fs = require("fs");
 
 // Define your configuration
