@@ -50,6 +50,4 @@ let PORT = process.env.PORT || 8080
 //   console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
 // });
 
-https.createServer(app).listen(PORT, () => {
-  console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
-});
+app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
