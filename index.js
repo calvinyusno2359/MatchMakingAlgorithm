@@ -1,5 +1,6 @@
 let express = require('express');
 let bodyParser = express.urlencoded({ extended: true });
+let mysql = require('mysql');
 let https = require("https");
 let path = require("path");
 
@@ -34,6 +35,7 @@ app.post('/chat/disconnect', user.disconnect);
 app.get('/calling', user.calling);
 
 // admin-related routes
+app.get('/admin/test', admin.test);
 app.get('/admin', admin.selectAgents);
 app.post('/admin/addagent', admin.addAgent);
 app.post('/admin/updateagent', admin.updateAgent);

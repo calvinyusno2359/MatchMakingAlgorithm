@@ -13,6 +13,16 @@ db.connect((err) => {
     console.log('MySQL connected...');
 });
 
+function test(req, res) {
+    let sql = 'SELECT * FROM agent';
+    db.query(sql, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        console.log('Agents fetched...');
+        res.send(results);
+    });
+}
+
 // Add agent
 function addAgent(req, res) {
     let entry = req.body;
@@ -70,6 +80,7 @@ function deleteAgent(req, res) {
 };
 
 // exports
+exports.test = test;
 exports.addAgent = addAgent;
 exports.selectAgents = selectAgents;
 // exports.selectAgent = selectAgent;
