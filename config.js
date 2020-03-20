@@ -1,3 +1,5 @@
+let fs = require("fs");
+
 // Define your configuration
 const options = {
     rainbow: {
@@ -41,4 +43,9 @@ const options = {
     pythonPath: process.env.PYTHON_PATH, // leave it blank for heroku
 };
 
+const cert = fs.readFileSync('server.cert');
+const key = fs.readFileSync('server.key');
+
 exports.options = options;
+exports.cert = cert;
+exports.key = key
