@@ -37,12 +37,10 @@ app.get('/calling', user.calling);
 
 // admin-related routes
 app.get('/admin/test', admin.test);
-app.get('/admin', admin.selectAgents);
+app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
 app.post('/admin/updateagent', admin.updateAgent);
 app.get('/admin/deleteagent/:id', admin.deleteAgent);
-// app.get('/admin/selectagents', admin.selectAgents);
-// app.get('/admin/selectagent', admin.selectAgent);
 
 // starts rainbowsdk
 // comment this for faster load during development
