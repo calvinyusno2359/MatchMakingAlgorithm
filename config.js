@@ -7,12 +7,12 @@ const options = {
     },
     credentials: {
         login: process.env.BOT_EMAIL || "spam.xyz999@gmail.com", // developer credendials
-        password: process.env.BOT_PASSWORD || "1234Qwer!"        // developer credentials
+        password: process.env.BOT_PASSWORD || "1234Qwer!" // developer credentials
     },
     // Application identifier
     application: {
-        appID: "de6b39a0513f11ea819a43cb4a9dae9b",
-        appSecret: "WzpQkTwxj6SfULL9muZJ83yKFEvxuvM1Iq59HxaXSo9S3lrTK0ST4khFlRPGErZ2"
+        appID: process.env.BOT_APPID || "de6b39a0513f11ea819a43cb4a9dae9b",
+        appSecret: process.env.BOT_APPSECRET || "WzpQkTwxj6SfULL9muZJ83yKFEvxuvM1Iq59HxaXSo9S3lrTK0ST4khFlRPGErZ2"
     },
     // Logs options
     logs: {
@@ -44,13 +44,12 @@ const options = {
 };
 
 const dblogin = {
-    connectionLimit : 10,
+    connectionLimit: 10,
     host: process.env.AGENT_DB_HOST || 'localhost',
     user: process.env.AGENT_DB_USERNAME || 'root',
     password: process.env.AGENT_DB_PASSWORD || 'password',
     database: process.env.AGENT_DB_DATABASE || 'tinder-on-rainbow',
 }
-
 
 const cert = fs.readFileSync('server.cert');
 const key = fs.readFileSync('server.key');
