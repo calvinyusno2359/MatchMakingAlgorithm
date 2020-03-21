@@ -36,7 +36,6 @@ app.post('/chat/disconnect', user.disconnect);
 app.get('/calling', user.calling);
 
 // admin-related routes
-app.get('/admin/test', admin.test);
 app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
 app.post('/admin/updateagent', admin.updateAgent);

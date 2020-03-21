@@ -62,7 +62,6 @@ function deleteAgent(req, res) {
 };
 
 // exports
-exports.test = test;
 exports.addAgent = addAgent;
 exports.populateAgents = populateAgents;
 // exports.selectAgent = selectAgent;
