@@ -40,6 +40,8 @@ app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
 app.post('/admin/updateagent', admin.updateAgent);
 app.get('/admin/deleteagent/:id', admin.deleteAgent);
+app.get('/admin/getagents/:id', admin.getAgents); 
+app.get('/admin/updateagentavail/:id', admin.updateAgentAvailability);
 
 // starts rainbowsdk
 // comment this for faster load during development
