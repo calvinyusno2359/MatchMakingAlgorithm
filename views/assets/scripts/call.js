@@ -105,13 +105,28 @@ function endCall() {
 	}
 	if (confirm('Are you sure you want to exit the call?')) {
 			
-		disconnect('/call/disconnect', id).then(() => {
-			window.location.pathname = '/'
-		})
+		window.location.pathname = '/'
+		
 	} else {
 		// Do nothing!
 	}
 }
+
+//OG end call
+
+// function endCall() {
+// 	const id = {
+// 		userId: user_id
+// 	}
+// 	if (confirm('Are you sure you want to exit the call?')) {
+			
+// 		disconnect('/call/disconnect', id).then(() => {
+// 			window.location.pathname = '/'
+// 		})
+// 	} else {
+// 		// Do nothing!
+// 	}
+// }
 
 
 async function disconnect(url = '', data = {}) {
