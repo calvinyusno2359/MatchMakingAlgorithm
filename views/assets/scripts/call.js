@@ -112,7 +112,7 @@ function endCall() {
 	}
 }
 
-//OG end call
+//OG end call --> this will double erase the agent table
 
 // function endCall() {
 // 	const id = {
