@@ -42,7 +42,7 @@ app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
 app.post('/admin/updateagent', admin.updateAgent);
 app.get('/admin/deleteagent/:id', admin.deleteAgent);
-app.get('/admin/getagents/:id', admin.getAgents); 
+app.get('/admin/getagents/:id', admin.getAgents);
 app.get('/admin/updateagentavail/:id', admin.updateAgentAvailability);
 
 // starts rainbowsdk
@@ -57,4 +57,4 @@ https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () 
 });
 
 // for heroku deployment: ssl certificate for https is managed by heroku's Auto Cert Management
-app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
+// app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
