@@ -37,12 +37,25 @@ async function waitConnection() {
 	});
 
 	  
-    let response = await fetch("/call/request");
+    let header = {"tag":tag};
+    let response = await fetch("/call/request", {headers: header});
     let result = await response.json();
     let token = result.token;
     let agent_id = result.agent_id;
     user_id = result.user_id;
     response = await rainbowSDK.connection.signinSandBoxWithToken(token);
+
+	if (agent_id == "WAIT") {
+		loading.innerText = "Sit tight while we find you an agent.";
+		while (agent_id == "WAIT") {
+			await new Promise(r => setTimeout(r, 1000));
+			let header = {"user_id": user_id};
+			let response = await fetch("/polling", {headers: header});
+			let result = await response.json();
+			agent_id = result.agent_id;
+		}
+		loading.innerText = "Connecting";
+	}
 
     // get agent, add to network, and open conversation
     let contact = await rainbowSDK.contacts.searchById(agent_id);	
@@ -102,20 +115,24 @@ function endCall() {
 
 
 async function disconnect(url = '', data = {}) {
-	const response = await fetch(url, {
-		method: 'POST',
-		headers: {
-		'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data)
-	});
-	return await response.json();
-	}
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    return await response.json();
+  }
 
 function onLoaded() {
 	    rainbowSDK.setVerboseLog(false);
 	    rainbowSDK.initialize();
 	}
+
+
+
+let tag = JSON.parse(window.localStorage.getItem("tag")).data;	
 
 const end = document.createElement("button")
 end.className = "end_button";
@@ -128,7 +145,7 @@ const background = document.createElement("div");
 background.className = "background";
 background.textContent = "Our agent is now attending to you , feel free to let us know your enquiry.";
 
-
+const loading = document.querySelector(".loading");
 
 angular.bootstrap(document, ["sdk"]).get("rainbowSDK");
 document.addEventListener(rainbowSDK.RAINBOW_ONLOADED, onLoaded);

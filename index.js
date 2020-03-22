@@ -33,6 +33,7 @@ app.get('/call', user.call);
 app.get('/call/request', user.requesting);
 app.get('/chat/request', user.requesting);
 app.post('/chat/disconnect', user.disconnect);
+app.post('/call/disconnect', user.disconnect);
 app.get('/calling', user.calling);
 app.get('/polling', user.polling);
 
@@ -51,9 +52,9 @@ rainbowSDK.start();
 let PORT = process.env.PORT || 8080
 
 // for localhost deployment: use self-issued ssh found in config.js
-// https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () => {
-//     console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
-// });
+https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () => {
+    console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
+});
 
 // for heroku deployment: ssl certificate for https is managed by heroku's Auto Cert Management
 app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
