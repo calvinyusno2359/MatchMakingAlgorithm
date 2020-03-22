@@ -1,5 +1,5 @@
 let path = require("path");
-let RainbowSDK = require("rainbow-node-sdk");
+// let RainbowSDK = require("rainbow-node-sdk");
 
 // modules
 let rainbow = require("./rainbow");
