@@ -28,6 +28,7 @@ app.get('/call', user.call);
 app.get('/call/request', user.requesting);
 app.get('/chat/request', user.requesting);
 app.post('/chat/disconnect', user.disconnect);
+app.post('/call/disconnect',user.disconnect); // "/call/disconnect"
 app.get('/calling',user.calling);
 
 // admin-related routes
