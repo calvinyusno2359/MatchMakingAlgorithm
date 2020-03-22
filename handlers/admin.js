@@ -5,15 +5,16 @@ let config = require("../config");
 // Create connection
 const db = mysql.createPool(config.dblogin);
 
-function test(req, res) {
+// Populate agents
+function populateAgents(req, res) {
     let sql = 'SELECT * FROM agent';
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.log(results);
         console.log('Agents fetched...');
-        res.send(results);
+        res.render('db', { data: results });
     });
-}
+};
 
 // Add agent
 function addAgent(req, res) {
@@ -24,17 +25,6 @@ function addAgent(req, res) {
         console.log(result);
         console.log("Agent added...");
         res.json({ status: "success" });
-    });
-};
-
-// Select agents
-function selectAgents(req, res) {
-    let sql = 'SELECT * FROM agent';
-    db.query(sql, (err, results) => {
-        if (err) throw err;
-        console.log(results);
-        console.log('Agents fetched...');
-        res.render('db', { data: results });
     });
 };
 
@@ -71,10 +61,33 @@ function deleteAgent(req, res) {
     });
 };
 
+function getAgents(req, res) {
+    const tag = req.params.id
+    let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = '${tag}'`
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result) 
+        res.json({ result: result });
+        // return result
+    })    
+}
+
+function updateAgentAvailability(req, res) {
+    const id = req.params.id
+    let sql = `UPDATE agent SET availability = 0 WHERE id = '${id}'`
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result) 
+        res.json({ result: result});
+        // return result
+    })    
+}
+
 // exports
-exports.test = test;
 exports.addAgent = addAgent;
-exports.selectAgents = selectAgents;
+exports.populateAgents = populateAgents;
 // exports.selectAgent = selectAgent;
 exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
+exports.getAgents = getAgents; 
+exports.updateAgentAvailability = updateAgentAvailability

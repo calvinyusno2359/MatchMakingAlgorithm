@@ -35,10 +35,12 @@ async function requesting(req, res) {
   response = await rainbowSDK.admin.askTokenOnBehalf(username, password);
   let token = response.token;
 
-  let tags = req.headers.tags;
-  // tags is an array of the tags selected by user
+  let tag = req.headers.tag;
+  // tag is a string of the text tag selected by the user
   // match userId with agentId
   console.log(userId);
+
+  // agentId should be "WAIT" if the user is placed in a queue.
   let agentId = await matchmaker.matchUser(userId);
   console.log(matchmaker.agentTable);
 
@@ -62,9 +64,20 @@ async function disconnect(req, res) {
   })
 }
 
+async function polling(req, res) {
+  let userId = req.headers.user_id;
+
+  // TODO: link with matchmaker to obtain agent ID / WAIT signal.
+
+  res.send({
+    "agent_id": "WAIT",
+  });
+}
+
 // exports
 exports.chat = chat;
 exports.call = call;
 exports.requesting = requesting;
 exports.disconnect = disconnect;
 exports.calling = calling;
+exports.polling = polling;

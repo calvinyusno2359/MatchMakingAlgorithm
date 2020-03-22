@@ -33,16 +33,17 @@ app.get('/call', user.call);
 app.get('/call/request', user.requesting);
 app.get('/chat/request', user.requesting);
 app.post('/chat/disconnect', user.disconnect);
+app.post('/call/disconnect', user.disconnect);
 app.get('/calling', user.calling);
+app.get('/polling', user.polling);
 
 // admin-related routes
-app.get('/admin/test', admin.test);
-app.get('/admin', admin.selectAgents);
+app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
 app.post('/admin/updateagent', admin.updateAgent);
 app.get('/admin/deleteagent/:id', admin.deleteAgent);
-// app.get('/admin/selectagents', admin.selectAgents);
-// app.get('/admin/selectagent', admin.selectAgent);
+app.get('/admin/getagents/:id', admin.getAgents); 
+app.get('/admin/updateagentavail/:id', admin.updateAgentAvailability);
 
 // starts rainbowsdk
 // comment this for faster load during development
@@ -56,4 +57,4 @@ https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () 
 });
 
 // for heroku deployment: ssl certificate for https is managed by heroku's Auto Cert Management
-// app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
+app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
