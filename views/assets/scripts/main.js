@@ -1,24 +1,21 @@
 const tags = document.querySelector(".problems");
 const buttons = document.querySelector(".support_buttons").querySelectorAll(".button");
-let active = [];
+let active = null;
 
 function selectTag(e) {
 	let target = e.toElement;
 
 	if (target.className == "active") {
 		target.className = null;
-		active.splice(active.indexOf(target.innerText), 1);
-	} else {
-		target.className = "active";
-		active.push(target.innerText);
-	}
-
-	if (active.length == 0) {
-		buttons.forEach(button => {
+		active = null;
+		buttons.forEach((button) => {
 			button.disabled = true;
-		});
+		})
 	} else {
-		buttons.forEach(button => {
+		if (active) active.className = null;
+		target.className = "active";
+		active = target;
+		buttons.forEach((button) => {
 			button.disabled = false;
 		});
 	}
@@ -26,7 +23,7 @@ function selectTag(e) {
 
 function getSupport(e) {
 	let target = e.toElement;
-	let data = JSON.stringify({"data":active});
+	let data = JSON.stringify({"data":active.innerText});
 	window.localStorage.setItem("tag", data);
 	if (target.id === "chat") {
 		window.location = "chat";
