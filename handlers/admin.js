@@ -1,78 +1,93 @@
+// modules
 const mysql = require('mysql');
+let config = require("../config");
 
 // Create connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'tinder-on-rainbow'
-});
+const db = mysql.createPool(config.dblogin);
 
-// Connect
-db.connect((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log('MySQL connected...')
-})
+// Populate agents
+function populateAgents(req, res) {
+    let sql = 'SELECT * FROM agent';
+    db.query(sql, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        console.log('Agents fetched...');
+        res.render('db', { data: results });
+    });
+};
 
 // Add agent
 function addAgent(req, res) {
     let entry = req.body;
     let sql = 'INSERT INTO agent SET ?';
-    let query = db.query(sql, entry, (err, result) => {
+    db.query(sql, entry, (err, result) => {
         if (err) throw err;
         console.log(result);
-        console.log("Agent added...")
-    });
-    res.end();
-};
-
-// Select agents
-function selectAgents(req, res) {
-    let sql = 'SELECT * FROM agent';
-    let query = db.query(sql, (err, results) => {
-        if (err) throw err;
-        console.log(results);
-        res.send('Agents fetched...');
+        console.log("Agent added...");
+        res.json({ status: "success" });
     });
 };
 
 // Select single agent
-function selectAgent(req, res) {
-    let sql = `SELECT * FROM agent WHERE id = '${req.params.id}'`;
-    let query = db.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log(result);
-        res.send('Agent fetched...');
-    });
-};
+// function selectAgent(req, res) {
+//     let sql = `SELECT * FROM agent WHERE id = '${req.params.id}'`;
+//     db.query(sql, (err, result) => {
+//         if (err) throw err;
+//         console.log(result);
+//         res.send('Agent fetched...');
+//     });
+// };
 
-// Update agent skill tag
-function updateAgentSkillTag(req, res) {
-    let newSkillTag = 'rubbish collecting';
-    let sql = `UPDATE agent SET tag = '${newSkillTag}' WHERE id = '${req.params.id}'`;
-    let query = db.query(sql, (err, result) => {
+// Update agent, including skill tag
+function updateAgent(req, res) {
+    let entry = req.body;
+    let sql = `UPDATE agent SET email = '${entry.email}', tag = '${entry.tag}' WHERE id = '${entry.id}'`;
+    db.query(sql, (err, result) => {
         if (err) throw err;
         console.log(result);
-        res.send('Agent skill tag updated...');
+        console.log('Agent updated...');
+        res.json({ status: "success" });
     });
 };
 
 // Delete agent
 function deleteAgent(req, res) {
     let sql = `DELETE FROM agent WHERE id = '${req.params.id}'`;
-    let query = db.query(sql, (err, result) => {
+    db.query(sql, (err, result) => {
         if (err) throw err;
         console.log(result);
         console.log('Agent deleted...');
+        res.json({ status: "success" });
     });
-    res.end();
 };
+
+function getAgents(req, res) {
+    const tag = req.params.id
+    let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = '${tag}'`
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result) 
+        res.json({ result: result });
+        // return result
+    })    
+}
+
+function updateAgentAvailability(req, res) {
+    const id = req.params.id
+    let sql = `UPDATE agent SET availability = 0 WHERE id = '${id}'`
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result) 
+        res.json({ result: result});
+        // return result
+    })    
+}
 
 // exports
 exports.addAgent = addAgent;
-exports.selectAgents = selectAgents;
-exports.selectAgent = selectAgent;
-exports.updateAgentSkillTag = updateAgentSkillTag;
+exports.populateAgents = populateAgents;
+// exports.selectAgent = selectAgent;
+exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
+exports.getAgents = getAgents; 
+exports.updateAgentAvailability = updateAgentAvailability

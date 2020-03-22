@@ -1,16 +1,18 @@
+let fs = require("fs");
+
 // Define your configuration
 const options = {
     rainbow: {
         host: "sandbox"
     },
     credentials: {
-        login: "spam.xyz999@gmail.com", // To replace with your developer credendials
-        password: "1234Qwer!" // To replace with your developer credentials
+        login: process.env.BOT_EMAIL || "spam.xyz999@gmail.com", // developer credendials
+        password: process.env.BOT_PASSWORD || "1234Qwer!" // developer credentials
     },
     // Application identifier
     application: {
-        appID: "de6b39a0513f11ea819a43cb4a9dae9b",
-        appSecret: "WzpQkTwxj6SfULL9muZJ83yKFEvxuvM1Iq59HxaXSo9S3lrTK0ST4khFlRPGErZ2"
+        appID: process.env.BOT_APPID || "de6b39a0513f11ea819a43cb4a9dae9b",
+        appSecret: process.env.BOT_APPSECRET || "WzpQkTwxj6SfULL9muZJ83yKFEvxuvM1Iq59HxaXSo9S3lrTK0ST4khFlRPGErZ2"
     },
     // Logs options
     logs: {
@@ -41,4 +43,18 @@ const options = {
     pythonPath: process.env.PYTHON_PATH, // leave it blank for heroku
 };
 
+const dblogin = {
+    connectionLimit: 10,
+    host: process.env.AGENT_DB_HOST,
+    user: process.env.AGENT_DB_USERNAME,
+    password: process.env.AGENT_DB_PASSWORD,
+    database: process.env.AGENT_DB_DATABASE
+}
+
+const cert = fs.readFileSync('server.cert');
+const key = fs.readFileSync('server.key');
+
+exports.dblogin = dblogin;
 exports.options = options;
+exports.cert = cert;
+exports.key = key

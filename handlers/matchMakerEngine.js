@@ -103,7 +103,7 @@ function MatchMaker() {
 
     this.generateMatch = function(userId) {
         return new Promise((resolve, reject) => {
-            let script = "matchmake.py";
+            let script = "algorithm/cosine.py";
             let pyshell = new PythonShell(path.join(__dirname, script), config.options);
 
             let agentIds = Object.keys(this.agentTable);
