@@ -61,9 +61,25 @@ function deleteAgent(req, res) {
     });
 };
 
+function adminLogin(req, res) {
+    let credentials = req.body;
+    console.log(credentials)
+    let sql = `SELECT * FROM admin WHERE username = '${credentials.username}' and password = '${credentials.password}'`;
+    db.query(sql, (err, result) => {
+        data = JSON.stringify(result)
+        parseData = (JSON.parse(data))[0]
+        if (JSON.stringify(parseData) == JSON.stringify(credentials)) {
+            res.status(200).send()
+        } else {
+            res.status(404).send()
+        }
+    })
+}
+
 // exports
 exports.addAgent = addAgent;
 exports.populateAgents = populateAgents;
 // exports.selectAgent = selectAgent;
 exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
+exports.adminLogin = adminLogin;
