@@ -50,7 +50,7 @@ app.get('/admin/updateagentavail/:id', admin.updateAgentAvailability);
 
 // starts rainbowsdk
 // comment this for faster load during development
-//rainbowSDK.start();
+rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
 
