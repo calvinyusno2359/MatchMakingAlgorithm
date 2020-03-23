@@ -8,7 +8,7 @@ let queue = require('./queue');
 // let config = require("../config");
 
 function MatchMaker() {
-  console.log("MatchMaker loaded.");
+  // console.log("MatchMaker loaded.");
 
   this.db = mysql.createPool({
     connectionLimit: 10,
@@ -110,7 +110,7 @@ function MatchMaker() {
 
         // get candidates that is available and has tag
         let candidates = JSON.parse(JSON.stringify(agents));
-        let matchedAgent = "GP";
+        let matchedAgent = "5e7875a7ae2042244e4317d1"; // default GP
         let maxQ = 99999;
 
         // check which one has minimum queue => is the matchedAgent
@@ -160,6 +160,10 @@ function MatchMaker() {
     if (bool === true) this.verbosity = true;
     return this
   };
+
+  this.option = function(dblogin) {
+    this.db = this.db = mysql.createPool(dblogin);
+  }
 };
 
 // exports

@@ -4,7 +4,6 @@ const queue = require("../handlers/queue");
 
 describe('Queue Test: Attributes', () => {
   let q;
-
   beforeEach((done) => {
     q = new queue.Queue();
     done();
@@ -18,7 +17,6 @@ describe('Queue Test: Attributes', () => {
 
 describe('Queue Test: Methods', () => {
   let q;
-
   beforeEach((done) => {
     q = new queue.Queue();
     q.enqueue("1");
@@ -62,6 +60,7 @@ describe('Queue Test: Methods', () => {
 });
 
 describe('Queue Test: Scenarios', () => {
+  let q;
   beforeEach((done) => {
     q = new queue.Queue();
     done();
