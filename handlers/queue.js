@@ -1,5 +1,5 @@
 function Queue() {
-    console.log("Queue Initiated.");
+    // console.log("Queue Initiated.");
 
     this.q = [];
     this.verbosity = false;
