@@ -52,7 +52,7 @@ p.right {
 	text-align: center;
 	font-family: "century-gothic", serif;
 	font-size: 30px;
-	width: 480px;
+	width: 30%;
 	position: absolute;
 	transform: translate(-50%, -50%);
 	left: 50%;
@@ -60,7 +60,7 @@ p.right {
 	border: 2px solid rgb(233, 30, 99);
 	border-radius: 4px;
 	overflow-y: auto;
-	height: 480px;
+	height: 60%;
 }
 
 .problems a {
