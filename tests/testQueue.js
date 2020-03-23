@@ -66,6 +66,31 @@ function test_peek() {
   console.log("top of Q2:", top2);
 }
 
+function test_dequeue_empty() {
+  test_enqueue();
+
+  element1 = q1.dequeue();
+  element2 = q2.dequeue();
+
+  console.log("element1:", element1);
+  console.log("element2:", element2);
+
+  q1.dequeue();
+  q2.dequeue();
+
+  console.log(`Q1: ${q1.q}`);
+  console.log(`Q2: ${q2.q}`);
+
+  console.log("Q1 length:", q1.length());
+  console.log("Q2 length:", q2.length());
+
+  element1 = q1.dequeue();
+  element2 = q2.dequeue();
+
+  console.log("element1:", element1);
+  console.log("element2:", element2);
+};
+
 console.log("\ntest_init");
 test_init();
 console.log("\ntest_enqueue");
@@ -74,3 +99,5 @@ console.log("\ntest_dequeue");
 test_dequeue();
 console.log("\ntest_peek");
 test_peek();
+console.log("\ntest_dequeue_empty");
+test_dequeue_empty();
