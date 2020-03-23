@@ -41,11 +41,23 @@ async function test_matchUser_multiple() {
 
 };
 
+async function test_disconnectUser() {
+  await test_matchUser_multiple()
+
+  agentId = await matchmaker.disconnectUser("user1");
+  console.log(matchmaker.userTable) // user2 & user3 only
+
+  agentId = await matchmaker.matchUser("user3", "Back");
+  console.log("signal3:", agentId) // first agent (topQ now!)
+}
+
 // console.log("\ntest_getAllAvailableAgent")
 // test_getAllAvailableAgent();
 // console.log("\ntest_generateMatch")
 // test_generateMatch();
 // console.log("\ntest_matchUser");
 // test_matchUser();
-console.log("\ntest_matchUser_multiple");
-test_matchUser_multiple();
+// console.log("\ntest_matchUser_multiple");
+// test_matchUser_multiple();
+console.log("\ntest_disconnectUser");
+test_disconnectUser();
