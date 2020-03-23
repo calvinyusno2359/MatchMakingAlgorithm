@@ -97,13 +97,29 @@ function downloadLogs() {
 
 async function waitConnection() {
     // ping server for token and id
-    let header = {"tags":tags};
+    let header = {"tag":tag};
     let response = await fetch("/chat/request", {headers: header});
     let result = await response.json();
     let token = result.token;
     agent_id = result.agent_id;
     user_id = result.user_id;
+
     response = await rainbowSDK.connection.signinSandBoxWithToken(token);
+
+    // If we need to wait,
+    // 1. display wait message to user
+    // 2. set up polling loop to check when we are done
+    if (agent_id == "WAIT") {
+        loading.innerText = "Sit tight while we find you an agent.";
+        while (agent_id == "WAIT") {
+            await new Promise(r => setTimeout(r, 1000));
+            let header = {"user_id": user_id};
+            let response = await fetch("/polling", {headers: header});
+            let result = await response.json();
+            agent_id = result.agent_id;
+        }
+        loading.innerText = "Connecting";
+    }
 
     // get agent, add to network, and open conversation
     let contact = await rainbowSDK.contacts.searchById(agent_id);
@@ -122,13 +138,9 @@ async function waitConnection() {
     content.addEventListener("keyup", keyPress);
     end.addEventListener("click", endChat);
 
-    conversation.messages.forEach(message => {
-        if (message.side === "R") {
-            pushText(message.data, "right");
-        } else if (message.side === "L") {
-            pushText(message.data, "left");
-        }
-    });
+    // let the agent know the context of the conversation
+    let alert = `New chat support request. Tag: ${tag}.`;
+    rainbowSDK.im.sendMessageToConversation(conversation, alert);
 }
 
 function receive(e) {
@@ -158,13 +170,21 @@ function onLoaded() {
     rainbowSDK.initialize();
 }
 
-// window.onbeforeunload = async function() {
-//     if (account_id == "") return;
-
-//     // unregister visitor from db
-//     let init = {"method": "POST", "body": {"account_id": account_id}};
-//     await fetch("https://esc.xuliang.dev/api/chat/done", init);
-// }
+ window.onbeforeunload = function() {
+    if (!user_id) {
+        window.location.pathname = '/';
+        return null;
+    }
+    const id = {
+        userId: user_id
+    }
+    disconnect('/chat/disconnect', id).then(() => {
+        closeConversation().then(() => {
+            window.location.pathname = '/';
+        });
+    });
+    return null;
+ }
 
 let conversation;
 let user_id = "";
@@ -172,7 +192,11 @@ let agent_id = "";
 let receipt_queue = [];
 let logs = []
 let msg = "";
-let tags = JSON.parse(window.localStorage.getItem("tag")).data;
+// If no tag is detected, send them back to index
+if (JSON.parse(window.localStorage.getItem("tag")) == null) {
+    window.location.pathname = '/';
+}
+let tag = JSON.parse(window.localStorage.getItem("tag")).data;
 
 const chat = document.createElement("div");
 const content = document.createElement("div");
@@ -190,6 +214,8 @@ send.disabled = true;
 end.className = "end_button";
 end.textContent = "✖";
 end.title = "End";
+
+const loading = document.querySelector(".loading");
 
 angular.bootstrap(document, ["sdk"]).get("rainbowSDK");
 

@@ -61,9 +61,49 @@ function deleteAgent(req, res) {
     });
 };
 
+function getAgents(req, res) {
+    const tag = req.params.id
+    let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = '${tag}'`
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result)
+        res.json({ result: result });
+        // return result
+    })
+}
+
+function updateAgentAvailability(req, res) {
+    const id = req.params.id
+    let sql = `UPDATE agent SET availability = 0 WHERE id = '${id}'`
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result)
+        res.json({ result: result});
+        // return result
+    })
+}
+
+function adminLogin(req, res) {
+    let credentials = req.body;
+    console.log(credentials)
+    let sql = `SELECT * FROM admin WHERE username = '${credentials.username}' and password = '${credentials.password}'`;
+    db.query(sql, (err, result) => {
+        data = JSON.stringify(result)
+        parseData = (JSON.parse(data))[0]
+        if (JSON.stringify(parseData) == JSON.stringify(credentials)) {
+            res.status(200).send()
+        } else {
+            res.status(404).send()
+        }
+    })
+}
+
 // exports
 exports.addAgent = addAgent;
 exports.populateAgents = populateAgents;
 // exports.selectAgent = selectAgent;
 exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
+exports.getAgents = getAgents;
+exports.updateAgentAvailability = updateAgentAvailability;
+exports.adminLogin = adminLogin;

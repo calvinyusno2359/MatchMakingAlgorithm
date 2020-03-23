@@ -28,6 +28,70 @@
   animation: lds-dual-ring 1.2s linear infinite;
 }
 
+.end_button {
+	font-family: "century-gothic", serif;
+	background-color: rgba(233, 30, 99, 0.7);
+	border: 2px rgba(233, 30, 99, 0.75);
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 24px;
+	height: 12%;
+	transition-duration: 0.33s;
+	width: 150px;
+	box-sizing: border-box;
+	position: absolute;
+	bottom: 0%;
+	right: 11%;
+}
+
+.end_button {
+	width: 50px;
+	height: 50px;
+	background-color: rgba(233, 30, 99, 0.8);
+	border-radius: 50%;
+	border: 0px;
+	box-shadow: 0 3px 5px 0 #666;
+
+	font-size: 18px;
+	color: white;
+	text-align: center;
+	display: inline-block;
+
+	position: fixed;
+	right: 10px;
+	top: 10px;
+
+	transition-duration: 0.33s;
+}
+
+.end_button:hover {
+	box-shadow: 0 3px 6px 0 #666;
+	transform: scale(1.05);
+	background-color: rgba(233, 30, 99, 0.9);
+}
+
+
+.background{
+	background-color: white;
+	top: 0%;
+	height: 88%;
+	position: absolute;
+	width: 100%;
+	box-sizing: border-box;
+	overflow-y: auto;
+  padding: 30px;
+
+  text-align: center;
+  top: 200px;
+  font-size: 50px;
+  color: rgba(233, 30, 99, 0.8);
+  
+  
+}
+
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
