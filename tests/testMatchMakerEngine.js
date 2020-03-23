@@ -1,6 +1,6 @@
 console.log(process.cwd())
 
-let matchMakerEngine = require("../handlers/matchMakerEngine2");
+let matchMakerEngine = require("../handlers/matchMakerEngine");
 
 // let matchmaker = new matchMakerEngine.MatchMaker();
 let matchmaker = new matchMakerEngine.MatchMaker().verbose(true);
@@ -49,6 +49,10 @@ async function test_disconnectUser() {
 
   agentId = await matchmaker.matchUser("user3", "Back");
   console.log("signal3:", agentId) // first agent (topQ now!)
+
+  result = await matchmaker.disconnectUser("user1");
+  console.log(matchmaker.userTable) // not connected anymore
+
 }
 
 async function test_matchUser_empty_tag() {
@@ -68,5 +72,5 @@ async function test_matchUser_empty_tag() {
 // test_matchUser_multiple();
 console.log("\ntest_disconnectUser");
 test_disconnectUser();
-console.log("\ntest_matchUser_empty_tag");
-test_matchUser_empty_tag();
+// console.log("\ntest_matchUser_empty_tag");
+// test_matchUser_empty_tag();
