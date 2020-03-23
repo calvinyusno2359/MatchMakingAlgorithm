@@ -158,11 +158,12 @@ function MatchMaker() {
 
   this.verbose = function(bool) {
     if (bool === true) this.verbosity = true;
-    return this
+    return this;
   };
 
   this.option = function(dblogin) {
     this.db = this.db = mysql.createPool(dblogin);
+    return this;
   }
 };
 
