@@ -41,7 +41,7 @@ async function requesting(req, res) {
   console.log(userId);
 
   // agentId should be "WAIT" if the user is placed in a queue.
-  let agentId = await matchmaker.matchUser(userId);
+  let agentId = await matchmaker.matchUser(userId, tag);
   console.log(matchmaker.agentTable);
 
   res.send({
@@ -68,6 +68,8 @@ async function polling(req, res) {
   let userId = req.headers.user_id;
 
   // TODO: link with matchmaker to obtain agent ID / WAIT signal.
+  // just call this again, it'll keep giving WAIT until available
+  // let agentId = await matchmaker.matchUser(userId, tag);
 
   res.send({
     "agent_id": "WAIT",

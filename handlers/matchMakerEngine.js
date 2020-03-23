@@ -70,11 +70,12 @@ function MatchMaker() {
 
       let message = `Success! User: ${userId} has been disconnected from ${agentId}.`
       if (this.verbosity) console.log(message);
+      return message;
     } else {
       let message = `Failure! User: ${userId} is not currently connected!`
       if (this.verbosity) console.log(message);
+      return message;
     }
-    return this
   };
 
   this.matchAgent = function(agentId) {
