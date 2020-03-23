@@ -170,13 +170,18 @@ function onLoaded() {
     rainbowSDK.initialize();
 }
 
-// window.onbeforeunload = async function() {
-//     if (account_id == "") return;
-
-//     // unregister visitor from db
-//     let init = {"method": "POST", "body": {"account_id": account_id}};
-//     await fetch("https://esc.xuliang.dev/api/chat/done", init);
-// }
+ window.onbeforeunload = function() {
+    if (!user_id) return null;
+    const id = {
+        userId: user_id
+    }
+    disconnect('/chat/disconnect', id).then(() => {
+        closeConversation().then(() => {
+            window.location.pathname = '/'
+        })
+    })
+    return "";
+ }
 
 let conversation;
 let user_id = "";
@@ -184,6 +189,10 @@ let agent_id = "";
 let receipt_queue = [];
 let logs = []
 let msg = "";
+// If no tag is detected, send them back to index
+if (JSON.parse(window.localStorage.getItem("tag")) == null) {
+    window.location.pathname = '/';
+}
 let tag = JSON.parse(window.localStorage.getItem("tag")).data;
 
 const chat = document.createElement("div");
