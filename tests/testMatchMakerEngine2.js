@@ -51,6 +51,13 @@ async function test_disconnectUser() {
   console.log("signal3:", agentId) // first agent (topQ now!)
 }
 
+async function test_matchUser_empty_tag() {
+  matchmaker = await matchmaker.getAllAvailableAgent();
+
+  agentId = await matchmaker.matchUser("user4");
+  console.log("signal4:", agentId) // first agent
+}
+
 // console.log("\ntest_getAllAvailableAgent")
 // test_getAllAvailableAgent();
 // console.log("\ntest_generateMatch")
@@ -61,3 +68,5 @@ async function test_disconnectUser() {
 // test_matchUser_multiple();
 console.log("\ntest_disconnectUser");
 test_disconnectUser();
+console.log("\ntest_matchUser_empty_tag");
+test_matchUser_empty_tag();
