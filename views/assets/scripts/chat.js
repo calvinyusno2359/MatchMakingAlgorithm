@@ -171,16 +171,19 @@ function onLoaded() {
 }
 
  window.onbeforeunload = function() {
-    if (!user_id) return null;
+    if (!user_id) {
+        window.location.pathname = '/';
+        return null;
+    }
     const id = {
         userId: user_id
     }
     disconnect('/chat/disconnect', id).then(() => {
         closeConversation().then(() => {
-            window.location.pathname = '/'
-        })
-    })
-    return "";
+            window.location.pathname = '/';
+        });
+    });
+    return null;
  }
 
 let conversation;
