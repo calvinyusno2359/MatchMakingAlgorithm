@@ -1,91 +1,76 @@
+console.log(process.cwd())
+
 let matchMakerEngine = require("../handlers/matchMakerEngine");
 
-let matchmaker = new matchMakerEngine.MatchMaker();
+// let matchmaker = new matchMakerEngine.MatchMaker();
+let matchmaker = new matchMakerEngine.MatchMaker().verbose(true);
 
-var message = "";
-
-function test_addAgent() {
-  let agent1 = "5e43c49ce9f127306369575f";
-  message = matchmaker.addAgent(agent1);
-  console.log(message);
-  console.log(matchmaker.agentTable);
+async function test_getAllAvailableAgent() {
+  matchmaker = await matchmaker.getAllAvailableAgent();
 };
 
-function test_generateMatch() {
-  let user1 = "5e43c555e9f1273063695767";
-  agentId = matchmaker.generateMatch(user1);
-  console.log("agentId:", agentId);
-  console.log(matchmaker.agentTable);
+async function test_generateMatch() {
+  matchmaker = await matchmaker.getAllAvailableAgent();
+  matchmaker = await matchmaker.generateMatch("Back");
+};
+
+async function test_matchUser() {
+  matchmaker = await matchmaker.getAllAvailableAgent();
+
+  agentId = await matchmaker.matchUser("user1", "Back");
+  console.log(agentId)
+};
+
+async function test_matchUser_multiple() {
+  matchmaker = await matchmaker.getAllAvailableAgent();
+
+  agentId = await matchmaker.matchUser("user1", "Back");
+  console.log("signal1:", agentId) // first agent
+
+  agentId = await matchmaker.matchUser("user1", "Back");
+  console.log("signal1:", agentId) // first agent (reconnect case)
+
+  agentId = await matchmaker.matchUser("user2", "Back");
+  console.log("signal2:", agentId) // second agent
+
+  agentId = await matchmaker.matchUser("user3", "Back");
+  console.log("signal3:", agentId) // WAIT (queued, tell wait)
+
+  agentId = await matchmaker.matchUser("user3", "Back");
+  console.log("signal3:", agentId) // WAIT (still queueing!)
+
+};
+
+async function test_disconnectUser() {
+  await test_matchUser_multiple()
+
+  result = await matchmaker.disconnectUser("user1");
+  console.log(matchmaker.userTable) // user2 & user3 only
+
+  agentId = await matchmaker.matchUser("user3", "Back");
+  console.log("signal3:", agentId) // first agent (topQ now!)
+
+  result = await matchmaker.disconnectUser("user1");
+  console.log(matchmaker.userTable) // not connected anymore
+
 }
 
-function test_matchUser() {
-  let user1 = "5e43c555e9f1273063695767";
-  agentId = matchmaker.matchUser(user1);
-  console.log(matchmaker.agentTable);
-  console.log(matchmaker.userTable);
-  console.log("agentId:", agentId);
+async function test_matchUser_empty_tag() {
+  matchmaker = await matchmaker.getAllAvailableAgent();
+
+  agentId = await matchmaker.matchUser("user4");
+  console.log("signal4:", agentId) // first agent
 }
 
-function test_matchUserBusy() {
-  let user1 = "5e43c555e9f1273063695767";
-  agentId = matchmaker.matchUser(user1);
-  console.log(matchmaker.agentTable);
-  console.log(matchmaker.userTable);
-
-  let user2 = "5e43c5asfr012341256gfdb3a";
-  agentId = matchmaker.matchUser(user2);
-  console.log(matchmaker.agentTable);
-  console.log(matchmaker.userTable);
-}
-
-function test_disconnectUser() {
-  let user1 = "5e43c555e9f1273063695767";
-  message = matchmaker.disconnectUser(user1);
-  console.log(message);
-  console.log(matchmaker.agentTable);
-  console.log(matchmaker.userTable);
-}
-
-function test_matchAgent() {
-  let agent1 = "5e43c49ce9f127306369575f";
-  message = matchmaker.matchAgent(agent1);
-  console.log(message);
-  console.log(matchmaker.agentTable);
-}
-
-function test_generateUser() {
-  let agent1 = "5e43c49ce9f127306369575f";
-  let agent2 = "5e43c555e9f1273063695767";
-  let agent3 = "5e43c5asfr012341256gfdb3a";
-  let user1 = "user1";
-  let user2 = "user2";
-
-  matchmaker.addAgent(agent1);
-  matchmaker.addAgent(agent2);
-  matchmaker.addAgent(agent3);
-
-  message = matchmaker.matchUser(user1);
-  setTimeout(function(){
-    console.log(message);
-    console.log(matchmaker.agentTable);;
-  }, 780);
-
-
-  message = matchmaker.matchUser(user2);
-  setTimeout(function(){
-    console.log(message);
-    console.log(matchmaker.agentTable);;
-  }, 800);
-}
-
-// test_addAgent();
-// test_addAgent();
+// console.log("\ntest_getAllAvailableAgent")
+// test_getAllAvailableAgent();
+// console.log("\ntest_generateMatch")
 // test_generateMatch();
+// console.log("\ntest_matchUser");
 // test_matchUser();
-// test_matchUser();
-// test_matchAgent();
-// test_matchUserBusy();
-// test_disconnectUser();
-// test_matchAgent();
-test_generateUser()
-
+// console.log("\ntest_matchUser_multiple");
+// test_matchUser_multiple();
+console.log("\ntest_disconnectUser");
+test_disconnectUser();
+// console.log("\ntest_matchUser_empty_tag");
+// test_matchUser_empty_tag();

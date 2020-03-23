@@ -66,10 +66,10 @@ function getAgents(req, res) {
     let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = '${tag}'`
     db.query(sql, (err, result) => {
         if(err) throw err;
-        console.log(result) 
+        console.log(result)
         res.json({ result: result });
         // return result
-    })    
+    })
 }
 
 function updateAgentAvailability(req, res) {
@@ -77,10 +77,10 @@ function updateAgentAvailability(req, res) {
     let sql = `UPDATE agent SET availability = 0 WHERE id = '${id}'`
     db.query(sql, (err, result) => {
         if(err) throw err;
-        console.log(result) 
+        console.log(result)
         res.json({ result: result});
         // return result
-    })    
+    })
 }
 
 function adminLogin(req, res) {
@@ -104,6 +104,6 @@ exports.populateAgents = populateAgents;
 // exports.selectAgent = selectAgent;
 exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
-exports.getAgents = getAgents; 
+exports.getAgents = getAgents;
 exports.updateAgentAvailability = updateAgentAvailability;
 exports.adminLogin = adminLogin;
