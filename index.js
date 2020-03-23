@@ -39,9 +39,7 @@ app.get('/calling', user.calling);
 app.get('/polling', user.polling);
 
 // admin-related routes
-app.get('/home', (req, res) => {
-    res.render('login')
-})
+app.get('/home', (req, res) => res.sendFile(path.join(__dirname + "/views/login.html")));
 app.post('/admin/login', admin.adminLogin);
 app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
@@ -52,7 +50,7 @@ app.get('/admin/updateagentavail/:id', admin.updateAgentAvailability);
 
 // starts rainbowsdk
 // comment this for faster load during development
-rainbowSDK.start();
+//rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
 
