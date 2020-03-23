@@ -22,7 +22,7 @@ function test_enqueue() {
 };
 
 function test_dequeue() {
-  test_enqueue()
+  test_enqueue();
 
   q1.dequeue();
   q2.dequeue();
@@ -44,9 +44,33 @@ function test_dequeue() {
 
 };
 
+function test_peek() {
+  test_enqueue();
+
+  var top1 = q1.peek();
+  var top2 = q2.peek();
+
+  console.log("top of Q1:", top1);
+  console.log("top of Q2:", top2);
+
+  q1.dequeue();
+  q2.dequeue();
+
+  console.log(`Q1: ${q1.q}`);
+  console.log(`Q2: ${q2.q}`);
+
+  top1 = q1.peek();
+  top2 = q2.peek();
+
+  console.log("top of Q1:", top1);
+  console.log("top of Q2:", top2);
+}
+
 console.log("\ntest_init");
 test_init();
 console.log("\ntest_enqueue");
 test_enqueue();
 console.log("\ntest_dequeue");
 test_dequeue();
+console.log("\ntest_peek");
+test_peek();
