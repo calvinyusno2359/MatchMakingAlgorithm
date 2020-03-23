@@ -27,6 +27,10 @@ function Queue() {
         if (bool === true) this.verbosity = true;
         return this
     }
+
+    this.peek = function() {
+        return this.q[0];
+    }
 };
 
 // exports
