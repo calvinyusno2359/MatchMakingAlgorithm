@@ -1,15 +1,15 @@
 // unit test for Queue object
 const assert = require('chai').assert;
-const queue = require("../handlers/queue");
+const queue = require("../handlers/matchMakerEngine");
 
-describe('MatchMakerEngine Test 1', () => {
+describe('MatchMakerEngine Test: Methods', () => {
   it("blah b", () => {
     assert.isTrue(true);
   });
 
 });
 
-describe('MatchMakerEngine Test 2', () => {
+describe('MatchMakerEngine Test: Scenarios', () => {
   it("blah b", () => {
     assert.isTrue(true);
   });
