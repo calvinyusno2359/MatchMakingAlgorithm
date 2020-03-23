@@ -8,22 +8,23 @@ let matchMakerEngine = require("./matchMakerEngine");
 let rainbowSDK = new RainbowSDK(config.options);
 
 // instantiate matchmaker engine
-let matchmaker = new matchMakerEngine.MatchMaker();
+let matchmaker = new matchMakerEngine.MatchMaker().verbose(true);
 
 // setup rainbowSDK
-rainbowSDK.events.on('rainbow_onready', (req, res) => {
+rainbowSDK.events.on('rainbow_onready', async (req, res) => {
 
   // populate contact table
   // get all contacts and populate agentTable when SDK is ready
-  let contacts = rainbowSDK.contacts.getAll();
-
+  // let contacts = rainbowSDK.contacts.getAll();
   // contacts with 'user' as role is
-  for (contact of contacts) {
-    if (contact.roles.includes("user")) {
-      let message = matchmaker.addAgent(contact.id);
-      console.log(message);
-    }
-  }
+  // for (contact of contacts) {
+  //   if (contact.roles.includes("user")) {
+  //     let message = matchmaker.addAgent(contact.id);
+  //     console.log(message);
+  //   }
+  // }
+
+  await matchmaker.getAllAvailableAgent();
   console.log(matchmaker.agentTable);
 
   console.log("Rainbow SDK is ready.");

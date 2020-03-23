@@ -12,6 +12,7 @@ let admin = require("./handlers/admin");
 let rainbow = require("./handlers/rainbow");
 let config = require("./config");
 
+
 // get rainbowSDK
 let rainbowSDK = rainbow.rainbowSDK;
 
@@ -38,6 +39,10 @@ app.get('/calling', user.calling);
 app.get('/polling', user.polling);
 
 // admin-related routes
+app.get('/home', (req, res) => {
+    res.render('login')
+})
+app.post('/admin/login', admin.adminLogin);
 app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
 app.post('/admin/updateagent', admin.updateAgent);
