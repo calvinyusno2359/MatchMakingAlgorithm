@@ -66,13 +66,14 @@ async function disconnect(req, res) {
 
 async function polling(req, res) {
   let userId = req.headers.user_id;
+  let tag = req.headers.tag;
 
   // TODO: link with matchmaker to obtain agent ID / WAIT signal.
   // just call this again, it'll keep giving WAIT until available
-  // let agentId = await matchmaker.matchUser(userId, tag);
+  let agentId = await matchmaker.matchUser(userId, tag);
 
   res.send({
-    "agent_id": "WAIT",
+    "agent_id": agentId,
   });
 }
 

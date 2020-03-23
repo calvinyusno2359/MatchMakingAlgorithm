@@ -63,16 +63,22 @@ function MatchMaker() {
     // disconnects user and agent
     // done by writing null to agentTable and deleting user from userTable
 
-    let agentId = this.userTable[userId];
-    if (this.agentTable[agentId].peek() == userId) {
+    let agentId = this.userTable[userId] || null;
+    if (agentId == null) {
+      let message = `Failure! User: ${userId} is not currently connected.`
+      if (this.verbosity) console.log(message);
+      return message;
+
+    } else if (this.agentTable[agentId].peek() == userId) {
       delete this.userTable[userId];
       this.agentTable[agentId].dequeue();
 
       let message = `Success! User: ${userId} has been disconnected from ${agentId}.`
       if (this.verbosity) console.log(message);
       return message;
+
     } else {
-      let message = `Failure! User: ${userId} is not currently connected!`
+      let message = `Failure! User: ${userId} is a phantom user, ERROR in matchUser!`
       if (this.verbosity) console.log(message);
       return message;
     }
