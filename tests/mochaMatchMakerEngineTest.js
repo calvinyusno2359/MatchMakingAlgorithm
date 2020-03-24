@@ -126,6 +126,8 @@ describe('MatchMakerEngine Test: Methods', () => {
     let isQueue;
     let isEmpty;
 
+    assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent");
+
     mme = mme.addAgent(agent1);
     assert.property(mme.agentTable, 'agent1', `agentTable does not have property: agent1`);
 
@@ -133,7 +135,7 @@ describe('MatchMakerEngine Test: Methods', () => {
     assert.isObject(isQueue, 'agent1 Queue is not initialized')
 
     isEmpty = mme.agentTable[agent1].q;
-    assert.isEmpty(isEmpty, 'agent1 Queue is empty')
+    assert.isEmpty(isEmpty, 'agent1 Queue is not empty')
 
     mme = mme.addAgent(agent1);
     let agents = Object.keys(mme.agentTable)
@@ -142,22 +144,55 @@ describe('MatchMakerEngine Test: Methods', () => {
     assert.equal(count, 1, 'there is more or less than 1 agent in agentTable')
 
     mme = mme.addAgent(agent2);
-    assert.property(mme.agentTable, 'agent2', `agentTable does not have property: agent1`);
+    assert.property(mme.agentTable, 'agent2', `agentTable does not have property: agent2`);
 
     isQueue = mme.agentTable[agent2];
     assert.isObject(isQueue, 'agent2 Queue is not initialized')
 
     isEmpty = mme.agentTable[agent2].q;
-    assert.isEmpty(isEmpty, 'agent2 Queue is empty')
+    assert.isEmpty(isEmpty, 'agent2 Queue is not empty')
 
     let sixAgentsTotal = Object.keys(mme.agentTable).length
     assert.equal(sixAgentsTotal, 6, 'there is more or less than 6 agents in agentTable')
-
   });
 
-  it("MME matchUser() works properly", () => {
-    assert.isTrue(true);
-  });
+  it("MME matchUser() works properly", async () => {
+    let tag = "Back";
+    let user1 = "user1";
+    let user2 = "user2";
+    let user3 = "user3";
+    let wait = "WAIT"
+
+    assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent");
+
+    // there will only be 2 agents to be matched to
+    // ideal: least queue + has tag + available
+    agent1 = await mme.matchUser(user1, tag);
+    assert.equal(agent1, expected_availTable[0].id, "agent matched is not the first ideal agent");
+
+    // already matched, so give back same value (should not take too long)
+    stillAgent1 = await mme.matchUser(user1, tag);
+    assert.equal(stillAgent1, agent1, "agent returned when alr matched is not the the same");
+
+    // ideal: least queue + has tag + available
+    agent2 = await mme.matchUser(user2, tag);
+    assert.equal(agent2, expected_availTable[1].id, "agent matched is not the second ideal agent");
+
+    // user3 will be matched to agent1 but given WAIT signal
+    agent1Wait = await mme.matchUser(user3, tag);
+    assert.equal(agent1Wait, wait, "user3 does not get WAIT signal");
+    let agent1Queue = mme.agentTable[agent1].q
+    let isUser1 = agent1Queue[0];
+    let isUser3 = agent1Queue[1];
+    assert.equal(agent1Queue.length, 2, "agent1's queue is more or less than 2")
+    assert.equal(isUser1, user1, "agent1's queue current patient is not user1")
+    assert.equal(isUser3, user3, "agent1's queue next patient is not user3")
+
+    // user3 asking again will still give WAIT signal but will not be written on agentTable again
+    stillAgent1Wait = await mme.matchUser(user3, tag);
+    assert.equal(stillAgent1Wait, wait, "agent returned when alr matched is not the the same for user3");
+
+  }).timeout(2000);
 
   it("MME disconnectUser() works properly", () => {
     assert.isTrue(true);
