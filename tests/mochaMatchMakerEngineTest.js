@@ -38,7 +38,7 @@ describe('MatchMakerEngine Test: Attributes', () => {
 
 describe('MatchMakerEngine Test: Methods', () => {
   let mme;
-  beforeEach(async (done) => {
+  beforeEach(async function() {
     let option = {
       connectionLimit: 10,
       host: "us-cdbr-iron-east-04.cleardb.net",
@@ -81,7 +81,7 @@ describe('MatchMakerEngine Test: Methods', () => {
       }
     ];
 
-    done();
+    mme = await mme.getAllAvailableAgent();
   });
 
   it("MME getAllAvailableAgent() works properly", async () => {
@@ -103,10 +103,9 @@ describe('MatchMakerEngine Test: Methods', () => {
       assert.propertyVal(mme.availTable[i], 'availability',expected_availTable[i].availability,
                          `${i} does not have property value: ${expected_availTable[i].availability}`);
     }
-  }).timeout(3000); // configure how long maximum it should take
+  }).timeout(1000); // configure how long maximum it should take
 
   it("MME generateMatch() works properly", async () => {
-    await mme.getAllAvailableAgent();
     assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent");
     let tag = "Back";
     let expectedAgent1and2 = expected_availTable[0].id;
@@ -117,7 +116,7 @@ describe('MatchMakerEngine Test: Methods', () => {
     // that's why doing same request request will result in SAME response!
     assert.equal(agent1, expectedAgent1and2, `${tag} agent 1 generated is wrong`);
     assert.equal(agent2, expectedAgent1and2, `${tag} agent 2 generated is wrong`);
-  }).timeout(3000); // configure how long maximum it should take
+  }).timeout(1500); // configure how long maximum it should take
 
   it("MME addAgent() works properly", () => {
     assert.isTrue(true);
