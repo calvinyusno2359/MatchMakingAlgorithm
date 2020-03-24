@@ -20,7 +20,7 @@ function Queue() {
     }
 
     this.length = function() {
-        return this.q.length;
+        return this.q.length || 0;
     }
 
     this.verbose = function(bool) {

@@ -78,4 +78,10 @@ describe('Queue Test: Scenarios', () => {
     assert.isUndefined(isUndefined, "Queue array length is not undefined");
   });
 
+  it("length() empty queue", () => {
+    assert.equal(q.q.length, 0, "Queue array length is not 0");
+    let isZero = q.length();
+    assert.equal(isZero, 0, "Queue array length is not 0");
+  });
+
 });

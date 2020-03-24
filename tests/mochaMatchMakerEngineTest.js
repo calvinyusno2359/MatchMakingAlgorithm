@@ -105,7 +105,17 @@ describe('MatchMakerEngine Test: Methods', () => {
     }
   });
 
-  it("MME generateMatch() works properly", () => {
+  it("MME generateMatch() works properly", async () => {
+    let tag = "Back";
+    let expectedAgent1 = expected_availTable[0].id;
+    let expectedAgent2 = expected_availTable[1].id;
+    // let agent1 = await mme.generateMatch(tag);
+    // let agent2 = await mme.generateMatch(tag);
+
+    console.log('here', agent1)
+
+    assert.equal(agent1, expectedAgent1, `${tag} agent generated is wrong`);
+    assert.equal(agent1, expectedAgent2, `${tag} agent generated is wrong`);
     assert.isTrue(true);
   });
 
