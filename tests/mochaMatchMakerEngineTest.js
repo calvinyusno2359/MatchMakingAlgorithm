@@ -197,12 +197,43 @@ describe('MatchMakerEngine Test: Methods', () => {
     assert.equal(agent1Queue.length, 2, "agent1's queue is more or less than 2")
     assert.equal(isUser1, user1, "agent1's queue current patient is not user1")
     assert.equal(isUser3, user3, "agent1's queue next patient is not user3")
-
   }).timeout(2500);
 
-  it("MME disconnectUser() works properly", () => {
-    assert.isTrue(true);
-  });
+  it("MME disconnectUser() works properly", async () => {
+    let tag = "Back";
+    let user1 = "user1";
+    let user2 = "user2";
+    let user3 = "user3";
+    let user4 = "user4";
+    let message;
+
+    assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent");
+
+    agent1 = await mme.matchUser(user1, tag);
+    agent2 = await mme.matchUser(user2, tag);
+
+    // successful
+    expectedMessage = `Success! User: ${user1} has been disconnected from ${agent1}.`;
+    message = await mme.disconnectUser(user1);
+    assert.equal(message, expectedMessage, "successful disconnection message is incorrect");
+
+    let agent1Queue = mme.agentTable[agent1].q;
+    assert.isEmpty(agent1Queue, "agent 1 queue is not empty");
+
+    // is not connected
+    expectedMessage = `Failure! User: ${user1} is not currently connected.`;
+    message = await mme.disconnectUser(user1);
+    assert.equal(message, expectedMessage, "unconnected disconnection message is incorrect");
+
+    // successful
+    expectedMessage = `Success! User: ${user2} has been disconnected from ${agent2}.`;
+    message = await mme.disconnectUser(user2);
+    assert.equal(message, expectedMessage, "successful disconnection message is incorrect");
+
+    let agent2Queue = mme.agentTable[agent2].q;
+    assert.isEmpty(agent2Queue, "agent 2 queue is not empty");
+
+  }).timeout(2000);;
 
 });
 
@@ -213,7 +244,7 @@ describe('MatchMakerEngine Test: Scenarios', () => {
     done();
   });
 
-  it("blah b", () => {
+  it("other edge cases I haven't converted to mocha", () => {
     assert.isTrue(true);
   });
 
