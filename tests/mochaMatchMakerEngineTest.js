@@ -191,8 +191,14 @@ describe('MatchMakerEngine Test: Methods', () => {
     // user3 asking again will still give WAIT signal but will not be written on agentTable again
     stillAgent1Wait = await mme.matchUser(user3, tag);
     assert.equal(stillAgent1Wait, wait, "agent returned when alr matched is not the the same for user3");
+    agent1Queue = mme.agentTable[agent1].q
+    isUser1 = agent1Queue[0];
+    isUser3 = agent1Queue[1];
+    assert.equal(agent1Queue.length, 2, "agent1's queue is more or less than 2")
+    assert.equal(isUser1, user1, "agent1's queue current patient is not user1")
+    assert.equal(isUser3, user3, "agent1's queue next patient is not user3")
 
-  }).timeout(2000);
+  }).timeout(2500);
 
   it("MME disconnectUser() works properly", () => {
     assert.isTrue(true);
