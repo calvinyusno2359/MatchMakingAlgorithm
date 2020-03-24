@@ -21,7 +21,7 @@ function pushText(text, side, sending=false) {
 
 function sendMessage() {
     if (content.textContent != "") {
-        receipt_queue.push(pushText(content.textContent, "right", true));
+        receipt_queue.push(pushText(content.textContent, "right", false));
         rainbowSDK.im.sendMessageToConversation(conversation, content.textContent);
         msg += `${user_id}: ${content.textContent} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
     }
