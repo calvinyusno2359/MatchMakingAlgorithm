@@ -39,6 +39,8 @@ describe('MatchMakerEngine Test: Attributes', () => {
 describe('MatchMakerEngine Test: Methods', () => {
   let mme;
   beforeEach(async function() {
+    this.timeout(5000) // timeout for everything beforeEach + function
+
     let option = {
       connectionLimit: 10,
       host: "us-cdbr-iron-east-04.cleardb.net",
@@ -119,7 +121,38 @@ describe('MatchMakerEngine Test: Methods', () => {
   }).timeout(1500); // configure how long maximum it should take
 
   it("MME addAgent() works properly", () => {
-    assert.isTrue(true);
+    let agent1 = "agent1";
+    let agent2 = "agent2";
+    let isQueue;
+    let isEmpty;
+
+    mme = mme.addAgent(agent1);
+    assert.property(mme.agentTable, 'agent1', `agentTable does not have property: agent1`);
+
+    isQueue = mme.agentTable[agent1];
+    assert.isObject(isQueue, 'agent1 Queue is not initialized')
+
+    isEmpty = mme.agentTable[agent1].q;
+    assert.isEmpty(isEmpty, 'agent1 Queue is empty')
+
+    mme = mme.addAgent(agent1);
+    let agents = Object.keys(mme.agentTable)
+    let count = 0;
+    for (var i=0; i<agents.length; i++) if (agents[i] == agent1) count++;
+    assert.equal(count, 1, 'there is more or less than 1 agent in agentTable')
+
+    mme = mme.addAgent(agent2);
+    assert.property(mme.agentTable, 'agent2', `agentTable does not have property: agent1`);
+
+    isQueue = mme.agentTable[agent2];
+    assert.isObject(isQueue, 'agent2 Queue is not initialized')
+
+    isEmpty = mme.agentTable[agent2].q;
+    assert.isEmpty(isEmpty, 'agent2 Queue is empty')
+
+    let sixAgentsTotal = Object.keys(mme.agentTable).length
+    assert.equal(sixAgentsTotal, 6, 'there is more or less than 6 agents in agentTable')
+
   });
 
   it("MME matchUser() works properly", () => {
