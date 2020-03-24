@@ -39,6 +39,11 @@ function keyPress(e) {
     }
 }
 
+window.addEventListener('beforeunload', (event) => {
+    event.returnValue = `Are you sure you want to leave?`;
+    closeConversation();
+});
+
 // end chat and close conversation
 function endChat() {
     const id = {

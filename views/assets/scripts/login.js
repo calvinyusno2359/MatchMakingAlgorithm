@@ -23,16 +23,22 @@ async function populate(url = '') {
       return await response
 }
 
-function login () {
+function login() {
     credentials = {username: username.value, password: password.value}
     authenticate('/admin/login', credentials).then((res) => {
         console.log(res)
         if (res.status == 200) {
             window.location.pathname = '/admin'
         } else {
-            messageOne.textContent = "Wrong username or password"
+            alert("Wrong username or password")
         }
     })
 }
 
+password.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    document.getElementById("login").click();
+  }
+}); 
 
