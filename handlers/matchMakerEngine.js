@@ -117,8 +117,7 @@ function MatchMaker() {
         // check which one has minimum queue => is the matchedAgent
         for (var i=0; i<candidates.length; i++) {
           let q = this.agentTable[candidates[i].id];
-          console.log('here', q.length())
-          if (q.length == 0) {
+          if (q.length() == 0) {
             lowestQIndex = i;
             break;
           } else if (q.length() < maxQ) {

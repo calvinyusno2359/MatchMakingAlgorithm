@@ -38,7 +38,7 @@ describe('MatchMakerEngine Test: Attributes', () => {
 
 describe('MatchMakerEngine Test: Methods', () => {
   let mme;
-  beforeEach((done) => {
+  beforeEach(async (done) => {
     let option = {
       connectionLimit: 10,
       host: "us-cdbr-iron-east-04.cleardb.net",
@@ -86,38 +86,38 @@ describe('MatchMakerEngine Test: Methods', () => {
 
   it("MME getAllAvailableAgent() works properly", async () => {
     await mme.getAllAvailableAgent();
-    assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent")
+    assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent");
     for (var i=0; i<mme.availTable.length; i++) {
       // check all 4 important properties exist
-      assert.property(mme.availTable[i], 'id', `${i} does not have property: id`)
-      assert.property(mme.availTable[i], 'email', `${i} does not have property: email`)
-      assert.property(mme.availTable[i], 'tag', `${i} does not have property: tag`)
-      assert.property(mme.availTable[i], 'availability', `${i} does not have property: availability`)
+      assert.property(mme.availTable[i], 'id', `${i} does not have property: id`);
+      assert.property(mme.availTable[i], 'email', `${i} does not have property: email`);
+      assert.property(mme.availTable[i], 'tag', `${i} does not have property: tag`);
+      assert.property(mme.availTable[i], 'availability', `${i} does not have property: availability`);
 
       assert.propertyVal(mme.availTable[i], 'id', expected_availTable[i].id,
-                         `${i} does not have property value: ${expected_availTable[i].id}`)
+                         `${i} does not have property value: ${expected_availTable[i].id}`);
       assert.propertyVal(mme.availTable[i], 'email',expected_availTable[i].email ,
-                         `${i} does not have property value: ${expected_availTable[i].email}`)
+                         `${i} does not have property value: ${expected_availTable[i].email}`);
       assert.propertyVal(mme.availTable[i], 'tag', expected_availTable[i].tag,
-                         `${i} does not have property value: ${expected_availTable[i].tag}`)
+                         `${i} does not have property value: ${expected_availTable[i].tag}`);
       assert.propertyVal(mme.availTable[i], 'availability',expected_availTable[i].availability,
-                         `${i} does not have property value: ${expected_availTable[i].availability}`)
+                         `${i} does not have property value: ${expected_availTable[i].availability}`);
     }
-  });
+  }).timeout(3000); // configure how long maximum it should take
 
   it("MME generateMatch() works properly", async () => {
+    await mme.getAllAvailableAgent();
+    assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent");
     let tag = "Back";
-    let expectedAgent1 = expected_availTable[0].id;
-    let expectedAgent2 = expected_availTable[1].id;
-    // let agent1 = await mme.generateMatch(tag);
-    // let agent2 = await mme.generateMatch(tag);
+    let expectedAgent1and2 = expected_availTable[0].id;
+    let agent1 = await mme.generateMatch(tag);
+    let agent2 = await mme.generateMatch(tag);
 
-    console.log('here', agent1)
-
-    assert.equal(agent1, expectedAgent1, `${tag} agent generated is wrong`);
-    assert.equal(agent1, expectedAgent2, `${tag} agent generated is wrong`);
-    assert.isTrue(true);
-  });
+    // reasoning: generateMatch does NOT alter agentTable at all, only generates match!
+    // that's why doing same request request will result in SAME response!
+    assert.equal(agent1, expectedAgent1and2, `${tag} agent 1 generated is wrong`);
+    assert.equal(agent2, expectedAgent1and2, `${tag} agent 2 generated is wrong`);
+  }).timeout(3000); // configure how long maximum it should take
 
   it("MME addAgent() works properly", () => {
     assert.isTrue(true);
