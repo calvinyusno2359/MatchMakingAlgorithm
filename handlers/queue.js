@@ -1,5 +1,5 @@
 function Queue() {
-    console.log("Queue Initiated.");
+    // console.log("Queue Initiated.");
 
     this.q = [];
     this.verbosity = false;
@@ -20,7 +20,7 @@ function Queue() {
     }
 
     this.length = function() {
-        return this.q.length;
+        return this.q.length || 0;
     }
 
     this.verbose = function(bool) {

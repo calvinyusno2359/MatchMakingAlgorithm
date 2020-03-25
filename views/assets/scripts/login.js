@@ -19,7 +19,14 @@ function login() {
         if (res.status == 200) {
             window.location.pathname = '/admin';
         } else {
-            messageOne.textContent = "Wrong username or password";
+            alert("Wrong username or password")
         }
     })
 }
+
+password.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("login").click();
+    }
+});
