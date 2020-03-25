@@ -2,12 +2,14 @@
 <head>
     <title>Admin Login</title>
     <script type="text/javascript" src="assets/scripts/login.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="assets/styles/login.css">
 </head>
+<div class="login">
+    <h1>Admin Login</h1>
+        <input id="username" type="text" placeholder="Username" required="required" />
+        <input id="password" type="password" placeholder="Password" required="required"/>
+        <button id="login" onclick="login()" type="submit" class="btn btn-primary btn-block btn-large">Login</button>
+</div>
 
-<body>
-    <p>Login</p>     
-        <input type="text" id='username' placeholder="Username">
-        <input type="text" id='password' placeholder="password">
-        <button onclick="login()">Login</button>       
-        <p id="message"></p>
-</body>
+
+
