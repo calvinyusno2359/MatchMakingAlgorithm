@@ -7,6 +7,10 @@ const db = mysql.createPool(config.dblogin);
 
 // Populate agents
 function populateAgents(req, res) {
+    if (req.headers.referer !== "https://localhost:8080/home" && req.headers.referer !== "https://tinder-on-rainbow.herokuapp.com/home") {
+        res.send("Access Denied");
+        return;
+    }
     let sql = 'SELECT * FROM agent';
     db.query(sql, (err, results) => {
         if (err) throw err;
@@ -21,10 +25,13 @@ function addAgent(req, res) {
     let entry = req.body;
     let sql = 'INSERT INTO agent SET ?';
     db.query(sql, entry, (err, result) => {
-        if (err) throw err;
-        console.log(result);
-        console.log("Agent added...");
-        res.json({ status: "success" });
+        if (err) {
+            res.json({ status: "failure" });
+        } else {
+            console.log(result);
+            console.log("Agent added...");
+            res.json({ status: "success" });
+        }
     });
 };
 
@@ -43,10 +50,13 @@ function updateAgent(req, res) {
     let entry = req.body;
     let sql = `UPDATE agent SET email = '${entry.email}', tag = '${entry.tag}' WHERE id = '${entry.id}'`;
     db.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log(result);
-        console.log('Agent updated...');
-        res.json({ status: "success" });
+        if (err) {
+            res.json({ status: "failure" });
+        } else {
+            console.log(result);
+            console.log("Agent updated...");
+            res.json({ status: "success" });
+        }
     });
 };
 
@@ -54,10 +64,13 @@ function updateAgent(req, res) {
 function deleteAgent(req, res) {
     let sql = `DELETE FROM agent WHERE id = '${req.params.id}'`;
     db.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log(result);
-        console.log('Agent deleted...');
-        res.json({ status: "success" });
+        if (err) {
+            res.json({ status: "failure" });
+        } else {
+            console.log(result);
+            console.log("Agent deleted...");
+            res.json({ status: "success" });
+        }
     });
 };
 
@@ -65,7 +78,7 @@ function getAgents(req, res) {
     const tag = req.params.id
     let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = '${tag}'`
     db.query(sql, (err, result) => {
-        if(err) throw err;
+        if (err) throw err;
         console.log(result)
         res.json({ result: result });
         // return result
@@ -76,9 +89,9 @@ function updateAgentAvailability(req, res) {
     const id = req.params.id
     let sql = `UPDATE agent SET availability = 0 WHERE id = '${id}'`
     db.query(sql, (err, result) => {
-        if(err) throw err;
+        if (err) throw err;
         console.log(result)
-        res.json({ result: result});
+        res.json({ result: result });
         // return result
     })
 }
