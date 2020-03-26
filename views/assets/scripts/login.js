@@ -14,14 +14,23 @@ async function authenticate(url = '', data = {}) {
 }
 
 function login() {
+    var response = grecaptcha.getResponse();
+    if (response.length == 0) {
+        document.getElementById('g-recaptcha-error').innerHTML = '<span style="color:red;">This field is required.</span>';
+        return;
+    }
     credentials = { username: username.value, password: password.value }
     authenticate('/admin/login', credentials).then(async(res) => {
         if (res.status == 200) {
             window.location.pathname = '/admin';
         } else {
-            alert("Wrong username or password")
+            alert("Wrong username or password");
         }
-    })
+    });
+}
+
+function verifyCaptcha() {
+    document.getElementById('g-recaptcha-error').innerHTML = '';
 }
 
 password.addEventListener("keyup", function(event) {
