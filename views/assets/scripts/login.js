@@ -10,7 +10,7 @@ async function authenticate(url = '', data = {}) {
         },
         body: JSON.stringify(data)
     });
-    return await response;
+    return response;
 }
 
 function login() {
@@ -20,7 +20,7 @@ function login() {
         return;
     }
     credentials = { username: username.value, password: password.value }
-    authenticate('/admin/login', credentials).then(async(res) => {
+    authenticate('/admin/login', credentials).then((res) => {
         if (res.status == 200) {
             window.location.pathname = '/admin';
         } else {
