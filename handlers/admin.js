@@ -10,7 +10,7 @@ function populateAgents(req, res) {
     // will remove localhost and tinder-on-rainbow eventually
     if (req.headers.referer !== "https://localhost:8080/home" &&
         req.headers.referer !== "https://tinder-on-rainbow.herokuapp.com/home" &&
-        req.headers.referer !== "https://match-made-on-rainbow.herokuapp.com/.herokuapp.com/home") {
+        req.headers.referer !== "https://match-made-on-rainbow.herokuapp.com/home") {
         res.send("Access Denied");
         return;
     }
