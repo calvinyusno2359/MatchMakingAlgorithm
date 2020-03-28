@@ -20,22 +20,18 @@ function checkEmptyInput() {
 
 // add Row
 async function addHtmlTableRow() {
-    // get the table by id
-    // create a new row and cells
-    // get value from input text
-    // set the values into row cell's
     if (!checkEmptyInput()) {
-        var newRow = table.insertRow(table.length),
-            cell1 = newRow.insertCell(0),
-            cell2 = newRow.insertCell(1),
-            cell3 = newRow.insertCell(2),
-            id = document.getElementById("id").value,
+        var id = document.getElementById("id").value,
             email = document.getElementById("email").value,
             tag = "";
 
         tags.forEach(tagname => {
             if (tagname.checked) {
-                tag += tagname.value + "\n";
+                if (tag == "") {
+                    tag += tagname.value;
+                } else {
+                    tag += "," + tagname.value;
+                }
             }
         });
 
@@ -47,16 +43,26 @@ async function addHtmlTableRow() {
             },
             body: JSON.stringify(data)
         };
-        await fetch("/admin/addagent", options);
-        cell1.innerHTML = id;
-        cell2.innerHTML = email;
-        cell3.innerHTML = tag;
-        // call the function to set the event to the new row
-        selectedRowToInput();
+        var res = await fetch("/admin/addagent", options);
+        var json = await res.json();
+        if (json.status == "success") {
+            var newRow = table.insertRow(table.length),
+                cell1 = newRow.insertCell(0),
+                cell2 = newRow.insertCell(1),
+                cell3 = newRow.insertCell(2);
+            cell1.innerHTML = id;
+            cell2.innerHTML = email;
+            cell3.innerHTML = tag;
+            // call the function to set the event to the new row
+            selectedRowToInput();
+            alert("Successfully added entry.");
+        } else {
+            alert("Failed to add entry. Check if there is any duplicate entry.");
+        }
     }
 }
 
-// display selected row data into input text
+// display selected row data into input fields
 function selectedRowToInput() {
 
     for (var i = 1; i < table.rows.length; i++) {
@@ -84,7 +90,11 @@ async function editHtmlTableSelectedRow() {
 
     tags.forEach(tagname => {
         if (tagname.checked) {
-            tag += tagname.value + "\n";
+            if (tag == "") {
+                tag += tagname.value;
+            } else {
+                tag += "," + tagname.value;
+            }
         }
     });
     if (!checkEmptyInput()) {
@@ -96,21 +106,33 @@ async function editHtmlTableSelectedRow() {
             },
             body: JSON.stringify(data)
         };
-        await fetch("/admin/updateagent", options);
-        table.rows[rIndex].cells[0].innerHTML = id;
-        table.rows[rIndex].cells[1].innerHTML = email;
-        table.rows[rIndex].cells[2].innerHTML = tag;
-        clearFields();
+        var res = await fetch("/admin/updateagent", options);
+        var json = await res.json();
+        if (json.status == "success") {
+            table.rows[rIndex].cells[0].innerHTML = id;
+            table.rows[rIndex].cells[1].innerHTML = email;
+            table.rows[rIndex].cells[2].innerHTML = tag;
+            clearFields();
+            alert("Successfully updated entry.");
+        } else {
+            alert("Failed to update entry.");
+        }
     }
 }
 
 async function removeSelectedRow() {
     if (!checkEmptyInput()) {
         id = document.getElementById("id").value;
-        await fetch("/admin/deleteagent/" + id);
-        if (rIndex > 0) table.deleteRow(rIndex);
-        // clear input text
-        clearFields();
+        var res = await fetch("/admin/deleteagent/" + id);
+        var json = await res.json();
+        if (json.status == "success") {
+            if (rIndex > 0) table.deleteRow(rIndex);
+            // clear input text
+            clearFields();
+            alert("Sucessfully deleted entry.");
+        } else {
+            alert("Failed to delete entry.");
+        }
     }
 }
 

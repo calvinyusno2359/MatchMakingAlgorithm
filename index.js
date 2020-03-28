@@ -39,9 +39,7 @@ app.get('/calling', user.calling);
 app.get('/polling', user.polling);
 
 // admin-related routes
-app.get('/home', (req, res) => {
-    res.render('login')
-})
+app.get('/home', (req, res) => res.sendFile(path.join(__dirname + "/views/login.html")));
 app.post('/admin/login', admin.adminLogin);
 app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
@@ -63,3 +61,4 @@ let PORT = process.env.PORT || 8080
 
 // for heroku deployment: ssl certificate for https is managed by heroku's Auto Cert Management
 app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
+

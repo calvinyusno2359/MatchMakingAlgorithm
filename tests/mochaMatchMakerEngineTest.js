@@ -118,7 +118,7 @@ describe('MatchMakerEngine Test: Methods', () => {
     // that's why doing same request request will result in SAME response!
     assert.equal(agent1, expectedAgent1and2, `${tag} agent 1 generated is wrong`);
     assert.equal(agent2, expectedAgent1and2, `${tag} agent 2 generated is wrong`);
-  }).timeout(1500); // configure how long maximum it should take
+  }).timeout(2000); // configure how long maximum it should take
 
   it("MME addAgent() works properly", () => {
     let agent1 = "agent1";
