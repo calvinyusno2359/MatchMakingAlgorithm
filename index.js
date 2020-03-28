@@ -50,14 +50,14 @@ app.get('/admin/updateagentavail/:id', admin.updateAgentAvailability);
 
 // starts rainbowsdk
 // comment this for faster load during development
-rainbowSDK.start();
+// rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
 
 // for localhost deployment: use self-issued ssh found in config.js
-// https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () => {
-//     console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
-// });
+https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () => {
+    console.log(`App listening on port ${PORT}! Go to https://localhost:${PORT}/`);
+});
 
 // for heroku deployment: ssl certificate for https is managed by heroku's Auto Cert Management
-app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
+// app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
