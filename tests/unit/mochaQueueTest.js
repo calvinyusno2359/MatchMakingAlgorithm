@@ -1,6 +1,6 @@
 // unit test for Queue object
 const assert = require('chai').assert;
-const queue = require("../handlers/queue");
+const queue = require("../../handlers/queue");
 
 describe('Queue Test: Attributes', () => {
   let q;
