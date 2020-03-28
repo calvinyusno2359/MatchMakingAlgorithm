@@ -2,4 +2,3 @@ node_modules
 .env
 
 debug.log
-/tests/system/debug.log
