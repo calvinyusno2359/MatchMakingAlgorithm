@@ -1,6 +1,7 @@
 const {Builder, By, until} = require("selenium-webdriver");
 require("chromedriver");
 const fs = require("fs");
+let path = require("path");
 
 async function sleep(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
@@ -86,6 +87,7 @@ let driver = new Builder().forBrowser("chrome").build();
 
 testMain("http://match-made-on-rainbow.herokuapp.com/");
 
-fs.readFile("lines.txt", (err, data) => {
+let file = path.join(__dirname + '/lines.txt')
+fs.readFile(file, (err, data) => {
 	lines = data.toString().split("\n");
 });

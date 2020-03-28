@@ -7,7 +7,10 @@ const db = mysql.createPool(config.dblogin);
 
 // Populate agents
 function populateAgents(req, res) {
-    if (req.headers.referer !== "https://localhost:8080/home" && req.headers.referer !== "https://tinder-on-rainbow.herokuapp.com/home") {
+    // will remove localhost and tinder-on-rainbow eventually
+    if (req.headers.referer !== "https://localhost:8080/home" &&
+        req.headers.referer !== "https://tinder-on-rainbow.herokuapp.com/home" &&
+        req.headers.referer !== "https://match-made-on-rainbow.herokuapp.com/home") {
         res.send("Access Denied");
         return;
     }
@@ -26,24 +29,14 @@ function addAgent(req, res) {
     let sql = 'INSERT INTO agent SET ?';
     db.query(sql, entry, (err, result) => {
         if (err) {
-            res.json({ status: "failure" });
+            res.status(400).send(); // Bad request
         } else {
             console.log(result);
             console.log("Agent added...");
-            res.json({ status: "success" });
+            res.status(200).send();
         }
     });
 };
-
-// Select single agent
-// function selectAgent(req, res) {
-//     let sql = `SELECT * FROM agent WHERE id = '${req.params.id}'`;
-//     db.query(sql, (err, result) => {
-//         if (err) throw err;
-//         console.log(result);
-//         res.send('Agent fetched...');
-//     });
-// };
 
 // Update agent, including skill tag
 function updateAgent(req, res) {
@@ -51,11 +44,13 @@ function updateAgent(req, res) {
     let sql = `UPDATE agent SET email = '${entry.email}', tag = '${entry.tag}' WHERE id = '${entry.id}'`;
     db.query(sql, (err, result) => {
         if (err) {
-            res.json({ status: "failure" });
+            res.status(400).send(); // Bad request
+        } else if (result.affectedRows == 0) {
+            res.status(304).send(); // Not modified
         } else {
             console.log(result);
             console.log("Agent updated...");
-            res.json({ status: "success" });
+            res.status(200).send();
         }
     });
 };
@@ -65,11 +60,13 @@ function deleteAgent(req, res) {
     let sql = `DELETE FROM agent WHERE id = '${req.params.id}'`;
     db.query(sql, (err, result) => {
         if (err) {
-            res.json({ status: "failure" });
+            res.status(400).send(); // Bad request
+        } else if (result.affectedRows == 0) {
+            res.status(304).send(); // Not modified
         } else {
             console.log(result);
             console.log("Agent deleted...");
-            res.json({ status: "success" });
+            res.status(200).send();
         }
     });
 };
@@ -81,7 +78,6 @@ function getAgents(req, res) {
         if (err) throw err;
         console.log(result)
         res.json({ result: result });
-        // return result
     })
 }
 
@@ -92,21 +88,20 @@ function updateAgentAvailability(req, res) {
         if (err) throw err;
         console.log(result)
         res.json({ result: result });
-        // return result
     })
 }
 
 function adminLogin(req, res) {
     let credentials = req.body;
-    console.log(credentials)
+    console.log(credentials);
     let sql = `SELECT * FROM admin WHERE username = '${credentials.username}' and password = '${credentials.password}'`;
     db.query(sql, (err, result) => {
-        data = JSON.stringify(result)
-        parseData = (JSON.parse(data))[0]
+        data = JSON.stringify(result);
+        parseData = (JSON.parse(data))[0];
         if (JSON.stringify(parseData) == JSON.stringify(credentials)) {
-            res.status(200).send()
+            res.status(200).send();
         } else {
-            res.status(404).send()
+            res.status(550).send(); // Permission denied
         }
     })
 }
@@ -114,7 +109,6 @@ function adminLogin(req, res) {
 // exports
 exports.addAgent = addAgent;
 exports.populateAgents = populateAgents;
-// exports.selectAgent = selectAgent;
 exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
 exports.getAgents = getAgents;
