@@ -33,12 +33,33 @@ async function testTag(tag) {
 async function testExit() {
 	let exit = await driver.findElement(By.css(".end_button"));
 	await exit.click();
-	await sleep(1000);
-	let alert = await driver.switchTo().alert();
-	await alert.accept();
-	await sleep(1000);
-	alert = await driver.switchTo().alert();
-	await alert.dismiss();
+    await sleep(1000);
+    
+	// let alert = await driver.switchTo().alert();
+	// await alert.accept();
+	// await sleep(1000);
+	// alert = await driver.switchTo().alert();
+    // await alert.dismiss();
+    
+
+    //temporarily replaced with testFull portion coz got 3 prompts now 
+    await driver.wait( until.alertIsPresent(),20000);
+    await driver.sleep(3000);
+
+    await driver.switchTo().alert().accept();
+    await driver.sleep(3000);
+
+    await driver.wait( until.alertIsPresent(),20000);
+    await driver.sleep(3000);
+
+    await driver.switchTo().alert().accept();
+    await driver.sleep(5000);
+
+    await driver.wait( until.alertIsPresent(),20000);
+    await driver.sleep(3000);
+
+    await driver.switchTo().alert().accept();
+    await driver.sleep(5000);
 }
 
 // Access chat page directly without choosing a tag.
