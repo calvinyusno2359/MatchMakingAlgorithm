@@ -27,7 +27,7 @@ function populateAgents(req, res) {
 function addAgent(req, res) {
     let entry = req.body;
     let sql = 'INSERT INTO agent SET ?';
-    db.query(sql, entry, (err, result) => {
+    db.query(sql, [entry], (err, result) => {
         if (err) {
             res.status(400).send(); // Bad request
         } else {
@@ -41,7 +41,7 @@ function addAgent(req, res) {
 // Update agent, including skill tag
 function updateAgent(req, res) {
     let entry = req.body;
-    let sql = `UPDATE agent SET email = '${entry.email}', tag = '${entry.tag}' WHERE id = '${entry.id}'`;
+    let sql = `UPDATE agent SET email = ${mysql.escape(entry.email)}, tag = ${mysql.escape(entry.tag)} WHERE id = ${mysql.escape(entry.id)}`;
     db.query(sql, (err, result) => {
         if (err) {
             res.status(400).send(); // Bad request
@@ -57,7 +57,7 @@ function updateAgent(req, res) {
 
 // Delete agent
 function deleteAgent(req, res) {
-    let sql = `DELETE FROM agent WHERE id = '${req.params.id}'`;
+    let sql = `DELETE FROM agent WHERE id = ${mysql.escape(req.params.id)}`;
     db.query(sql, (err, result) => {
         if (err) {
             res.status(400).send(); // Bad request
@@ -73,7 +73,7 @@ function deleteAgent(req, res) {
 
 function getAgents(req, res) {
     const tag = req.params.id
-    let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = '${tag}'`
+    let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = ${mysql.escape(tag)}`
     db.query(sql, (err, result) => {
         if (err) throw err;
         console.log(result)
@@ -83,7 +83,7 @@ function getAgents(req, res) {
 
 function updateAgentAvailability(req, res) {
     const id = req.params.id
-    let sql = `UPDATE agent SET availability = 0 WHERE id = '${id}'`
+    let sql = `UPDATE agent SET availability = 0 WHERE id = ${mysql.escape(id)}`
     db.query(sql, (err, result) => {
         if (err) throw err;
         console.log(result)
@@ -93,15 +93,13 @@ function updateAgentAvailability(req, res) {
 
 function adminLogin(req, res) {
     let credentials = req.body;
-    console.log(credentials);
-    let sql = `SELECT * FROM admin WHERE username = '${credentials.username}' and password = '${credentials.password}'`;
+    let sql = `SELECT * FROM admin WHERE username = ${mysql.escape(credentials.username)} and password = ${mysql.escape(credentials.password)}`;
     db.query(sql, (err, result) => {
-        data = JSON.stringify(result);
-        parseData = (JSON.parse(data))[0];
-        if (JSON.stringify(parseData) == JSON.stringify(credentials)) {
-            res.status(200).send();
-        } else {
+        if (err) throw err;
+        if (result.length == 0) {
             res.status(550).send(); // Permission denied
+        } else {
+            res.status(200).send();
         }
     })
 }
