@@ -1,9 +1,10 @@
 // modules
-const mysql = require('mysql');
+let mysql = require('mysql');
 let config = require("../config");
+let matchmaker = require("./rainbow").matchmaker;
 
 // Create connection
-const db = mysql.createPool(config.dblogin);
+let db = mysql.createPool(config.dblogin);
 
 // Populate agents
 function populateAgents(req, res) {
@@ -15,11 +16,10 @@ function populateAgents(req, res) {
         return;
     }
     let sql = 'SELECT * FROM agent';
-    db.query(sql, (err, results) => {
+    db.query(sql, (err, result) => {
         if (err) throw err;
-        console.log(results);
         console.log('Agents fetched...');
-        res.render('db', { data: results });
+        res.render('db', { data: result });
     });
 };
 
@@ -27,11 +27,12 @@ function populateAgents(req, res) {
 function addAgent(req, res) {
     let entry = req.body;
     let sql = 'INSERT INTO agent SET ?';
-    db.query(sql, [entry], (err, result) => {
+    db.query(sql, [entry], async(err, result) => {
         if (err) {
             res.status(400).send(); // Bad request
         } else {
-            console.log(result);
+            await matchmaker.getAllAvailableAgent();
+            console.log(matchmaker);
             console.log("Agent added...");
             res.status(200).send();
         }
@@ -48,7 +49,6 @@ function updateAgent(req, res) {
         } else if (result.affectedRows == 0) {
             res.status(304).send(); // Not modified
         } else {
-            console.log(result);
             console.log("Agent updated...");
             res.status(200).send();
         }
@@ -58,38 +58,38 @@ function updateAgent(req, res) {
 // Delete agent
 function deleteAgent(req, res) {
     let sql = `DELETE FROM agent WHERE id = ${mysql.escape(req.params.id)}`;
-    db.query(sql, (err, result) => {
+    db.query(sql, async(err, result) => {
         if (err) {
             res.status(400).send(); // Bad request
         } else if (result.affectedRows == 0) {
             res.status(304).send(); // Not modified
         } else {
-            console.log(result);
+            await matchmaker.getAllAvailableAgent();
+            console.log(matchmaker);
             console.log("Agent deleted...");
             res.status(200).send();
         }
     });
 };
 
-function getAgents(req, res) {
-    const tag = req.params.id
-    let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = ${mysql.escape(tag)}`
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log(result)
-        res.json({ result: result });
-    })
-}
 
-function updateAgentAvailability(req, res) {
-    const id = req.params.id
-    let sql = `UPDATE agent SET availability = 0 WHERE id = ${mysql.escape(id)}`
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log(result)
-        res.json({ result: result });
-    })
-}
+// function getAgents(req, res) {
+//     const tag = req.params.id
+//     let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = ${mysql.escape(tag)}`
+//     db.query(sql, (err, result) => {
+//         if (err) throw err;
+//         res.json({ result: result });
+//     })
+// }
+
+// function updateAgentAvailability(req, res) {
+//     const id = req.params.id
+//     let sql = `UPDATE agent SET availability = 0 WHERE id = ${mysql.escape(id)}`
+//     db.query(sql, (err, result) => {
+//         if (err) throw err;
+//         res.json({ result: result });
+//     })
+// }
 
 function adminLogin(req, res) {
     let credentials = req.body;
@@ -105,10 +105,10 @@ function adminLogin(req, res) {
 }
 
 // exports
-exports.addAgent = addAgent;
 exports.populateAgents = populateAgents;
+exports.addAgent = addAgent;
 exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
-exports.getAgents = getAgents;
-exports.updateAgentAvailability = updateAgentAvailability;
+// exports.getAgents = getAgents;
+// exports.updateAgentAvailability = updateAgentAvailability;
 exports.adminLogin = adminLogin;
