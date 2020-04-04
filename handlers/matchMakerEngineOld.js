@@ -1,147 +1,176 @@
-let {PythonShell} = require('python-shell');
-let path = require("path");
-let config = require("../config");
+// modules
+let mysql = require('mysql');
+let dotenv = require('dotenv').config({ path: '../.env' })
 
-// define a new array method
-Object.defineProperty(Array.prototype, 'prioritySort', {
-    enumerable: false,
-    value: function(agentIds) {
-        // get array of sorted index whose value is biggest to lowest
-        let priority = [];
-        let sortedScores = this.slice().sort(function(a, b){return b-a});
-        for (var i=0; i<sortedScores.length; i++) {
-            let index = this.indexOf(sortedScores[i]);
-            priority.push(agentIds[index]);
-        }
-        return priority;
-    }
-})
+let queue = require('./queue');
+
+// somehow the line below causes ENOENT ERROR, hence cannot get config.dblogin => path issue?
+// let config = require("../config");
 
 function MatchMaker() {
-    console.log("MatchMaker loaded.");
+  // console.log("MatchMaker loaded.");
 
-    this.userTable = {};
-    this.agentTable = {};
+  this.db = mysql.createPool({
+    connectionLimit: 10,
+    host: process.env.AGENT_DB_HOST,
+    user: process.env.AGENT_DB_USERNAME,
+    password: process.env.AGENT_DB_PASSWORD,
+    database: process.env.AGENT_DB_DATABASE
+  });
 
-    this.matchUser = async function(userId) {
-        // matches both agent and user together if user is not matched already, returns agentId
-        // done by writing a value to the key in userAgent and agentTable
+  this.availTable = [];     // populate all available agent and their info
+  this.userTable = {};      // dictionary of {userId: agentId}
+  this.agentTable = {};     // dictionary of {agentId: userIdQ}
+  this.verbosity = false;
 
-        if (this.userTable[userId] != null) {
-            let agentId = this.userTable[userId];
-            let message = `This user has already been matched!`;
-            console.log(message);
-            return agentId;
+  this.matchUser = async function(userId, tag) {
+    // matches both agent and user together if user is not matched already, returns agentId or "WAIT"
+    // if user is matched alr, then return either wait signal (if not topQ) or the agentId (if topQ)
+    // done by writing a value to the key in userAgent and agentTable
 
-        // go through priority list and try to match user and agent
-        } else {
-            let agentPriority = await this.generateMatch(userId);
+    let matchedAgent = this.userTable[userId];
 
-            for (var i=0; i<agentPriority.length; i++) {
-                let agentId = agentPriority[i];
-                if (this.agentTable[agentId] == null) {
-                    // double record on both tables
-                    this.userTable[userId] = agentId;
-                    this.agentTable[agentId] = userId;
+    if (matchedAgent != null) { // user has been matched
+      let message = `This ${userId} has already been matched!`;
+      if (this.verbosity) console.log(message);
 
-                    let message = `Success! A matching Agent: ${agentId} has been found for User: ${userId}.`;
-                    console.log(message);
-                    return agentId;
-                }
-            }
-            let message = `Failure! A match cannot be found, it seems all agents are busy.`;
-            console.log(message);
-            return null;
-        }
-    };
+      // check if userId is topQ or not and respond accordingly
+      if (this.agentTable[matchedAgent].peek() == userId) return matchedAgent;
+      else return "WAIT";
 
-    this.disconnectUser = async function(userId) {
-        // disconnects user and agent
-        // done by writing null to agentTable and deleting user from userTable
+    } else { // user is new
+      let agentId = await this.generateMatch(tag);
+      let message = `This ${userId} is matched with ${agentId}!`;
 
-        let agentId = this.userTable[userId];
-        if (this.agentTable[agentId] == userId) {
-            delete this.userTable[userId];
-            this.agentTable[agentId] = null;
+      // write to agentTable and userTable & update db
+      this.agentTable[agentId].enqueue(userId);
+      this.userTable[userId] = agentId;
+      if (this.verbosity) {
+        console.log(message);
+        console.log(this.agentTable);
+        console.log(this.userTable);
+      }
 
-            let message = `Success! User: ${userId} has been disconnected from ${agentId}.`
-            console.log(message);
-            return message;
-        } else {
-            let message = `Failure! User: ${userId} cannot be found!`
-            console.log(message);
-            return message;
-        }
+      // update db
 
+      // if topQ, returns agentId, else WAIT
+      if (this.agentTable[agentId].peek() == userId) return agentId
+      else return "WAIT"
     }
+  };
 
-    this.matchAgent = function(agentId) {
-        if (this.agentTable[agentId] != null) {
-            let userId = this.agentTable[agentId];
-            let message = `This Agent: ${agentId} has found a match!`;
-            console.log(message);
-            return userId;
-        } else {
-            let message = `Failure! This Agent: ${agentId} is not connected to anyone.`;
-            console.log(message);
-            return null;
+  this.disconnectUser = async function(userId) {
+    // disconnects user and agent
+    // done by writing null to agentTable and deleting user from userTable
+
+    let agentId = this.userTable[userId] || null;
+    if (agentId == null) {
+      let message = `Failure! User: ${userId} is not currently connected.`
+      if (this.verbosity) console.log(message);
+      return message;
+
+    } else if (this.agentTable[agentId].peek() == userId) {
+      delete this.userTable[userId];
+      this.agentTable[agentId].dequeue();
+
+      let message = `Success! User: ${userId} has been disconnected from ${agentId}.`
+      if (this.verbosity) console.log(message);
+      return message;
+
+    } else {
+      let message = `Failure! User: ${userId} is a phantom user, ERROR in matchUser!`
+      if (this.verbosity) console.log(message);
+      return message;
+    }
+  };
+
+  this.matchAgent = function(agentId) {
+    return null;
+  };
+
+  this.addAgent = function(agentId) {
+    // adds agent if not inside already
+    if (agentId in this.agentTable) {
+      let message = `Failure! Agent: ${agentId} was already inside!`;
+      if (this.verbosity) console.log(message);
+    } else {
+      this.agentTable[agentId] = new queue.Queue();
+      let message = `Success! Agent: ${agentId} has been added to agentTable!`;
+      if (this.verbosity) console.log(message);
+    }
+    return this
+  };
+
+  this.generateMatch = function(tag) {
+    // get all agents => populate availTable and agentTable
+    return new Promise((resolve, rejcet) => {
+      let sql = `SELECT * FROM agent WHERE availability = 1 AND FIND_IN_SET('${tag}', tag)`;
+      let agents = this.db.query(sql, (err, agents) => {
+        if (err) reject(err);
+
+        // get candidates that is available and has tag
+        let candidates = JSON.parse(JSON.stringify(agents));
+        let matchedAgent = "5e7875a7ae2042244e4317d1"; // default GP
+        let maxQ = 99999;
+        let lowestQIndex;
+
+        // check which one has minimum queue => is the matchedAgent
+        for (var i=0; i<candidates.length; i++) {
+          let q = this.agentTable[candidates[i].id];
+          if (q.length() == 0) {
+            lowestQIndex = i;
+            break;
+          } else if (q.length() < maxQ) {
+            maxQ = q.length();
+            lowestQIndex = i;
+            matchedAgent = candidates[i].id;
+          } else continue
+        }
+        matchedAgent = candidates[lowestQIndex].id;
+
+        if (this.verbosity) {
+          console.log("candidates:", candidates);
+          console.log("matchedAgent:", matchedAgent);
         }
 
-    }
+        resolve(matchedAgent);
+      });
+    });
+  };
 
-    this.addAgent = function(agentId) {
-        // adds agent if not inside already
-        if (agentId in this.agentTable) {
-            let message = `Failure! Agent: ${agentId} was already inside!`;
-            return message;
-        } else {
-            this.agentTable[agentId] = null;
-            let message = `Success! Agent: ${agentId} has been added to agentTable!`;
-            return message;
+  this.getAllAvailableAgent = function() {
+    // used only for initial startup
+    // get all available agent => populate availTable and agentTable
+    return new Promise((resolve, rejcet) => {
+      let sql = 'SELECT * FROM agent WHERE `availability` = 1 ';
+      let agents = this.db.query(sql, (err, agents) => {
+        if (err) reject(err);
+
+        // populate availTable
+        this.availTable = JSON.parse(JSON.stringify(agents));
+
+        // then register every avail agent to agentTable
+        for (var i=0; i<this.availTable.length; i++) this.addAgent(this.availTable[i].id)
+
+        if (this.verbosity) {
+          console.log("availTable:", this.availTable);
+          console.log("agentTable:", this.agentTable);
         }
-    }
 
-    this.generateMatch = function(userId) {
-        return new Promise((resolve, reject) => {
-            let script = "algorithm/cosine.py";
-            let pyshell = new PythonShell(path.join(__dirname, script), config.options);
+        resolve(this);
+      });
+    })
+  };
 
-            let agentIds = Object.keys(this.agentTable);
-            let agentPriority;
+  this.verbose = function(bool) {
+    if (bool === true) this.verbosity = true;
+    return this;
+  };
 
-            let data = {
-                "agent_ids" : agentIds,
-                "tags" : [1, 1, 1]          // input tags here
-            };
-
-            pyshell.send(JSON.stringify(data));
-
-            pyshell.on('message', function (message) {
-                let agentScores = JSON.parse(message);
-                agentPriority = agentScores.prioritySort(agentIds);
-                console.log(agentPriority);
-
-            });
-
-            pyshell.on('stderr', function (stderr) {
-                console.log(stderr);
-            });
-
-            pyshell.end(function (err, code, signal) {
-                if (err) {
-                    let message = `Failure! A match cannot be found, returning null.`;
-                    console.log(message);
-                    reject(err)
-                };
-                console.log('The exit code was: ' + code);
-                console.log('The exit signal was: ' + signal);
-                console.log(`${script} finished`);
-                message = `Success! Matches has been generated for User: ${userId}.`;
-                console.log(message);
-                resolve(agentPriority);
-            });
-        });
-    }
+  this.option = function(dblogin) {
+    this.db = this.db = mysql.createPool(dblogin);
+    return this;
+  }
 };
 
 // exports

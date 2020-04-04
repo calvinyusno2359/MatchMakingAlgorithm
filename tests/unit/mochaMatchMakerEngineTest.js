@@ -1,7 +1,6 @@
 // unit test for Queue object
-const mysql = require('mysql');
 const assert = require('chai').assert;
-const matchmaker = require("../../handlers/matchMakerEngine");
+const matchmaker = require("../handlers/matchMakerEngineOld");
 
 describe('MatchMakerEngine Test: Attributes', () => {
   let mme;
@@ -13,8 +12,7 @@ describe('MatchMakerEngine Test: Attributes', () => {
       password: "b664b3dc",
       database: "heroku_1b94bebf9d56dd9"
     }
-    let db = mysql.createPool(option);
-    mme = new matchmaker.MatchMaker();
+    mme = new matchmaker.MatchMaker().option(option);
     done();
   });
 
@@ -33,9 +31,9 @@ describe('MatchMakerEngine Test: Attributes', () => {
     assert.isEmpty(mme.agentTable, "agentTable is not empty");
   });
 
-  // it("MME must have db connection (Object)", () => {
-  //   assert.isObject(mme.db, "db connection is not established");
-  // });
+  it("MME must have db connection (Object)", () => {
+    assert.isObject(mme.db, "db connection is not established");
+  });
 });
 
 describe('MatchMakerEngine Test: Methods', () => {
@@ -50,7 +48,7 @@ describe('MatchMakerEngine Test: Methods', () => {
       password: "b664b3dc",
       database: "heroku_1b94bebf9d56dd9"
     }
-    // mme = new matchmaker.MatchMaker().option(option);
+    mme = new matchmaker.MatchMaker().option(option);
 
     // Assumptions for test db:
     // 1. DB content looks like this:
@@ -85,8 +83,6 @@ describe('MatchMakerEngine Test: Methods', () => {
       }
     ];
 
-    let db = mysql.createPool(option);
-    mme = new matchmaker.MatchMaker();
     mme = await mme.getAllAvailableAgent();
   });
 
@@ -122,7 +118,7 @@ describe('MatchMakerEngine Test: Methods', () => {
     // that's why doing same request request will result in SAME response!
     assert.equal(agent1, expectedAgent1and2, `${tag} agent 1 generated is wrong`);
     assert.equal(agent2, expectedAgent1and2, `${tag} agent 2 generated is wrong`);
-  }).timeout(2000); // configure how long maximum it should take
+  }).timeout(1500); // configure how long maximum it should take
 
   it("MME addAgent() works properly", () => {
     let agent1 = "agent1";
