@@ -12,17 +12,22 @@ function fulfill(req, res) {
 }
 
 function getQueueNumber(req, res) {
-		let rgx = new RegExp(`@number@`,"g");
-		let userId = req.body.queryResult.parameters.userId
+	let rgx = new RegExp(`@number@`,"g");
+	let userId = req.body.queryResult.parameters.userId
 
-		let queueNumber = matchmaker.search(userId)[1]; // 0 is agentId
-		console.log("HEREEEEEEEEEEEEEEEE:", queueNumber)
-		if (queueNumber === null) queueNumber = "null, please try refreshing"
+	let queueNumber = matchmaker.search(userId)[1]; // 0 is agentId
+	if (queueNumber === null) queueNumber = "null, please try refreshing"
 
-		req.body.queryResult.fulfillmentText = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, queueNumber))
-		req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, queueNumber))
-		res.send(req.body.queryResult);
+	req = replace(rgx, queueNumber)
+
+	res.send(req.body.queryResult);
 }
 
+
+function replace(req, rgx, val) {
+	req.body.queryResult.fulfillmentText = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val))
+	req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val))
+	return req
+}
 // exports
 exports.fulfill = fulfill;
