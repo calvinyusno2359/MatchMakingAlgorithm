@@ -18,16 +18,16 @@ function getQueueNumber(req, res) {
 	let queueNumber = matchmaker.search(userId)[1]; // 0 is agentId
 	if (queueNumber === null) queueNumber = "null, please try refreshing"
 
-	req = replace(rgx, queueNumber)
+	req = replace(req, rgx, queueNumber)
 
 	res.send(req.body.queryResult);
 }
 
 
 function replace(req, rgx, val) {
-	req.body.queryResult.fulfillmentText = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val))
-	req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val))
-	return req
+	req.body.queryResult.fulfillmentText = req.body.queryResult.fulfillmentText.replace(rgx, val);
+	req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val))l
+	return reql
 }
 // exports
 exports.fulfill = fulfill;
