@@ -240,6 +240,7 @@ describe('MatchMakerEngine Test: Methods', () => {
     let user1 = "user1";
     let user2 = "user2";
     let user3 = "user3";
+    let user4 = "user4";
 
     await mme.matchUser(user1, tag);
     await mme.matchUser(user2, tag);
@@ -248,6 +249,7 @@ describe('MatchMakerEngine Test: Methods', () => {
     res1 = mme.search(user1);
     res2 = mme.search(user2);
     res3 = mme.search(user3);
+    res4 = mme.search(user4);
 
     agent1 = res1[0];
     agent2 = res2[0];
@@ -259,9 +261,13 @@ describe('MatchMakerEngine Test: Methods', () => {
     assert.equal(agent1, '5e422880e9f1273063695253', "search agent 1 is incorrect");
     assert.equal(agent2, '5e43c49ce9f127306369575f', "search agent 2 is incorrect");
     assert.equal(agent3, '5e422880e9f1273063695253', "search agent 3 is incorrect");
-    assert.equal(queue1, 1, "search queue 1 is incorrect");
-    assert.equal(queue2, 1, "search queue 1 is incorrect");
-    assert.equal(queue3, 2, "search queue 1 is incorrect");
+    assert.equal(queue1, 0, "search queue 1 is incorrect");
+    assert.equal(queue2, 0, "search queue 1 is incorrect");
+    assert.equal(queue3, 1, "search queue 1 is incorrect");
+
+    assert.isNull(res4[0], "search agent is not null");
+    assert.isNull(res4[1], "search queue is not null");
+
   }).timeout(2000);
 
 });

@@ -59,8 +59,8 @@ describe('Queue Test: Methods', () => {
   })
 
   it("Queue search() works properly", () => {
-  	assert.equal(q.search("1"), "1", "Queue search() does not return 1");
-  	assert.equal(q.search("4"), "4", "Queue search() does not return 1");
+  	assert.equal(q.search("1"), 0, "Queue search() does not return 0");
+  	assert.equal(q.search("4"), 3, "Queue search() does not return 3");
   })
 });
 
@@ -88,5 +88,11 @@ describe('Queue Test: Scenarios', () => {
     let isZero = q.length();
     assert.equal(isZero, 0, "Queue array length is not 0");
   });
+
+  it("Queue search() empty queue", () => {
+  	assert.equal(q.q.length, 0, "Queue array length is not 0");
+  	let isNull = q.search("1");
+  	assert.isNull(isNull, "Queue search() empty does not return null");
+  })
 
 });

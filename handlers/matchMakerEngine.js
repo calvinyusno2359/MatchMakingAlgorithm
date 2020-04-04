@@ -15,7 +15,7 @@ function MatchMaker() {
         // if user is matched alr, then return either wait signal (if not topQ) or the agentId (if topQ)
         // done by writing a value to the key in userAgent and agentTable
 
-        let matchedAgent = this.userTable[userId];
+        let matchedAgent = this.userTable[userId] || null;
 
         if (matchedAgent != null) { // user has been matched
             let message = `This ${userId} has already been matched!`;
@@ -111,7 +111,7 @@ function MatchMaker() {
 
     this.search = function(userId) {
     		// returns agentId and queueNumber of this userId
-    		let matchedAgent = this.userTable[userId];
+    		let matchedAgent = this.userTable[userId] || null;
     		if (matchedAgent === null) return [null, null];
     		else {
     				let queue = this.agentTable[matchedAgent];

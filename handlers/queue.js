@@ -34,7 +34,7 @@ function Queue() {
 
     this.search = function(id) {
     		for (var i=0; i<this.q.length; i++) {
-    			if (this.q[i] === id) return i+1
+    			if (this.q[i] === id) return i
     		}
     		return null;
     }
