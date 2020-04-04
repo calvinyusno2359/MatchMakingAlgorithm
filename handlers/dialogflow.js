@@ -4,6 +4,10 @@ function fulfill(req, res) {
 		"text": ["from server"]
 	}
 	if (req.body.queryResult.action === 'queue') {
+		req.body.queryResult.fulfillmentText = "from server 1";
+		res.send(req.body.queryResult);
+	}
+	else if (req.body.queryResult.action === 'queue') {
 		let val = 1;
     let rgx = new RegExp(`@number@`,"g");
 
