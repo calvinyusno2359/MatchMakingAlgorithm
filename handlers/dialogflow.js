@@ -39,7 +39,7 @@ function getTag(req, res) {
 	let userId = req.body.queryResult.parameters.userId
 
 	let agentId = matchmaker.search(userId)[0];
-	let tag = matchmaker.availTable[agentId];
+	let tag = matchmaker.availTable[agentId].tag;
 	req.body.queryResult.parameters['tag'] = tag;
 	if (tag === null) tag = "null, you are not currently matched to any agent.";
 
