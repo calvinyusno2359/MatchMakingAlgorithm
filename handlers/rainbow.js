@@ -30,5 +30,9 @@ rainbowSDK.events.on('rainbow_onready', async(req, res) => {
     console.log("Rainbow SDK is ready.");
 });
 
+rainbowSDK.events.on('rainbow_oncontactpresencechanged', async(contact) => {
+		console.log(contact);
+}
+
 exports.rainbowSDK = rainbowSDK;
 exports.matchmaker = matchmaker;

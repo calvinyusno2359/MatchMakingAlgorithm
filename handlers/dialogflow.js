@@ -35,25 +35,6 @@ function getAgentId(req, res) {
 	res.send(req.body.queryResult);
 }
 
-function getTag(req, res) {
-	let rgx = new RegExp(`@tag@`,"g");
-	let userId = req.body.queryResult.parameters.userId
-
-	let agentId = matchmaker.userTable[userId];
-
-	let tag = "null, you are not currently matched to any agent.";
-	for (var i=0; i<matchmaker.availTable.length; i++) {
-		if (matchmaker.availTable[i].id === agentId) {
-			tag = matchmaker.availTable[i].tag;
-			break
-		}
-	}
-
-	req.body.queryResult.parameters['tag'] = tag;
-
-	req = replace(req, rgx, tag);
-	res.send(req.body.queryResult);
-}
 
 function replace(req, rgx, val) {
 	req.body.queryResult.fulfillmentText = req.body.queryResult.fulfillmentText.replace(rgx, val);
