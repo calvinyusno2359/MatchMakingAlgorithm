@@ -233,7 +233,36 @@ describe('MatchMakerEngine Test: Methods', () => {
     let agent2Queue = mme.agentTable[agent2].q;
     assert.isEmpty(agent2Queue, "agent 2 queue is not empty");
 
-  }).timeout(2000);;
+  }).timeout(2000);
+
+  it("MME search() works properly", async () => {
+    let tag = "Back";
+    let user1 = "user1";
+    let user2 = "user2";
+    let user3 = "user3";
+
+    await mme.matchUser(user1, tag);
+    await mme.matchUser(user2, tag);
+    await mme.matchUser(user3, tag);
+
+    res1 = mme.search(user1);
+    res2 = mme.search(user2);
+    res3 = mme.search(user3);
+
+    agent1 = res1[0];
+    agent2 = res2[0];
+    agent3 = res3[0];
+    queue1 = res1[1];
+    queue2 = res2[1];
+    queue3 = res3[1];
+
+    assert.equal(agent1, '5e422880e9f1273063695253', "search agent 1 is incorrect");
+    assert.equal(agent2, '5e43c49ce9f127306369575f', "search agent 2 is incorrect");
+    assert.equal(agent3, '5e422880e9f1273063695253', "search agent 3 is incorrect");
+    assert.equal(queue1, 1, "search queue 1 is incorrect");
+    assert.equal(queue2, 1, "search queue 1 is incorrect");
+    assert.equal(queue3, 2, "search queue 1 is incorrect");
+  }).timeout(2000);
 
 });
 

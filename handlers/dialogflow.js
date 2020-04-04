@@ -16,7 +16,7 @@ function getQueueNumber(req, res) {
 		let userId = req.body.queryResult.parameters.userId
 
 		let queueNumber = matchmaker.search(userId)[1]; // 0 is agentId
-
+		console.log("HEREEEEEEEEEEEEEEEE:", queueNumber)
 		if (queueNumber === null) queueNumber = "null, please try refreshing"
 
 		req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, queueNumber))
