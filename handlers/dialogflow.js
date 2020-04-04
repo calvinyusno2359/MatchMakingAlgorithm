@@ -15,7 +15,7 @@ function getQueueNumber(req, res) {
 		let rgx = new RegExp(`@number@`,"g");
 		let userId = req.body.queryResult.parameters.userId
 
-		let agentId, queueNumber = await matchmaker.search(userId);
+		let queueNumber = await matchmaker.search(userId)[1]; // 0 is agentId
 
 		if (queueNumber === null) queueNumber = "null, please try refreshing"
 

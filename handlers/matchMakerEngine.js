@@ -108,6 +108,23 @@ function MatchMaker() {
         if (bool === true) this.verbosity = true;
         return this;
     };
+
+    this.search = function(userId) {
+    		// returns agentId and queueNumber of this userId
+    		let matchedAgent = this.userTable[userId];
+    		if (matchedAgent === null) return [null, null];
+    		else {
+    				let queue = this.agentTable[matchedAgent];
+    				for (var i=0; i<queue.length; i++) {
+    						if (queue[i] === userId) {
+    							queueNumber = i;
+    							break;
+    						}
+    						else return [null, null];
+    				}
+    				return [matchedAgent, queueNumber];
+    		}
+    }
 };
 
 // exports
