@@ -39,17 +39,14 @@ function getTag(req, res) {
 	let rgx = new RegExp(`@tag@`,"g");
 	let userId = req.body.queryResult.parameters.userId
 
-	let agentId = matchmaker.search(userId)[0] || null;
+	let agentId = matchmaker.userTable[userId];
 
-	let tag;
-	if (agentId != null) {
-		for (var i=0; i<matchmaker.availTable.length; i++) {
-			if (matchmaker.availTable[i].id === agentId) {
-				tag = matchmaker.availTable[i].tag;
-				break
-			}
+	let tag = "null, you are not currently matched to any agent.";
+	for (var i=0; i<matchmaker.availTable.length; i++) {
+		if (matchmaker.availTable[i].id === agentId) {
+			tag = matchmaker.availTable[i].tag;
+			break
 		}
-		tag = "null, you are not currently matched to any agent.";
 	}
 
 	req.body.queryResult.parameters['tag'] = tag;
