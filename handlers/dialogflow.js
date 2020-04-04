@@ -1,4 +1,10 @@
-function fulfill(req, res) {
+// modules
+let rainbow = require("./rainbow");
+
+// get matchmaker
+let matchmaker = rainbow.matchmaker;
+
+async function fulfill(req, res) {
 	let message = [];
 	let text = {
 		"text": ["from server"]
@@ -7,7 +13,7 @@ function fulfill(req, res) {
 		req.body.queryResult.fulfillmentText = "from server 1";
 		res.send(req.body.queryResult);
 	}
-	else if (req.body.queryResult.action === 'queue') {
+	else if (req.body.queryResult.action === 'queue.number') {
 		let val = 1;
     let rgx = new RegExp(`@number@`,"g");
 
