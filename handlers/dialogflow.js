@@ -1,5 +1,9 @@
 function fulfill(req, res) {
-	res.send(req.body);
+	if (req.body.queryResult.action === 'queue') {
+		req.body.queryResult.fulfillmentMessages = "from server"
+		res.send(req.body);
+	}
+	res.send(req.body.queryResult);
 }
 
 // exports
