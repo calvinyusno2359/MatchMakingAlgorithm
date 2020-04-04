@@ -4,7 +4,10 @@ function fulfill(req, res) {
 		"text": ["from server"]
 	}
 	if (req.body.queryResult.action === 'queue') {
-		req.body.queryResult.fulfillmentMessages = message.push(text);
+		let val = 1;
+    let rgx = new RegExp(`@number@`,"g");
+
+		req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val))
 		res.send(req.body.queryResult);
 	}
 	else {
