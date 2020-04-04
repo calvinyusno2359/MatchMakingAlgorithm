@@ -171,6 +171,17 @@ function MatchMaker() {
     this.db = this.db = mysql.createPool(dblogin);
     return this;
   }
+
+  this.search = function(userId) {
+		// returns agentId and queueNumber of this userId
+		let matchedAgent = this.userTable[userId];
+		if (matchedAgent === null) return [null, null];
+		else {
+			let queue = this.agentTable[matchedAgent];
+			let queueNumber = queue.search(userId);
+			return [matchedAgent, queueNumber];
+		}
+  }
 };
 
 // exports
