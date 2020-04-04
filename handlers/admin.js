@@ -83,12 +83,15 @@ function deleteAgent(req, res) {
 // }
 
 function updateAgentAvailability(agentId, binary) {
-    let sql = `UPDATE agent SET availability = ${mysql.escape(binary)} WHERE id = ${mysql.escape(agentId)}`
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log(result);
-    })
-}
+		return new Promise((resolve, reject) => {
+				let sql = `UPDATE agent SET availability = ${mysql.escape(binary)} WHERE id = ${mysql.escape(agentId)}`
+				db.query(sql, (err, result) => {
+						if (err) reject(err);
+        		console.log(result);
+        		resolve(true);
+    		});
+		});
+};
 
 function adminLogin(req, res) {
     let credentials = req.body;
