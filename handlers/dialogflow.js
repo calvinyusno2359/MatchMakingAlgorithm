@@ -28,9 +28,22 @@ function getAgentId(req, res) {
 
 	let agentId = matchmaker.search(userId)[0];
 	req.body.queryResult.parameters['agentId'] = agentId;
-	if (agentId === null) agentId = "null, you are not currently matched.";
+	if (agentId === null) agentId = "null, you are not currently matched to any agent.";
 
 	req = replace(req, rgx, agentId);
+	res.send(req.body.queryResult);
+}
+
+function getTag(req, res) {
+	let rgx = new RegExp(`@tag@`,"g");
+	let userId = req.body.queryResult.parameters.userId
+
+	let agentId = matchmaker.search(userId)[0];
+	let tag = matchmaker.availTable[agentId];
+	req.body.queryResult.parameters['tag'] = tag;
+	if (tag === null) tag = "null, you are not currently matched to any agent.";
+
+	req = replace(req, rgx, tag);
 	res.send(req.body.queryResult);
 }
 
