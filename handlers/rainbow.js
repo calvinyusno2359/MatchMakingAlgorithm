@@ -32,7 +32,7 @@ rainbowSDK.events.on('rainbow_onready', async(req, res) => {
 
 rainbowSDK.events.on('rainbow_oncontactpresencechanged', async(contact) => {
 		console.log(contact);
-}
+});
 
 exports.rainbowSDK = rainbowSDK;
 exports.matchmaker = matchmaker;
