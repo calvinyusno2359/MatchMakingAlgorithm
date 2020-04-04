@@ -1,10 +1,22 @@
 // modules
+let path = require("path");
 let mysql = require('mysql');
 let config = require("../config");
 let matchmaker = require("./rainbow").matchmaker;
 
 // Create connection
 let db = mysql.createPool(config.dblogin);
+
+function checkAuthentication(req, res) {
+    let credentials = req.body;
+    console.log(credentials);
+    let sql = `SELECT * FROM admin WHERE username = ${mysql.escape(credentials.username)} and password = ${mysql.escape(credentials.password)}`;
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        return result.length == 0 ? res.redirect('/home') : res.redirect('/admin');
+    })
+}
 
 // Populate agents
 function populateAgents(req, res) {
@@ -13,7 +25,6 @@ function populateAgents(req, res) {
         req.headers.referer !== "https://tinder-on-rainbow.herokuapp.com/home" &&
         req.headers.referer !== "https://match-made-on-rainbow.herokuapp.com/home") {
         res.send("Access Denied");
-        return;
     }
     let sql = 'SELECT * FROM agent';
     db.query(sql, (err, result) => {
@@ -32,7 +43,6 @@ function addAgent(req, res) {
             res.status(400).send(); // Bad request
         } else {
             await matchmaker.getAllAvailableAgent();
-            console.log(matchmaker);
             console.log("Agent added...");
             res.status(200).send();
         }
@@ -65,50 +75,15 @@ function deleteAgent(req, res) {
             res.status(304).send(); // Not modified
         } else {
             await matchmaker.getAllAvailableAgent();
-            console.log(matchmaker);
             console.log("Agent deleted...");
             res.status(200).send();
         }
     });
 };
 
-
-// function getAgents(req, res) {
-//     const tag = req.params.id
-//     let sql = `SELECT id, matched_user, availability FROM agent WHERE tag = ${mysql.escape(tag)}`
-//     db.query(sql, (err, result) => {
-//         if (err) throw err;
-//         res.json({ result: result });
-//     })
-// }
-
-// function updateAgentAvailability(req, res) {
-//     const id = req.params.id
-//     let sql = `UPDATE agent SET availability = 0 WHERE id = ${mysql.escape(id)}`
-//     db.query(sql, (err, result) => {
-//         if (err) throw err;
-//         res.json({ result: result });
-//     })
-// }
-
-function adminLogin(req, res) {
-    let credentials = req.body;
-    let sql = `SELECT * FROM admin WHERE username = ${mysql.escape(credentials.username)} and password = ${mysql.escape(credentials.password)}`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-        if (result.length == 0) {
-            res.status(550).send(); // Permission denied
-        } else {
-            res.status(200).send();
-        }
-    })
-}
-
 // exports
+exports.checkAuthentication = checkAuthentication;
 exports.populateAgents = populateAgents;
 exports.addAgent = addAgent;
 exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
-// exports.getAgents = getAgents;
-// exports.updateAgentAvailability = updateAgentAvailability;
-exports.adminLogin = adminLogin;

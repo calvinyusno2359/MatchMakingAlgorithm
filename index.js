@@ -38,17 +38,15 @@ app.get('/polling', user.polling);
 
 // admin-related routes
 app.get('/home', (req, res) => res.sendFile(path.join(__dirname + "/views/login.html")));
-app.post('/admin/login', admin.adminLogin);
+app.post('/admin/login', admin.checkAuthentication);
 app.get('/admin', admin.populateAgents);
 app.post('/admin/addagent', admin.addAgent);
 app.post('/admin/updateagent', admin.updateAgent);
 app.get('/admin/deleteagent/:id', admin.deleteAgent);
-// app.get('/admin/getagents/:id', admin.getAgents);
-// app.get('/admin/updateagentavail/:id', admin.updateAgentAvailability);
 
 // starts rainbowsdk
 // comment this for faster load during development
-rainbowSDK.start();
+// rainbowSDK.start();
 
 let PORT = process.env.PORT || 8080
 

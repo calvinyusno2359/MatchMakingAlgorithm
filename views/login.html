@@ -7,10 +7,19 @@
     <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <div class="login">
+
     <h1>Admin Login</h1>
-    <input id="username" type="text" placeholder="Username" required="required" />
-    <input id="password" type="password" placeholder="Password" required="required" />
-    <div class="g-recaptcha" data-sitekey="6LdDHeQUAAAAADjZ2N2uXQZCfzfYLOaeRECzN_pE" data-callback="verifyCaptcha"></div>
-    <div id="g-recaptcha-error"></div>
-    <button id="login" onclick="login()" type="submit" class="btn btn-primary btn-block btn-large">Login</button>
+    <form action="/admin/login" method="POST" onsubmit="authenticate()">
+        <div>
+            <label for="username">Username</label>
+            <input type="username" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="g-recaptcha" data-sitekey="6LdDHeQUAAAAADjZ2N2uXQZCfzfYLOaeRECzN_pE" data-callback="verifyCaptcha"></div>
+        <div id="g-recaptcha-error"></div>
+        <button id="login" type="submit" class="btn btn-primary btn-block btn-large">Login</button>
+    </form>
 </div>
