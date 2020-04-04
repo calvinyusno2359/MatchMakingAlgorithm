@@ -57,6 +57,11 @@ describe('Queue Test: Methods', () => {
     q.dequeue();
     assert.equal(q.peek(), "3", "Queue length() does return 3");
   })
+
+  it("Queue search() works properly", () => {
+  	assert.equal(q.search("1"), "1", "Queue search() does not return 1");
+  	assert.equal(q.search("4"), "4", "Queue search() does not return 1");
+  })
 });
 
 describe('Queue Test: Scenarios', () => {

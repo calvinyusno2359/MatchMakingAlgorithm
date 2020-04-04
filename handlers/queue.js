@@ -31,6 +31,13 @@ function Queue() {
     this.peek = function() {
         return this.q[0];
     }
+
+    this.search = function(id) {
+    		for (var i=0; i<this.q.length; i++) {
+    			if (this.q[i] === id) return i+1
+    		}
+    		return null;
+    }
 };
 
 // exports
