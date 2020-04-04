@@ -115,7 +115,7 @@ async function waitConnection() {
     // 1. display wait message to user
     // 2. set up polling loop to check when we are done
     if (agent_id == "WAIT") {
-        loading.innerText = "Sit tight while we find you an agent.";
+        loading.innerText = `Sit tight while we find you an agent.\n (User ID: ${user_id})`;
         while (agent_id == "WAIT") {
             await new Promise(r => setTimeout(r, 1000));
             let header = {"user_id": user_id};

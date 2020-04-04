@@ -19,7 +19,7 @@
         "nodemon": "^2.0.2",
         "python-shell": "^1.0.8",
         "rainbow-cli": "^1.65.0",
-        "rainbow-node-sdk": "^1.66.1",
+        "rainbow-node-sdk": "^1.69.0",
         "rainbow-web-sdk": "^1.67.0",
         "selenium-webdriver": "^4.0.0-alpha.7"
     },

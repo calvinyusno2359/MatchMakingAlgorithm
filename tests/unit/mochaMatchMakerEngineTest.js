@@ -1,6 +1,6 @@
 // unit test for Queue object
 const assert = require('chai').assert;
-const matchmaker = require("../../handlers/matchMakerEngine");
+const matchmaker = require("../../handlers/matchMakerEngineOld");
 
 describe('MatchMakerEngine Test: Attributes', () => {
   let mme;
@@ -118,7 +118,7 @@ describe('MatchMakerEngine Test: Methods', () => {
     // that's why doing same request request will result in SAME response!
     assert.equal(agent1, expectedAgent1and2, `${tag} agent 1 generated is wrong`);
     assert.equal(agent2, expectedAgent1and2, `${tag} agent 2 generated is wrong`);
-  }).timeout(2000); // configure how long maximum it should take
+  }).timeout(1500); // configure how long maximum it should take
 
   it("MME addAgent() works properly", () => {
     let agent1 = "agent1";
@@ -233,8 +233,70 @@ describe('MatchMakerEngine Test: Methods', () => {
     let agent2Queue = mme.agentTable[agent2].q;
     assert.isEmpty(agent2Queue, "agent 2 queue is not empty");
 
-  }).timeout(2000);;
+  }).timeout(2000);
 
+  it("MME search() works properly", async () => {
+    let tag = "Back";
+    let user1 = "user1";
+    let user2 = "user2";
+    let user3 = "user3";
+    let user4 = "user4";
+
+    await mme.matchUser(user1, tag);
+    await mme.matchUser(user2, tag);
+    await mme.matchUser(user3, tag);
+
+    res1 = mme.search(user1);
+    res2 = mme.search(user2);
+    res3 = mme.search(user3);
+    res4 = mme.search(user4);
+
+    agent1 = res1[0];
+    agent2 = res2[0];
+    agent3 = res3[0];
+    queue1 = res1[1];
+    queue2 = res2[1];
+    queue3 = res3[1];
+
+    assert.equal(agent1, '5e422880e9f1273063695253', "search agent 1 is incorrect");
+    assert.equal(agent2, '5e43c49ce9f127306369575f', "search agent 2 is incorrect");
+    assert.equal(agent3, '5e422880e9f1273063695253', "search agent 3 is incorrect");
+    assert.equal(queue1, 0, "search queue 1 is incorrect");
+    assert.equal(queue2, 0, "search queue 1 is incorrect");
+    assert.equal(queue3, 1, "search queue 1 is incorrect");
+
+    assert.isNull(res4[0], "search agent is not null");
+    assert.isNull(res4[1], "search queue is not null");
+
+  }).timeout(2000);
+
+  it("MME removeAgent() works properly", () => {
+    let agent1 = "agent1";
+    let isQueue;
+    let isEmpty;
+
+    assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent");
+
+    mme = mme.addAgent(agent1);
+    assert.property(mme.agentTable, 'agent1', `agentTable does not have property: agent1`);
+
+    isQueue = mme.agentTable[agent1];
+    assert.isObject(isQueue, 'agent1 Queue is not initialized')
+
+    isEmpty = mme.agentTable[agent1].q;
+    assert.isEmpty(isEmpty, 'agent1 Queue is not empty')
+
+    mme = mme.addAgent(agent1);
+    let agents = Object.keys(mme.agentTable)
+    let count = 0;
+    for (var i=0; i<agents.length; i++) if (agents[i] == agent1) count++;
+    assert.equal(count, 1, 'there is more or less than 1 agent in agentTable')
+
+    mme = mme.removeAgent(agent2);
+
+    let stillFourAgentsTotal = Object.keys(mme.agentTable).length
+    assert.equal(stillFourAgentsTotal, 4, 'there is more or less than 6 agents in agentTable')
+  });
 });
 
 describe('MatchMakerEngine Test: Scenarios', () => {

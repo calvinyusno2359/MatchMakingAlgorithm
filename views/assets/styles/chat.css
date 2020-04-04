@@ -142,7 +142,7 @@ body {
 .loading {
 	text-align: center;
 	font-family: "century-gothic", serif;
-	font-size: 50px;
+	font-size: 40px;
 	position: absolute;
 	transform: translate(-50%, -50%);
 	bottom: 50%;

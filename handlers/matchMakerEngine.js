@@ -15,7 +15,7 @@ function MatchMaker() {
         // if user is matched alr, then return either wait signal (if not topQ) or the agentId (if topQ)
         // done by writing a value to the key in userAgent and agentTable
 
-        let matchedAgent = this.userTable[userId];
+        let matchedAgent = this.userTable[userId] || null;
 
         if (matchedAgent != null) { // user has been matched
             let message = `This ${userId} has already been matched!`;
@@ -89,6 +89,19 @@ function MatchMaker() {
         return this;
     };
 
+    this.removeAgent = function(agentId) {
+        // removes agent if not removed already
+        if (agentId in this.agentTable) {
+        		let message = `Success! Agent: ${agentId} has been removed from agentTable!`;
+        		delete this.agentTable[agentId];
+            if (this.verbosity) console.log(message);
+        } else {
+            let message = `Failure! Agent: ${agentId} is already removed!`;
+            if (this.verbosity) console.log(message);
+        }
+        return this;
+    };
+
     this.generateMatch = function(tag) {
         // get all agents => populate availTable and agentTable
         return new Promise((resolve, reject) => {
@@ -108,6 +121,17 @@ function MatchMaker() {
         if (bool === true) this.verbosity = true;
         return this;
     };
+
+    this.search = function(userId) {
+    		// returns agentId and queueNumber of this userId
+    		let matchedAgent = this.userTable[userId] || null;
+    		if (matchedAgent === null) return [null, null];
+    		else {
+    				let queue = this.agentTable[matchedAgent];
+    				let queueNumber = queue.search(userId);
+    				return [matchedAgent, queueNumber];
+    		}
+    }
 };
 
 // exports

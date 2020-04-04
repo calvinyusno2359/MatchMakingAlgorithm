@@ -81,9 +81,21 @@ function deleteAgent(req, res) {
     });
 };
 
+function updateAgentAvailability(agentId, binary) {
+    return new Promise((resolve, reject) => {
+        let sql = `UPDATE agent SET availability = ${mysql.escape(binary)} WHERE id = ${mysql.escape(agentId)}`
+        db.query(sql, (err, result) => {
+            if (err) reject(err);
+            console.log(result);
+            resolve(true);
+        });
+    });
+};
+
 // exports
 exports.checkAuthentication = checkAuthentication;
 exports.populateAgents = populateAgents;
 exports.addAgent = addAgent;
 exports.updateAgent = updateAgent;
 exports.deleteAgent = deleteAgent;
+exports.updateAgentAvailability = updateAgentAvailability;
