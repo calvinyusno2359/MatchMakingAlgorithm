@@ -26,8 +26,9 @@ function getQueueNumber(req, res) {
 
 function replace(req, rgx, val) {
 	req.body.queryResult.fulfillmentText = req.body.queryResult.fulfillmentText.replace(rgx, val);
-	req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val))l
-	return reql
+	req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val));
+	return req
 }
+
 // exports
 exports.fulfill = fulfill;
