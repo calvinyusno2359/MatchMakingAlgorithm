@@ -115,13 +115,7 @@ function MatchMaker() {
     		if (matchedAgent === null) return [null, null];
     		else {
     				let queue = this.agentTable[matchedAgent];
-    				for (var i=0; i<queue.length; i++) {
-    						if (queue[i] === userId) {
-    							queueNumber = i;
-    							break;
-    						}
-    						else return [null, null];
-    				}
+    				let queueNumber = queue.search(userId);
     				return [matchedAgent, queueNumber];
     		}
     }
