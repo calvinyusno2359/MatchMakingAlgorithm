@@ -1,6 +1,6 @@
 // unit test for Queue object
 const assert = require('chai').assert;
-const matchmaker = require("../handlers/matchMakerEngineOld");
+const matchmaker = require("../../handlers/matchMakerEngineOld");
 
 describe('MatchMakerEngine Test: Attributes', () => {
   let mme;
