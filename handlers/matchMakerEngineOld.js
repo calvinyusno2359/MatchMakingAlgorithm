@@ -101,6 +101,19 @@ function MatchMaker() {
     return this
   };
 
+  this.removeAgent = function(agentId) {
+    // removes agent if not removed already
+    if (agentId in this.agentTable) {
+  		let message = `Success! Agent: ${agentId} has been removed from agentTable!`;
+  		delete this.agentTable[agentId];
+      if (this.verbosity) console.log(message);
+    } else {
+      let message = `Failure! Agent: ${agentId} is already removed!`;
+      if (this.verbosity) console.log(message);
+    }
+    return this;
+  };
+
   this.generateMatch = function(tag) {
     // get all agents => populate availTable and agentTable
     return new Promise((resolve, rejcet) => {

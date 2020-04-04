@@ -270,6 +270,33 @@ describe('MatchMakerEngine Test: Methods', () => {
 
   }).timeout(2000);
 
+  it("MME removeAgent() works properly", () => {
+    let agent1 = "agent1";
+    let isQueue;
+    let isEmpty;
+
+    assert.equal(mme.availTable.length, 4, "There are more or less than 4 available agent");
+
+    mme = mme.addAgent(agent1);
+    assert.property(mme.agentTable, 'agent1', `agentTable does not have property: agent1`);
+
+    isQueue = mme.agentTable[agent1];
+    assert.isObject(isQueue, 'agent1 Queue is not initialized')
+
+    isEmpty = mme.agentTable[agent1].q;
+    assert.isEmpty(isEmpty, 'agent1 Queue is not empty')
+
+    mme = mme.addAgent(agent1);
+    let agents = Object.keys(mme.agentTable)
+    let count = 0;
+    for (var i=0; i<agents.length; i++) if (agents[i] == agent1) count++;
+    assert.equal(count, 1, 'there is more or less than 1 agent in agentTable')
+
+    mme = mme.removeAgent(agent2);
+
+    let stillFourAgentsTotal = Object.keys(mme.agentTable).length
+    assert.equal(stillFourAgentsTotal, 4, 'there is more or less than 6 agents in agentTable')
+  });
 });
 
 describe('MatchMakerEngine Test: Scenarios', () => {
