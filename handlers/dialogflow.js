@@ -7,6 +7,7 @@ let matchmaker = rainbow.matchmaker;
 function fulfill(req, res) {
 	if (req.body.queryResult.action === 'queue.number') getQueueNumber(req, res);
 	else if (req.body.queryResult.action === 'queue.agentId') getAgentId(req, res);
+	else if (req.body.queryResult.action === 'queue.tag') getTag(req, res);
 	else res.send(req.body.queryResult);
 }
 
