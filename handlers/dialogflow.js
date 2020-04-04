@@ -15,6 +15,7 @@ function getQueueNumber(req, res) {
 	let userId = req.body.queryResult.parameters.userId
 
 	let queueNumber = matchmaker.search(userId)[1]; // 0 is agentId
+	req.body.queryResult.parameters['queueNumber'] = queueNumber;
 	if (queueNumber === null) queueNumber = "null, please try refreshing";
 
 	req = replace(req, rgx, queueNumber);
@@ -26,6 +27,7 @@ function getAgentId(req, res) {
 	let userId = req.body.queryResult.parameters.userId
 
 	let agentId = matchmaker.search(userId)[0];
+	req.body.queryResult.parameters['agentId'] = agentId;
 	if (agentId === null) agentId = "null, you are not currently matched.";
 
 	req = replace(req, rgx, agentId);
@@ -36,6 +38,13 @@ function replace(req, rgx, val) {
 	req.body.queryResult.fulfillmentText = req.body.queryResult.fulfillmentText.replace(rgx, val);
 	req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, val));
 	return req
+}
+
+function getOldParam(req, name) {
+	let contextList = req.body.queryResult.outputContexts;
+	let context = req.body.queryResult.outputContexts[0];
+	let param = context.paramters[name];
+	return param;
 }
 
 // exports
