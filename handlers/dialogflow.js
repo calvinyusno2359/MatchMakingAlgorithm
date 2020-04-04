@@ -19,6 +19,7 @@ function getQueueNumber(req, res) {
 		console.log("HEREEEEEEEEEEEEEEEE:", queueNumber)
 		if (queueNumber === null) queueNumber = "null, please try refreshing"
 
+		req.body.queryResult.fulfillmentText = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, queueNumber))
 		req.body.queryResult.fulfillmentMessages = JSON.parse(JSON.stringify(req.body.queryResult.fulfillmentMessages).replace(rgx, queueNumber))
 		res.send(req.body.queryResult);
 }
