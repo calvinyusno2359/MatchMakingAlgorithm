@@ -3,6 +3,7 @@ let RainbowSDK = require("rainbow-node-sdk");
 // modules
 let config = require("../config");
 let matchMakerEngine = require("./matchMakerEngine");
+let admin = require("./admin");
 
 // instantiate the SDK
 let rainbowSDK = new RainbowSDK(config.options);
@@ -30,8 +31,14 @@ rainbowSDK.events.on('rainbow_onready', async(req, res) => {
     console.log("Rainbow SDK is ready.");
 });
 
-rainbowSDK.events.on('rainbow_oncontactpresencechanged', async(contact) => {
-		console.log(contact);
+rainbowSDK.events.on("rainbow_oncontactpresencechanged", (contact) => {
+		// update db when availability changes for this contact
+		let agentId = contact.id;
+		if (contact.presence === "online") {
+			admin.updateAgentAvailability(agentId, "1");
+		} else {
+			admin.updateAgentAvailability(agentId, "0");
+		}
 });
 
 exports.rainbowSDK = rainbowSDK;
