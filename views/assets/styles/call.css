@@ -1,6 +1,6 @@
 .loading {
   font-family: "century-gothic", serif;
-  font-size: 50px;
+  font-size: 40px;
   position: absolute;
   transform: translate(-50%, -50%);
   top: 45%;
@@ -87,8 +87,8 @@
   top: 200px;
   font-size: 50px;
   color: rgba(233, 30, 99, 0.8);
-  
-  
+
+
 }
 
 
