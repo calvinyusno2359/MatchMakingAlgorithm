@@ -91,6 +91,21 @@
 
 }
 
+.btn-danger {
+	position: fixed;
+	right: 83px;
+	bottom: 5%;
+}
+
+.chat-popup {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+}
+
 
 @keyframes lds-dual-ring {
   0% {
