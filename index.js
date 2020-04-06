@@ -13,6 +13,9 @@ let rainbow = require("./handlers/rainbow");
 let config = require("./config");
 
 
+
+
+
 // get rainbowSDK
 let rainbowSDK = rainbow.rainbowSDK;
 
@@ -37,6 +40,7 @@ app.post('/chat/disconnect', user.disconnect);
 app.post('/call/disconnect', user.disconnect);
 app.get('/calling', user.calling);
 app.get('/polling', user.polling);
+app.get('/fail', async(req, res) => res.sendFile(path.join(__dirname + "/views/fail.html")));
 
 // admin-related routes
 app.get('/home', (req, res) => res.sendFile(path.join(__dirname + "/views/login.html")));
@@ -48,9 +52,12 @@ app.get('/admin/deleteagent/:id', admin.deleteAgent);
 app.get('/admin/getagents/:id', admin.getAgents);
 app.get('/admin/updateagentavail/:id', admin.updateAgentAvailability);
 
-// starts rainbowsdk
-// comment this for faster load during development
-// rainbowSDK.start();
+
+
+//starts rainbowsdk
+//comment this for faster load during development
+rainbowSDK.start();
+
 
 let PORT = process.env.PORT || 8080
 

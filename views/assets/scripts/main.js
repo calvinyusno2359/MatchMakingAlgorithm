@@ -32,7 +32,12 @@ function getSupport(e) {
 	}
 }
 
+
+
 tags.addEventListener("click", selectTag);
 buttons.forEach(button => {
 	button.addEventListener("click", getSupport);
 });
+
+
+
