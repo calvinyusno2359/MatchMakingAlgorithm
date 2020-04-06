@@ -219,7 +219,7 @@ let msg = "";
 if (JSON.parse(window.localStorage.getItem("tag")) == null) {
     window.location.pathname = '/';
 }
-// let tag = JSON.parse(window.localStorage.getItem("tag")).data;
+let tag = JSON.parse(window.localStorage.getItem("tag")).data;
 // if (tag in valid_tags == false) {
 //     window.location.pathname = '/';
 // }
