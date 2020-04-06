@@ -38,6 +38,14 @@ function Queue() {
     		}
     		return null;
     }
+
+    this.peek2 = function() {
+        return this.q[1];
+    }
+
+    this.steal = function() {
+        return this.q.splice(1, 1)[0];
+    }
 };
 
 // exports

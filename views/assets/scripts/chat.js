@@ -148,8 +148,23 @@ async function waitConnection() {
     rainbowSDK.im.sendMessageToConversation(conversation, alert);
 }
 
+async function redirect(redirect_tag) {
+    await closeConversation();
+    await disconnect('/chat/disconnect', {"userId": user_id});
+    let data = JSON.stringify({"data":redirect_tag});
+    window.localStorage.setItem("tag", data);
+    window.location = "chat";
+}
+
 function receive(e) {
     let message = e.detail.message;
+    if (message.data.substring(0, 9) == "/REDIRECT") {
+        new_tag = message.data.substring(10);
+        if (new_tag in valid_tags) {
+            redirect(new_tag);
+        }
+        return;
+    }
     pushText(message.data, "left");
     msg += `${agent_id}: ${message.data} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
 }
@@ -191,17 +206,22 @@ function onLoaded() {
     return null;
  }
 
+
 let conversation;
 let user_id = "";
 let agent_id = "";
 let receipt_queue = [];
 let logs = []
 let msg = "";
+const valid_tags = ["General Enquiry", "Abdomen", "Back", "Chest", "Ear", "Extremeties", "Head", "Pelvis", "Rectum", "Skin", "Tooth"];
 // If no tag is detected, send them back to index
 if (JSON.parse(window.localStorage.getItem("tag")) == null) {
     window.location.pathname = '/';
 }
 let tag = JSON.parse(window.localStorage.getItem("tag")).data;
+if (tag in valid_tags == false) {
+    window.location.pathname = '/';
+}
 
 const chat = document.createElement("div");
 const content = document.createElement("div");
