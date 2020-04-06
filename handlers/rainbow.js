@@ -38,7 +38,7 @@ rainbowSDK.events.on("rainbow_oncontactpresencechanged", async(contact) => {
     if (contact.presence === "online") {
         status = await admin.updateAgentAvailability(agentId, "1");
         if (status) matchmaker.getAllAvailableAgent();
-    } else {
+    } else if (contact.presence === "offline") {
         status = await admin.updateAgentAvailability(agentId, "0");
         if (status) {
             matchmaker.removeAgent(agentId);
