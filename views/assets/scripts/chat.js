@@ -39,10 +39,10 @@ function keyPress(e) {
     }
 }
 
-window.addEventListener('beforeunload', (event) => {
-    event.returnValue = `Are you sure you want to leave?`;
-    closeConversation();
-});
+// window.addEventListener('beforeunload', (event) => {
+//     event.returnValue = `Are you sure you want to leave?`;
+//     closeConversation();
+// });
 
 // end chat and close conversation
 function endChat() {
@@ -160,9 +160,10 @@ function receive(e) {
     let message = e.detail.message;
     if (message.data.substring(0, 9) == "/REDIRECT") {
         new_tag = message.data.substring(10);
-        if (new_tag in valid_tags) {
-            redirect(new_tag);
-        }
+        redirect(new_tag);
+        // if (new_tag in valid_tags) {
+        //     redirect(new_tag);
+        // }
         return;
     }
     pushText(message.data, "left");
@@ -213,15 +214,15 @@ let agent_id = "";
 let receipt_queue = [];
 let logs = []
 let msg = "";
-const valid_tags = ["General Enquiry", "Abdomen", "Back", "Chest", "Ear", "Extremeties", "Head", "Pelvis", "Rectum", "Skin", "Tooth"];
+// const valid_tags = ["General Enquiry", "Abdomen", "Back", "Chest", "Ear", "Extremeties", "Head", "Pelvis", "Rectum", "Skin", "Tooth"];
 // If no tag is detected, send them back to index
 if (JSON.parse(window.localStorage.getItem("tag")) == null) {
     window.location.pathname = '/';
 }
-let tag = JSON.parse(window.localStorage.getItem("tag")).data;
-if (tag in valid_tags == false) {
-    window.location.pathname = '/';
-}
+// let tag = JSON.parse(window.localStorage.getItem("tag")).data;
+// if (tag in valid_tags == false) {
+//     window.location.pathname = '/';
+// }
 
 const chat = document.createElement("div");
 const content = document.createElement("div");
