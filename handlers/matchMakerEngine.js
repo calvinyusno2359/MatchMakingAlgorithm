@@ -7,6 +7,7 @@ function MatchMaker() {
 
     this.availTable = []; // populate all available agent and their info
     this.userTable = {}; // dictionary of {userId: agentId}
+    this.userTags = {}; // dictionary of {userId: tag}
     this.agentTable = {}; // dictionary of {agentId: userIdQ}
     this.verbosity = false;
 
@@ -33,6 +34,7 @@ function MatchMaker() {
             // write to agentTable and userTable & update db
             this.agentTable[agentId].enqueue(userId);
             this.userTable[userId] = agentId;
+            this.userTags[userId] = tag;
             if (this.verbosity) {
                 console.log(message);
                 console.log(this.agentTable);
@@ -59,7 +61,9 @@ function MatchMaker() {
 
         } else if (this.agentTable[agentId].peek() == userId) {
             delete this.userTable[userId];
+            delete this.userTags[userId];
             this.agentTable[agentId].dequeue();
+            this.availableListener(agentId);
 
             let message = `Success! User: ${userId} has been disconnected from ${agentId}.`
             if (this.verbosity) console.log(message);
@@ -117,6 +121,14 @@ function MatchMaker() {
         return new Promise((resolve, reject) => resolve(matchMakerDb.getAllAvailableAgent.call(this)));
     };
 
+    this.canMatch = async function(user, agent) {
+        if (await this.generateMatch(userTags[user]) == agent) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     this.verbose = function(bool) {
         if (bool === true) this.verbosity = true;
         return this;
@@ -131,6 +143,27 @@ function MatchMaker() {
     				let queueNumber = queue.search(userId);
     				return [matchedAgent, queueNumber];
     		}
+    }
+
+    this.availableListener = function(agentId) {
+        if (agentTable[agentId].length() == 0) {
+            let target = null;
+            let maxLength = 1;
+            
+            // get the person from longest queue who can match with agent
+            Object.keys(agentTable).forEach((agent) => {
+                if (agentTable[agent].length() > maxLength) {
+                    if (this.canMatch(agentTable[agent].peek2(), agentId)) {
+                        target = agentTable[agent];
+                        maxLength = target.length();
+                    }
+                }
+            });
+
+            if (target != null) {
+                agentTable[agentId].enqueue(target.steal());
+            }
+        }
     }
 };
 
