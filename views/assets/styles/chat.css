@@ -173,7 +173,7 @@ body {
 
 .btn-danger {
 	position: fixed;
-	right: 83px;
+	right: 130px;
 	bottom: 5%;
 }
 
@@ -185,7 +185,6 @@ body {
 	top: 0;
 	left: 0;
 }
-
 
 @keyframes lds-dual-ring {
   0% {

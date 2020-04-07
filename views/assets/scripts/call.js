@@ -57,7 +57,9 @@ async function waitConnection() {
     }
 
          // get agent, add to network, and open conversation
-        
+
+    open_chat.style.display = "none";
+    dialog.style.display = "none";
     let contact  =  await  rainbowSDK.contacts.searchById(agent_id);
     var res = rainbowSDK.webRTC.callInAudio(contact);
     console.log("res label: " + res.label);
@@ -149,6 +151,8 @@ function  onLoaded()  {    
 
 let tag = JSON.parse(window.localStorage.getItem("tag")).data;
 
+let dialog = document.getElementById("chat-popup")
+let open_chat = document.getElementById("chat-open")
 const  end  =  document.createElement("button")
 end.className  =  "end_button";
 end.textContent  =  "Exit"
