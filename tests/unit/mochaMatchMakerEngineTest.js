@@ -299,15 +299,15 @@ describe('MatchMakerEngine Test: Methods', () => {
   });
 });
 
-describe('MatchMakerEngine Test: Scenarios', () => {
-  let mme;
-  beforeEach((done) => {
-    mme = new matchmaker.MatchMaker();
-    done();
-  });
+// describe('MatchMakerEngine Test: Scenarios', () => {
+//   let mme;
+//   beforeEach((done) => {
+//     mme = new matchmaker.MatchMaker();
+//     done();
+//   });
 
-  it("other edge cases I haven't converted to mocha", () => {
-    assert.isTrue(true);
-  });
+//   it("other edge cases I haven't converted to mocha", () => {
+//     assert.isTrue(true);
+//   });
 
-});
+// });
