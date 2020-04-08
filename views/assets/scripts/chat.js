@@ -68,7 +68,7 @@ function  endChat()  {
 
 const user_stays = async function user_stays() {
     try {
-        let msg = "user has been disconnected from the chat"    
+        let msg = "User has been disconnected from the chat"    
         rainbowSDK.im.sendMessageToConversation(conversation,  msg);
         // RainbowSDK.im.sendMessageToConversation(conversation, leftChatMsg);
         disconnect('/chat/disconnect', id).then(() => {
@@ -83,7 +83,7 @@ const user_stays = async function user_stays() {
 window.addEventListener('beforeunload', async function onBeforeUnload(e) {
     setTimeout(user_stays, 500);
     try {
-        let msg = "user has been disconnected from the chat"    
+        let msg = "User has been disconnected from the chat"    
         rainbowSDK.im.sendMessageToConversation(conversation,  msg);
         // RainbowSDK.im.sendMessageToConversation(conversation, leftChatMsg);
         disconnect('/chat/disconnect', id).then(() => {

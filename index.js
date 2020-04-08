@@ -27,6 +27,7 @@ app.set('view engine', 'ejs');
 // routes and handlers
 // user-related routes
 app.get('/', async(req, res) => res.sendFile(path.join(__dirname + "/views/main.html")));
+app.get('/fail', async(req, res) => res.sendFile(path.join(__dirname + "/views/fail.html")));
 app.get('/chat', user.chat);
 app.get('/call', user.call);
 app.get('/call/request', user.requesting);
@@ -60,3 +61,4 @@ https.createServer({ key: config.key, cert: config.cert }, app).listen(PORT, () 
 
 // for heroku deployment: ssl certificate for https is managed by heroku's Auto Cert Management
 //app.listen(PORT, () => console.log(`Listening to port: ${PORT}...`));
+

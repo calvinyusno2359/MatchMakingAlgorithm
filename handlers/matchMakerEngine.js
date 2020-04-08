@@ -148,22 +148,22 @@ function MatchMaker() {
     }
 
     this.availableListener = function(agentId) {
-        if (agentTable[agentId].length() == 0) {
+        if (this.agentTable[agentId].length() == 0) {
             let target = null;
             let maxLength = 1;
 
             // get the person from longest queue who can match with agent
-            Object.keys(agentTable).forEach((agent) => {
-                if (agentTable[agent].length() > maxLength) {
-                    if (this.canMatch(agentTable[agent].peek2(), agentId)) {
-                        target = agentTable[agent];
+            Object.keys(this.agentTable).forEach((agent) => {
+                if (this.agentTable[agent].length() > maxLength) {
+                    if (this.canMatch(this.agentTable[agent].peek2(), agentId)) {
+                        target = this.agentTable[agent];
                         maxLength = target.length();
                     }
                 }
             });
 
             if (target != null) {
-                agentTable[agentId].enqueue(target.steal());
+                this.agentTable[agentId].enqueue(target.steal());
             }
         }
     }
