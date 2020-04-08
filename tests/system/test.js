@@ -55,11 +55,11 @@ async function testExit() {
     await driver.switchTo().alert().accept();
     await driver.sleep(5000);
 
-    await driver.wait( until.alertIsPresent(),20000);
-    await driver.sleep(3000);
+    // await driver.wait( until.alertIsPresent(),20000);
+    // await driver.sleep(3000);
 
-    await driver.switchTo().alert().accept();
-    await driver.sleep(5000);
+    // await driver.switchTo().alert().accept();
+    // await driver.sleep(5000);
 }
 
 // Access chat page directly without choosing a tag.
@@ -102,7 +102,8 @@ async function testMain(url) {
 
 
 // let tags = ["General Enquiry", "Abdomen", "Back", "Chest", "Ear", "Extremeties", "Head", "Pelvis", "Rectum", "Skin", "Tooth"];
-let tags = ["General Enquiry", "Back", "Extremeties"]
+let tags = ["General Enquiry", "Back", "Abdomen"]
+//let tags = ["General Enquiry", "Back", "Extremeties"]
 let lines = [];
 let driver = new Builder().forBrowser("chrome").build();
 

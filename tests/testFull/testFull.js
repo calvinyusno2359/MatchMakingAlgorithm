@@ -53,10 +53,10 @@ async function testChat(){
     await driver.switchTo().alert().accept();
     driver.sleep(5000);
 
-    driver.wait( until.alertIsPresent(),20000);
-    await driver.sleep(3000);
+    // driver.wait( until.alertIsPresent(),20000);
+    // await driver.sleep(3000);
 
-    await driver.switchTo().alert().accept();
+    // await driver.switchTo().alert().accept();
 
 
     
@@ -125,7 +125,7 @@ async function testAdmin(){
 
     
     await captcha[0].click();
-    await driver.sleep(2000)
+    await driver.sleep(5000)
     console.log("Captcha test success"+ " - the captcha will effectively prevent brute force password attack by automated bots");
     
 
