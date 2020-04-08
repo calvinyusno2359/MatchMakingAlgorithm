@@ -91,11 +91,18 @@
 
 }
 
-.btn-danger {
-	position: fixed;
-	right: 83px;
-	bottom: 5%;
-}
+.button {
+	background-color: #f44336;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 45% 90%;
+	cursor: pointer;
+  }
 
 .chat-popup {
 	width: 100%;

@@ -171,11 +171,18 @@ body {
   animation: lds-dual-ring 1.2s linear infinite;
 }
 
-.btn-danger {
-	position: fixed;
-	right: 135px;
-	bottom: 5%;
-}
+.button {
+	background-color: #f44336;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 45% 90%;
+	cursor: pointer;
+  }
 
 .chat-popup {
 	width: 100%;
@@ -195,10 +202,3 @@ body {
   }
 
 }
-
-@media (min-width: 1200px) {
-	.container {
-		max-width: 1300px;
-	}
-}
-
