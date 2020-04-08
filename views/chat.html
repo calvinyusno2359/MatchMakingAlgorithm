@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="assets/icons/chat.ico">
     <link rel="stylesheet" href="https://use.typekit.net/rgd1rxa.css">
     <link rel="stylesheet" type="text/css" href="assets/styles/chat.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -15,14 +16,41 @@
     <script src="./vendors-sdk.min.js"></script>
     <script src="./rainbow-sdk.min.js"></script>
     <script src="assets/scripts/chat.js" defer></script>
-    <script src="assets/scripts/preventMultipleTabs.js" defer></script>
+
 </head>
 
 <body>
     <div class="loading">
         Connecting...
     </div>
+
+    <div class="chat-popup" id="chat-popup", style="position: fixed; top: 340px; left: 75%; display: none; width: 350px; height: 430px;">
+        <iframe
+            allow="microphone;"
+            width="350"
+            height="430"
+            src="https://console.dialogflow.com/api-client/demo/embedded/378f6fa7-7498-463f-81dd-a367505a8e20">
+        </iframe>
+    </div>
+
     <div class="lds-dual-ring"></div>
+
+    <button id = "chat-open" onclick="toggle()" type="button" class="btn btn-danger btn-lg">
+        Chat <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+    </button>
+
+
+    <script type="text/javascript">
+       function toggle() {
+            var x = document.getElementById("chat-popup");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            }
+            else {
+                x.style.display = "none";
+            }
+        }
+    </script>
 </body>
 
 </html>

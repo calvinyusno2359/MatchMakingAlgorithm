@@ -1,6 +1,6 @@
 // unit test for Queue object
 const assert = require('chai').assert;
-const queue = require("../handlers/queue");
+const queue = require("../../handlers/queue");
 
 describe('Queue Test: Attributes', () => {
   let q;
@@ -57,6 +57,11 @@ describe('Queue Test: Methods', () => {
     q.dequeue();
     assert.equal(q.peek(), "3", "Queue length() does return 3");
   })
+
+  it("Queue search() works properly", () => {
+  	assert.equal(q.search("1"), 0, "Queue search() does not return 0");
+  	assert.equal(q.search("4"), 3, "Queue search() does not return 3");
+  })
 });
 
 describe('Queue Test: Scenarios', () => {
@@ -83,5 +88,11 @@ describe('Queue Test: Scenarios', () => {
     let isZero = q.length();
     assert.equal(isZero, 0, "Queue array length is not 0");
   });
+
+  it("Queue search() empty queue", () => {
+  	assert.equal(q.q.length, 0, "Queue array length is not 0");
+  	let isNull = q.search("1");
+  	assert.isNull(isNull, "Queue search() empty does not return null");
+  })
 
 });
