@@ -239,6 +239,14 @@ function  receive(e)  {    
         //     redirect(new_tag);
         // }
         return;
+    } else if (message.data.substring(0, 5) == "/EXIT") {
+    		disconnect('/chat/disconnect', id).then(() => {
+    			downloadLogs();
+    			closeConversation().then(() => {
+    				window.location.pathname = '/'
+    			});
+    		})
+    		return;
     }    
     pushText(message.data,  "left");
     msg += `${agent_id}: ${message.data} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
