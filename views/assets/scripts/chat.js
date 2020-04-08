@@ -21,6 +21,7 @@ function pushText(text, side, sending=false) {
 
 function sendMessage() {
     if (content.textContent != "") {
+        console.log("content" + content.textContent);
         receipt_queue.push(pushText(content.textContent, "right", false));
         rainbowSDK.im.sendMessageToConversation(conversation, content.textContent);
         msg += `${user_id}: ${content.textContent} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
@@ -39,31 +40,19 @@ function keyPress(e) {
     }
 }
 
-window.addEventListener('beforeunload', (event) => {
-    event.returnValue = `Are you sure you want to leave?`;
-    closeConversation();
-});
-
 // end chat and close conversation
 function endChat() {
-    const id = {
-        userId: user_id
-    }
     if (confirm('Are you sure you want to exit the chat?')) {
         if (confirm('Do you want a copy of the chat logs?')) {
             downloadLogs()
-            disconnect('/chat/disconnect', id).then(() => {
-                closeConversation().then(() => {
-                    window.location.pathname = '/'
-                })
-            })
+            let msg = "user has left the chat" 
+            rainbowSDK.im.sendMessageToConversation(conversation, msg);
+            window.location.pathname = '/'
         }
         else {
-            disconnect('/chat/disconnect', id).then(() => {
-                closeConversation().then(() => {
-                    window.location.pathname = '/'
-                })
-            })
+            let msg = "user has left theå chat" 
+            rainbowSDK.im.sendMessageToConversation(conversation, msg);
+            window.location.pathname = '/'
         }
     } else {
         // Do nothing!
@@ -71,6 +60,73 @@ function endChat() {
 
 }
 
+const user_stays = async function user_stays() {
+    try {
+        let msg = "user has been disconnected from the chat"  
+        rainbowSDK.im.sendMessageToConversation(conversation, msg);
+        // RainbowSDK.im.sendMessageToConversation(conversation, leftChatMsg);
+        disconnect('/chat/disconnect', id).then(() => {
+            closeConversation().then(() => {
+                window.location.pathname = '/'
+            });
+        })
+    } 
+    catch (err) {
+    }
+}
+ 
+
+window.addEventListener('beforeunload', async function onBeforeUnload(e) {
+    setTimeout(user_stays, 500);
+    try {
+        let msg = "user has been disconnected from the chat"  
+        rainbowSDK.im.sendMessageToConversation(conversation, msg);
+        // RainbowSDK.im.sendMessageToConversation(conversation, leftChatMsg);
+        disconnect('/chat/disconnect', id).then(() => {
+            closeConversation().then(() => {
+                window.location.pathname = '/'
+            });
+        })
+    } 
+    catch (err) {
+    }
+});
+
+function timeOut() {
+    let secondsSinceLastActivity = 0;
+    // In Seconds
+    const maxInactivity = 30;
+   
+    // Prevent double load
+    let boolFlag = true;
+   
+    setInterval(async function () {
+           secondsSinceLastActivity++;
+           console.log("secondsSince " + secondsSinceLastActivity)
+           // After timeout
+           if (secondsSinceLastActivity > maxInactivity && boolFlag) {
+            boolFlag = false;
+            closeBoolean = true;
+                window.alert("You have been logged out due to inactivity.");    
+                window.location.pathname = '/'
+           }
+       }, 1000);
+   
+       function activity() {
+           //reset the secondsSinceLastActivity to 0
+           secondsSinceLastActivity = 0;
+       }
+   
+    const activityEvents = [
+     'mousedown', 'mousemove', 'keydown',
+     'scroll', 'touchstart'
+    ];
+   
+    activityEvents.forEach(function (eventName) {
+           document.addEventListener(eventName, activity, true);
+       });
+}
+   
 async function disconnect(url = '', data = {}) {
     const response = await fetch(url, {
       method: 'POST',
@@ -85,6 +141,10 @@ async function disconnect(url = '', data = {}) {
 const closeConversation = async() => {
     await rainbowSDK.conversations.closeConversation(conversation)
 }
+
+// async function closeConversation() {
+//     return awaitrainbowSDK.conversations.closeConversation(conversation)
+// }
 
 function downloadLogs() {
     var filename = "logs.txt";
@@ -108,7 +168,10 @@ async function waitConnection() {
     let token = result.token;
     agent_id = result.agent_id;
     user_id = result.user_id;
-
+    id = {
+        userId: user_id
+    }
+    leftChatMsg = "User has been disconnected"
     response = await rainbowSDK.connection.signinSandBoxWithToken(token);
 
     // If we need to wait,
@@ -134,6 +197,8 @@ async function waitConnection() {
     document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMMESSAGERECEIVED, receive);
     document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMRECEIPTRECEIVED, receipt);
 
+    open_chat.style.display = "none";
+    dialog.style.display = "none";
     document.body.appendChild(chat);
     document.body.appendChild(content);
     document.body.appendChild(send);
@@ -146,10 +211,27 @@ async function waitConnection() {
     // let the agent know the context of the conversation
     let alert = `New chat support request. Tag: ${tag}.`;
     rainbowSDK.im.sendMessageToConversation(conversation, alert);
+    timeOut();
+}
+
+async function redirect(redirect_tag) {
+    await closeConversation();
+    await disconnect('/chat/disconnect', {"userId": user_id});
+    let data = JSON.stringify({"data":redirect_tag});
+    window.localStorage.setItem("tag", data);
+    window.location = "chat";
 }
 
 function receive(e) {
     let message = e.detail.message;
+    if (message.data.substring(0, 9) == "/REDIRECT") {
+        new_tag = message.data.substring(10);
+        redirect(new_tag);
+        // if (new_tag in valid_tags) {
+        //     redirect(new_tag);
+        // }
+        return;
+    }
     pushText(message.data, "left");
     msg += `${agent_id}: ${message.data} ${new Date(Date.now()).toLocaleDateString("en-US") + " " + new Date(Date.now()).toLocaleTimeString("en-US")}\n`
 }
@@ -175,21 +257,6 @@ function onLoaded() {
     rainbowSDK.initialize();
 }
 
- window.onbeforeunload = function() {
-    if (!user_id) {
-        window.location.pathname = '/';
-        return null;
-    }
-    const id = {
-        userId: user_id
-    }
-    disconnect('/chat/disconnect', id).then(() => {
-        closeConversation().then(() => {
-            window.location.pathname = '/';
-        });
-    });
-    return null;
- }
 
 let conversation;
 let user_id = "";
@@ -197,11 +264,18 @@ let agent_id = "";
 let receipt_queue = [];
 let logs = []
 let msg = "";
+let id = {} 
+let dialog = document.getElementById("chat-popup")
+let open_chat = document.getElementById("chat-open")
+// const valid_tags = ["General Enquiry", "Abdomen", "Back", "Chest", "Ear", "Extremeties", "Head", "Pelvis", "Rectum", "Skin", "Tooth"];
 // If no tag is detected, send them back to index
 if (JSON.parse(window.localStorage.getItem("tag")) == null) {
     window.location.pathname = '/';
 }
 let tag = JSON.parse(window.localStorage.getItem("tag")).data;
+// if (tag in valid_tags == false) {
+//     window.location.pathname = '/';
+// }
 
 const chat = document.createElement("div");
 const content = document.createElement("div");

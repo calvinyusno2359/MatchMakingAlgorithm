@@ -27,7 +27,6 @@ function generateMatch(tag, callback) {
                 lowestQIndex = i;
                 matchedAgent = candidates[i].id;
             }
-            matchedAgent = candidates[lowestQIndex].id;
         }
         if (candidates.length > 0) matchedAgent = candidates[lowestQIndex].id;
 

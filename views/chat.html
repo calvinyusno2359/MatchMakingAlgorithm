@@ -16,6 +16,7 @@
     <script src="./vendors-sdk.min.js"></script>
     <script src="./rainbow-sdk.min.js"></script>
     <script src="assets/scripts/chat.js" defer></script>
+
 </head>
 
 <body>
@@ -23,7 +24,7 @@
         Connecting...
     </div>
 
-    <div class="chat-popup" id="chat-popup", style = "position: relative; top: 200px; left: 70%; display: none;">
+    <div class="chat-popup" id="chat-popup", style="position: fixed; top: 340px; left: 75%; display: none; width: 350px; height: 430px;">
         <iframe
             allow="microphone;"
             width="350"
@@ -38,6 +39,7 @@
         Chat <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
     </button>
 
+
     <script type="text/javascript">
        function toggle() {
             var x = document.getElementById("chat-popup");
@@ -49,7 +51,6 @@
             }
         }
     </script>
-
 </body>
 
 </html>
