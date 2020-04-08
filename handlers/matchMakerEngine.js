@@ -28,6 +28,8 @@ function MatchMaker() {
 
         } else { // user is new
             let agentId = await this.generateMatch(tag);
+            if (agentId == null) return null;
+
             let message = `This ${userId} is matched with ${agentId}!`;
             console.log(message);
 
@@ -96,8 +98,8 @@ function MatchMaker() {
     this.removeAgent = function(agentId) {
         // removes agent if not removed already
         if (agentId in this.agentTable) {
-        		let message = `Success! Agent: ${agentId} has been removed from agentTable!`;
-        		delete this.agentTable[agentId];
+            let message = `Success! Agent: ${agentId} has been removed from agentTable!`;
+            delete this.agentTable[agentId];
             if (this.verbosity) console.log(message);
         } else {
             let message = `Failure! Agent: ${agentId} is already removed!`;
@@ -116,7 +118,7 @@ function MatchMaker() {
     };
 
     this.getAllAvailableAgent = function() {
-        // used only for initial startup
+        // used for initial startup and when new agent is added/deleted
         // get all available agent => populate availTable and agentTable
         return new Promise((resolve, reject) => resolve(matchMakerDb.getAllAvailableAgent.call(this)));
     };
@@ -135,21 +137,21 @@ function MatchMaker() {
     };
 
     this.search = function(userId) {
-    		// returns agentId and queueNumber of this userId
-    		let matchedAgent = this.userTable[userId] || null;
-    		if (matchedAgent === null) return [null, null];
-    		else {
-    				let queue = this.agentTable[matchedAgent];
-    				let queueNumber = queue.search(userId);
-    				return [matchedAgent, queueNumber];
-    		}
+        // returns agentId and queueNumber of this userId
+        let matchedAgent = this.userTable[userId] || null;
+        if (matchedAgent === null) return [null, null];
+        else {
+            let queue = this.agentTable[matchedAgent];
+            let queueNumber = queue.search(userId);
+            return [matchedAgent, queueNumber];
+        }
     }
 
     this.availableListener = function(agentId) {
         if (agentTable[agentId].length() == 0) {
             let target = null;
             let maxLength = 1;
-            
+
             // get the person from longest queue who can match with agent
             Object.keys(agentTable).forEach((agent) => {
                 if (agentTable[agent].length() > maxLength) {

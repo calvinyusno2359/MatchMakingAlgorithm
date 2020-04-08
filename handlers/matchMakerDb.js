@@ -16,6 +16,9 @@ function generateMatch(tag, callback) {
         let maxQ = 99999;
         let lowestQIndex;
 
+        // no one is online at the moment
+        if (candidates.length == 0) return callback(null);
+
         // check which one has minimum queue => is the matchedAgent
         for (var i = 0; i < candidates.length; i++) {
             let q = this.agentTable[candidates[i].id];
@@ -28,7 +31,7 @@ function generateMatch(tag, callback) {
                 matchedAgent = candidates[i].id;
             }
         }
-        if (candidates.length > 0) matchedAgent = candidates[lowestQIndex].id;
+        matchedAgent = candidates[lowestQIndex].id;
 
         if (this.verbosity) {
             console.log("candidates:", candidates);
