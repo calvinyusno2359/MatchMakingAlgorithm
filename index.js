@@ -27,6 +27,7 @@ app.set('view engine', 'ejs');
 // routes and handlers
 // user-related routes
 app.get('/', async(req, res) => res.sendFile(path.join(__dirname + "/views/main.html")));
+app.get('/fail', async(req, res) => res.sendFile(path.join(__dirname + "/views/fail.html")));
 app.get('/chat', user.chat);
 app.get('/call', user.call);
 app.get('/call/request', user.requesting);
