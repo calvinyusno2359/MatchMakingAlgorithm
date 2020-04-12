@@ -62,6 +62,17 @@ describe('Queue Test: Methods', () => {
   	assert.equal(q.search("1"), 0, "Queue search() does not return 0");
   	assert.equal(q.search("4"), 3, "Queue search() does not return 3");
   })
+
+  it("Queue peek2() works properly", () => {
+  	assert.equal(q.peek2(), "2", "Queue peek2() does not return 2");
+  })
+
+  it("Queue steal() works properly", () => {
+  	let stolen = q.steal();
+  	assert.equal(stolen, "2", "Queue steal() does not return 2");
+  	assert.equal(q.length(), 3, "Queue length() does return 3");
+  	console.log(stolen);
+  })
 });
 
 describe('Queue Test: Scenarios', () => {
