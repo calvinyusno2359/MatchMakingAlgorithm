@@ -53,7 +53,7 @@ function MatchMaker() {
 
     this.disconnectUser = async function(userId) {
         // disconnects user and agent
-        // done by writing null to agentTable and deleting user from userTable
+        // done by dequeueing user from agentTable Q and deleting user from userTable
 
         let agentId = this.userTable[userId] || null;
         if (agentId == null) {
@@ -109,7 +109,7 @@ function MatchMaker() {
     };
 
     this.generateMatch = function(tag) {
-        // get all agents => populate availTable and agentTable
+        // given a tag, find agentId whose Q is the shortest, return agentId
         return new Promise((resolve, reject) => {
             matchMakerDb.generateMatch.call(this, tag, function(matchedAgent) {
                 resolve(matchedAgent);
@@ -124,7 +124,7 @@ function MatchMaker() {
     };
 
     this.canMatch = async function(user, agent) {
-        if (await this.generateMatch(userTags[user]) == agent) {
+        if (await this.generateMatch(this.userTags[user]) == agent) {
             return true;
         } else {
             return false;
@@ -148,22 +148,25 @@ function MatchMaker() {
     }
 
     this.availableListener = function(agentId) {
+    		// if this agentId is free, steal from another agent's Q index 1
         if (this.agentTable[agentId].length() == 0) {
-            let target = null;
+            let targetQ = null;
             let maxLength = 1;
 
             // get the person from longest queue who can match with agent
             Object.keys(this.agentTable).forEach((agent) => {
                 if (this.agentTable[agent].length() > maxLength) {
                     if (this.canMatch(this.agentTable[agent].peek2(), agentId)) {
-                        target = this.agentTable[agent];
-                        maxLength = target.length();
+                        targetQ = this.agentTable[agent];
+                        maxLength = targetQ.length();
                     }
                 }
             });
 
-            if (target != null) {
-                this.agentTable[agentId].enqueue(target.steal());
+            if (targetQ != null) {
+            		let userId = targetQ.steal();
+                this.agentTable[agentId].enqueue(userId);
+                this.userTable[userId] = agentId;
             }
         }
     }
