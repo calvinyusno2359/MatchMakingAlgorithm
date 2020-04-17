@@ -45,7 +45,7 @@ async function waitConnection() {
     response  =  await  rainbowSDK.connection.signinSandBoxWithToken(token);
 
     if (agent_id == "WAIT") {
-        loading.innerText = "Sit tight while we find you an agent.";
+        loading.innerText = `Sit tight while we find you an agent.\n (User ID: ${user_id})`;
         while (agent_id == "WAIT") {
             await new Promise(r => setTimeout(r, 1000));
             let header = { "user_id": user_id };
