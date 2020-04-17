@@ -1,5 +1,5 @@
 
-const {Builder, By, Key, until} = require('selenium-webdriver'); 
+const {Builder, By, Key, until} = require('selenium-webdriver');
 
 
 
@@ -22,7 +22,7 @@ async function testChat(){
     await driver.findElement(By.id('chat')).click();
     await driver.sleep(3000);
 
-    
+
     const textBox = await driver.wait(  until.elementLocated(By.className('text_box')),   30000);
     const enter = await driver.wait(  until.elementLocated(By.className('send_button')),   30000);
 
@@ -34,7 +34,7 @@ async function testChat(){
     await enter.click();
     await driver.sleep(3000);
 
-    
+
     const button = await driver.wait(  until.elementLocated(By.className('end_button')),   30000);
     await button.click();
     await driver.sleep(3000);
@@ -59,7 +59,7 @@ async function testChat(){
     // await driver.switchTo().alert().accept();
 
 
-    
+
     console.log("Chat Test suceed");
 
     await (await driver).sleep(5000);
@@ -74,7 +74,7 @@ async function testCall(){
     await driver.sleep(3000);
 
     await driver.findElement(By.id('call')).click();
-    
+
     await driver.sleep(3000);
 
     //const button_call = await driver.wait(  until.elementLocated(By.className('end_button')));
@@ -84,10 +84,10 @@ async function testCall(){
         await driver.quit();
         process.exit(1);
     }
-    
+
     const button_call = await driver.findElement(By.className('end_button'))
-    
-    
+
+
     await driver.sleep(10000);
 
     await button_call.click();
@@ -106,7 +106,7 @@ async function testCall(){
 
 async function testAdmin(){
     await driver.get('https://tinder-on-rainbow.herokuapp.com/home');
-    
+
     await driver.sleep(3000)
     const username = await driver.findElement(By.id('username'));
     const password = await driver.findElement(By.id('password'));
@@ -114,7 +114,7 @@ async function testAdmin(){
 
     const login = await driver.findElement(By.id('login'));
 
-    
+
     await username.sendKeys("admin");
     await driver.sleep(2000);
 
@@ -123,14 +123,14 @@ async function testAdmin(){
 
     const captcha = await driver.findElements(By.tagName('iframe'));
 
-    
+
     await captcha[0].click();
     await driver.sleep(5000)
     console.log("Captcha test success"+ " - the captcha will effectively prevent brute force password attack by automated bots");
-    
 
 
-    
+
+
 }
 
 async function testMain(url){
@@ -140,7 +140,7 @@ async function testMain(url){
     await testAdmin();
     driver.close();
     //await driver.quit();
-    
+
 }
 
 testMain('https://match-made-on-rainbow.herokuapp.com/');

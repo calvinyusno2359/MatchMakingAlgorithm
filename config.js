@@ -51,8 +51,8 @@ const dblogin = {
     database: process.env.AGENT_DB_DATABASE
 }
 
-const cert = fs.readFileSync('server.cert');
-const key = fs.readFileSync('server.key');
+const cert = fs.readFileSync('public/server.cert');
+const key = fs.readFileSync('public/server.key');
 
 exports.dblogin = dblogin;
 exports.options = options;

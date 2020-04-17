@@ -71,7 +71,6 @@ describe('Queue Test: Methods', () => {
   	let stolen = q.steal();
   	assert.equal(stolen, "2", "Queue steal() does not return 2");
   	assert.equal(q.length(), 3, "Queue length() does return 3");
-  	console.log(stolen);
   })
 });
 

@@ -34,15 +34,15 @@ async function testExit() {
 	let exit = await driver.findElement(By.css(".end_button"));
 	await exit.click();
     await sleep(1000);
-    
+
 	// let alert = await driver.switchTo().alert();
 	// await alert.accept();
 	// await sleep(1000);
 	// alert = await driver.switchTo().alert();
     // await alert.dismiss();
-    
 
-    //temporarily replaced with testFull portion coz got 3 prompts now 
+
+    //temporarily replaced with testFull portion coz got 3 prompts now
     await driver.wait( until.alertIsPresent(),20000);
     await driver.sleep(3000);
 
@@ -107,7 +107,7 @@ let tags = ["General Enquiry", "Back", "Abdomen"]
 let lines = [];
 let driver = new Builder().forBrowser("chrome").build();
 
-testMain("http://match-made-on-rainbow.herokuapp.com/");
+testMain("https://match-made-on-rainbow.herokuapp.com/");
 
 let file = path.join(__dirname + '/lines.txt')
 fs.readFile(file, (err, data) => {
