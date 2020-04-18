@@ -34,7 +34,7 @@ The application follows a seven-step process to connect a User to an appropriate
 
 The following image summarizes the seven-step process:
 
-<img align="center" src="/images/overview.jpg" alt="Overview Image">
+<p align="center"><img src="/images/overview.jpg" alt="Overview Image"></p>
 
 ## The Routing Algorithm
 The Routing Algorithm has the following characteristics:
@@ -42,8 +42,8 @@ The Routing Algorithm has the following characteristics:
 2. When a match is found, the user will be put in a `Queue`. The Agent will only handle the **first** User in the queue. i.e. index 0 of the `Queue`.
 3. When matching, the algorithm will attempt to put the User in the **shortest** `Queue` possible. Please see the following diagram for clarity **(Note: i denotes the order in which the Users requested to be matched!)**:
 
-<img align="center" src="/images/MME Algorithm.jpg" alt="MME Algorithm Image">
+<p align="center"><img src="/images/mme_algorithm.jpg" alt="MME Algorithm Image"></p>
 
 4. When a User disconnects, the User is dequeued from the `Queue`. If **after dequeueing** the Agent's `Queue` is **empty**, the Agent will **steal** the second User (index 1)  from the **longest** `Queue`. This is an attempt to distribute the load of an Agent.
 
-<img align="center" src="/images/mme_algorithm_steal.jpg" alt="MME Algorithm Queue Stealing Image">
+<p align="center"><img src="/images/mme_algorithm_steal.jpg" alt="Queue Stealing Image"></p>
