@@ -47,3 +47,5 @@ The Routing Algorithm has the following characteristics:
 4. When a User disconnects, the User is dequeued from the `Queue`. If **after dequeueing** the Agent's `Queue` is **empty**, the Agent will **steal** the second User (index 1)  from the **longest** `Queue`. This is an attempt to distribute the load of an Agent.
 
 <p align="center"><img src="/images/mme_algorithm_steal.jpg" alt="Queue Stealing Image"></p>
+
+5. When a User is **NOT** being served (i.e. index != 0), instead of MME will return `WAIT` signal instead of the `agent_id`.
