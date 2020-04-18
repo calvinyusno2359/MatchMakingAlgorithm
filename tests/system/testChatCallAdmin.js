@@ -22,9 +22,10 @@ async function testChat(){
     await driver.findElement(By.id('chat')).click();
     await driver.sleep(3000);
 
-
-    const textBox = await driver.wait(  until.elementLocated(By.className('text_box')),   30000);
-    const enter = await driver.wait(  until.elementLocated(By.className('send_button')),   30000);
+    const textBox = await driver.wait(  until.elementLocated(By.className('text_box')));
+    const enter = await driver.wait(  until.elementLocated(By.className('send_button')));
+    // const textBox = await driver.wait(  until.elementLocated(By.className('text_box')),   30000);
+    // const enter = await driver.wait(  until.elementLocated(By.className('send_button')),   30000);
 
     await driver.sleep(7000);
 
