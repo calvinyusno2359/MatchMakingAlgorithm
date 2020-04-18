@@ -34,7 +34,6 @@ app.get('/call/request', user.requesting);
 app.get('/chat/request', user.requesting);
 app.post('/chat/disconnect', user.disconnect);
 app.post('/call/disconnect', user.disconnect);
-app.get('/calling', user.calling);
 app.get('/polling', user.polling);
 
 // admin-related routes

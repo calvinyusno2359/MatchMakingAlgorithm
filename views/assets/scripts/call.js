@@ -1,8 +1,3 @@
-/*
-TODO:
-- Move browser check to landing page, and disable call button if not supported
-*/
-
 async function waitConnection() {
 
     if (rainbowSDK.webRTC.canMakeAudioVideoCall()) {
@@ -35,7 +30,6 @@ async function waitConnection() {
         rainbowSDK.webRTC.useSpeaker("default");
     });
 
-
     let header = { "tag": tag };    
     let  response  =  await  fetch("/call/request", { headers: header });    
     let  result  =  await  response.json();    
@@ -56,8 +50,6 @@ async function waitConnection() {
         loading.innerText = "Connecting";
     }
 
-         // get agent, add to network, and open conversation
-
     open_chat.style.display = "none";
     dialog.style.display = "none";
     let contact  =  await  rainbowSDK.contacts.searchById(agent_id);
@@ -67,16 +59,9 @@ async function waitConnection() {
     if (res.label === "OK") {
         /* Your call has been correctly initiated. Waiting for the other peer to answer */
         console.log("waiting for rply");
-        // go to the next page
-        //window.location = "calling";
-        // TODO: 1 if call established --> go to next page
-        //TODO: 2 release call function
-
     }
+
     document.addEventListener(rainbowSDK.webRTC.RAINBOW_ONWEBRTCCALLSTATECHANGED, onWebRTCCallChanged);
-
-    //end.addEventListener("click", endCall);
-
 
 }
 
@@ -96,10 +81,8 @@ function onWebRTCCallChanged(event) {
         disconnect('/call/disconnect', id).then(() => {
             window.location.pathname = '/'
         })
-
     }
 }
-
 
 function  endCall()  {
     const id = {
@@ -113,23 +96,6 @@ function  endCall()  {
         // Do nothing!
     }
 }
-
-//OG end call --> this will double erase the agent table
-
-// function endCall() {
-// 	const id = {
-// 		userId: user_id
-// 	}
-// 	if (confirm('Are you sure you want to exit the call?')) {
-
-// 		disconnect('/call/disconnect', id).then(() => {
-// 			window.location.pathname = '/'
-// 		})
-// 	} else {
-// 		// Do nothing!
-// 	}
-// }
-
 
 async function disconnect(url = '', data = {}) {
     const response = await fetch(url, {
@@ -147,12 +113,10 @@ function  onLoaded()  {    
     rainbowSDK.initialize();
 }
 
-
-
 let tag = JSON.parse(window.localStorage.getItem("tag")).data;
-
 let dialog = document.getElementById("chat-popup")
 let open_chat = document.getElementById("chat-open")
+
 const  end  =  document.createElement("button")
 end.className  =  "end_button";
 end.textContent  =  "Exit"

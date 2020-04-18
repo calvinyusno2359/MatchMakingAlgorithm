@@ -1,5 +1,6 @@
 const {Builder, By, until} = require("selenium-webdriver");
-require("chromedriver");
+let chrome = require('selenium-webdriver/chrome');
+//require("chromedriver");
 const fs = require("fs");
 let path = require("path");
 
@@ -105,7 +106,14 @@ async function testMain(url) {
 let tags = ["General Enquiry", "Back", "Abdomen"]
 //let tags = ["General Enquiry", "Back", "Extremeties"]
 let lines = [];
-let driver = new Builder().forBrowser("chrome").build();
+
+var chromeOptions = new chrome.Options();
+
+chromeOptions.addArguments('use-fake-ui-for-media-stream');
+chromeOptions.addArguments('allow-file-access-from-files')
+chromeOptions.addArguments('use-fake-device-for-media-stream')
+
+const driver = new Builder().forBrowser('chrome').setChromeOptions(chromeOptions).build();
 
 testMain("https://match-made-on-rainbow.herokuapp.com/");
 
