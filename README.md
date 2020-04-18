@@ -33,16 +33,19 @@ The application follows a seven-step process to connect a User to an appropriate
 7. User's browser logins as an `Anonymous Guest` using `login_token` and creates a `Conversation` with the designated Agent using Rainbow API
 
 The following image summarizes the seven-step process:
-![Overview Image](/images/overview.jpg)
+
+  ![Overview Image](/images/overview.jpg)
 
 ## The Routing Algorithm
 The Routing Algorithm has the following characteristics:
 1. The algorithm attempts to match a user specifying a certain `tag` with an **online** Agent who has that `tag` in his/her `skill_tags`. If there is not a single **online** Agent that has the specified `tag`, the User will be notified.
 2. When a match is found, the user will be put in a `Queue`. The Agent will only handle the **first** User in the queue. i.e. index 0 of the `Queue`.
 3. When matching, the algorithm will attempt to put the User in the **shortest** `Queue` possible. Please see the following diagram for clarity **(Note: i denotes the order in which the Users requested to be matched!)**:
-![MME Algorithm Image](/images/mme_algorithm.jpg)
 
-4. When a User disconnects, the User is dequeued from the `Queue`. If **after dequeueing** the Agent's `Queue` is **empty**, the Agent will **steal** the second (index 1) User from the **longest** `Queue`. This is an attempt to distribute the load of an Agent.
-![MME Algorithm Image](/images/mme_algorithm.jpg)
+  ![MME Algorithm Image](/images/mme_algorithm.jpg)
+
+4. When a User disconnects, the User is dequeued from the `Queue`. If **after dequeueing** the Agent's `Queue` is **empty**, the Agent will **steal** the second User (index 1)  from the **longest** `Queue`. This is an attempt to distribute the load of an Agent.
+
+  ![MME Algorithm Image](/images/mme_algorithm_steal.jpg)
 
 
