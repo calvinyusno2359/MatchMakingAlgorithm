@@ -28,7 +28,8 @@ The application follows a seven-step process to connect a User to an appropriate
 1. The User arrives in the web page, specifies his `tag` and requests to be connected to an Agent.
 2. The match-made-on-rainbow server receives this request and in turn requests rainbow server for an `Anonymous Guest Account` on behalf of User.
 3. Rainbow server creates an `Anonymous Guest Account` for the User and returns a `login_token`.
-5. match-made-on-rainbow server performs an algorithm on the `tag` and a list of currently available of Agents to find matches and returns an `agent_id` before returning to the User.
+4. match-made-on-rainbow server queries the database for currently available User (if necessary) before performs the algorithm on the `tag` and the list of  of Agents to find a match.
+5. When match-made-on-rainbow server has found a matching `agent_id`, it sends both the `agent_id` and the `login_token` back to the User's browser.
 6. User receives the `login_token` and the `agent_id` which indicate which Agent the User should contact.
 7. User's browser logins as an `Anonymous Guest` using `login_token` and creates a `Conversation` with the designated Agent using Rainbow API
 
