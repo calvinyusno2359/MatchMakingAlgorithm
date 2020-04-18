@@ -1,5 +1,18 @@
 # Project; Match-Made-On-Rainbow
-A match making engine that routes a User's chat and audio request to the appropriate Agent. Built using Rainbow API on NodeJS.
+A match making engine that routes a User's chat and audio request to the appropriate Agent. Built using Rainbow API and NodeJS.
+
+## How to Test
+- As User:
+You may test it yourself by going to this website: https://match-made-on-rainbow.herokuapp.com/
+
+- As Agent:
+You MUST log in as the following 3 Rainbow Agent accounts from this website as well: https://web-sandbox.openrainbow.com/app/1.69.3/index.html#/login
+Otherwise, there won't be anyone (likely) to which your User will be routed to.
+The following are the 3 Rainbow Agent account details:
+Username          | Password  | Skill tags      |
+testa@gmail.com   | 1234Qwer! | Abdomen         |
+testb@gmail.com   | 1234Qwer! | Back            |
+testgp@gmail.com  | 1234Qwer! | General Enquiry |
 
 ## Overview
 The application follows a seven-step process to connect a User to an appropriate Agent
@@ -13,8 +26,6 @@ The application follows a seven-step process to connect a User to an appropriate
 The following image summarizes the seven-step process:
 
 ![Overview Image](/images/overview.jpg)
-
-You may test it yourself by going to this website: http://match-made-on-rainbow.herokuapp.com/
 
 ## The Routing Algorithm
 The algorithm treats User `tags` and Agent `skills` as vectors and attempt to find their similarity score. Then, it...
