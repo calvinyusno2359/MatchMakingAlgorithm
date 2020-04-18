@@ -14,6 +14,11 @@ testa@gmail.com   | 1234Qwer! | Abdomen         |
 testb@gmail.com   | 1234Qwer! | Back            |
 testgp@gmail.com  | 1234Qwer! | General Enquiry |
 
+- As Admin
+git clone `master` branch, in the cloned folder, simply call `npm run test`.
+This will simulatenously run the junit white box test, blackbox test and system tests.
+The report will be printed out in the console, once each tests are completed.
+
 ## Overview
 The application follows a seven-step process to connect a User to an appropriate Agent
 1. The User arrives in the web page, specifies his `tags` and requests to be connected to an Agent
