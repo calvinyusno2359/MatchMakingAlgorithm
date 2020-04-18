@@ -25,7 +25,7 @@ The report will be printed out in the console, once each tests are completed.
 
 ## Overview
 The application follows a seven-step process to connect a User to an appropriate Agent
-1. The User arrives in the web page, specifies his `tags` and requests to be connected to an Agent.
+1. The User arrives in the web page, specifies his `tag` and requests to be connected to an Agent.
 2. The match-made-on-rainbow server receives this request and in turn requests rainbow server for an `Anonymous Guest Account` on behalf of User.
 3. Rainbow server creates an `Anonymous Guest Account` for the User and returns a `login_token`.
 5. match-made-on-rainbow server performs an algorithm on the `tag` and a list of currently available of Agents to find matches and returns an `agent_id` before returning to the User.
@@ -48,4 +48,4 @@ The Routing Algorithm has the following characteristics:
 
 <p align="center"><img src="/images/mme_algorithm_steal.jpg" alt="Queue Stealing Image"></p>
 
-5. When a User is **NOT** being served (i.e. index != 0), instead of MME will return `WAIT` signal instead of the `agent_id`.
+5. When a User is **NOT** being served (i.e. index > 0), instead of returning the `agent_id`, the algorithm will return `WAIT` signal instead. Users will only receive `agent_id` when they're on the top of the `Queue` (index 0)!
