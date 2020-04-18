@@ -2,8 +2,8 @@
 A match making engine that routes a User's chat and audio request to the appropriate Agent. Built using Rainbow API and NodeJS.
 
 ## How to Test
-- As User:
-You may test it yourself by going to this website: https://match-made-on-rainbow.herokuapp.com/
+###- As User:
+You may test it yourself by going to this website: https://match-made-on-rainbow.herokuapp.com/.
 You MUST log in as the 3 Rainbow Agent sandbox accounts as well! Otherwise, there won't be anyone (likely) to which your User will be routed to.
 
 The following are the 3 Rainbow Agent account details:
@@ -14,23 +14,23 @@ The following are the 3 Rainbow Agent account details:
 |testb@gmail.com   | 1234Qwer! | Back            |
 |testgp@gmail.com  | 1234Qwer! | General Enquiry |
 
-- As Agent:
+###- As Agent:
 Simply login as Rainbow Agents using the details stated in the table above.
-Visit this website to login as Rainbow Agents: https://web-sandbox.openrainbow.com/app/1.69.3/index.html#/login
+Visit this website to login as Rainbow Agents: https://web-sandbox.openrainbow.com/app/1.69.3/index.html#/login.
 
-- As Admin
+###- As Admin:
 git clone `master` branch, in the cloned folder, simply call `npm run test`.
 This will simulatenously run the junit white box test, blackbox test and system tests.
 The report will be printed out in the console, once each tests are completed.
 
 ## Overview
 The application follows a seven-step process to connect a User to an appropriate Agent
-1. The User arrives in the web page, specifies his `tags` and requests to be connected to an Agent
-2. The server receives this request, logins as Rainbow Bot Account and requests for an `Anonymous Guest Account`
-3. Rainbow server creates an `Anonymous Guest Account` for the User and returns a `login token`
-5. match-made-on-rainbow server performs an algorithm on the `tags` and list of Agents to find matches and returns a `Agent Priority List` before returning to User
-6. User receives a `login token` and an `agent_id` to contact
-7. User logins as `Anonymous Guest` and creates a `Conversation` with the designated Agent using Rainbow API
+1. The User arrives in the web page, specifies his `tags` and requests to be connected to an Agent.
+2. The server receives this request and requests for an `Anonymous Guest Account` on behalf of User.
+3. Rainbow server creates an `Anonymous Guest Account` for the User and returns a `login_token`.
+5. match-made-on-rainbow server performs an algorithm on the `tags` and list of Agents to find matches and returns an `agent_id` before returning to User.
+6. User receives the `login_token` and the `agent_id` which indicate which Agent the User should contact.
+7. User's browser logins as `Anonymous Guest` using `login_token` and creates a `Conversation` with the designated Agent using Rainbow API
 
 The following image summarizes the seven-step process:
 
