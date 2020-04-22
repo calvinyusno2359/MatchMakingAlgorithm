@@ -3,7 +3,7 @@ const buttons = document.querySelector(".support_buttons").querySelectorAll(".bu
 let active = null;
 
 function selectTag(e) {
-    let target = e.toElement;
+    let target = e.target;
 
     if (target.className == "active") {
         target.className = null;
@@ -22,7 +22,7 @@ function selectTag(e) {
 }
 
 function getSupport(e) {
-    let target = e.toElement;
+    let target = e.target;
     let data = JSON.stringify({ "data": active.innerText });
     window.localStorage.setItem("tag", data);
     if (target.id === "chat") {
