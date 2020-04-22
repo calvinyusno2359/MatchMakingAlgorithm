@@ -15,6 +15,7 @@
         "dotenv": "^8.2.0",
         "ejs": "^3.0.1",
         "express": "^4.17.1",
+        "install": "^0.13.0",
         "mysql": "^2.18.1",
         "nodemon": "^2.0.2",
         "python-shell": "^1.0.8",

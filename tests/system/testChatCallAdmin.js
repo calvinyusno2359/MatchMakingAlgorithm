@@ -1,4 +1,6 @@
 
+
+
 const {Builder, By, Key, until} = require('selenium-webdriver');
 
 
@@ -12,7 +14,6 @@ chromeOptions.addArguments('use-fake-device-for-media-stream')
 
 
 const driver = new Builder().forBrowser('chrome').setChromeOptions(chromeOptions).build();
-
 
 async function testChat(){
     elements = await driver.findElements(By.tagName('a'));
@@ -78,6 +79,8 @@ async function testCall(){
 
     await driver.sleep(3000);
 
+
+
     //const button_call = await driver.wait(  until.elementLocated(By.className('end_button')));
     try{await driver.wait(  until.elementLocated(By.className('end_button')),70000);
     }catch(err){
@@ -106,7 +109,7 @@ async function testCall(){
 }
 
 async function testAdmin(){
-    await driver.get('https://tinder-on-rainbow.herokuapp.com/home');
+    await driver.get('https://match-made-on-rainbow.herokuapp.com/home');
 
     await driver.sleep(3000)
     const username = await driver.findElement(By.id('username'));
