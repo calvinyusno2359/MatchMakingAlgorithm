@@ -1,6 +1,8 @@
 # Project; Match-Made-On-Rainbow
 A match making engine that routes a User's chat and audio request to the appropriate Agent. Built using Rainbow API and NodeJS.
 
+**Note: branch v2.1 is the current heroku deployment.**
+
 ## How to Test
 ### As User:
 You may test it yourself by going to this website: https://match-made-on-rainbow.herokuapp.com/.
